@@ -1,0 +1,8 @@
+*.dvi
+*.latexmkrc
+*.log
+*.fls
+*.fdb_latexmk
+*.aux
+*.bst
+*.sty

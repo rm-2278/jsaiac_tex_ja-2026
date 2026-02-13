@@ -1,0 +1,210 @@
+\usepackage{color}
+\usepackage[dvipdfmx]{graphicx}
+%%
+\title{
+\jtitle{階層的世界モデルにおける現状と課題：Hierosの限界と将来の展望}
+\etitle{Current Status and Challenges in Hierarchical World Models: Identifying Limitations of Hieros and Future Prospects}
+}
+%%英文は以下を使用
+%\title{Style file for manuscripts of JSAI 20XX}
+
+\jaddress{氏名，所属，住所，rm2278@cam.ac.uk}
+
+\author{%
+\jname{三好 理輝\first}
+\ename{Riki Miyoshi}
+\and
+\jname{劉 智優\second}
+\ename{Jiu You}
+\and
+\jname{山田\third}
+\ename{Third Author's Name}
+%\and
+%Given-name Surname\third{}%%英文は左を使用
+}
+
+\affiliate{
+\jname{\first{}ケンブリッジ大学}
+\ename{University of Cambridge}
+\and
+\jname{\second{}所属}
+\ename{Affiliation \#2 in English}
+\and
+\jname{\third{}所属}
+\ename{Affiliation \#3 in English}
+%\and
+%\third{}Affiliation \#3 in English%%英文は左を使用
+}
+
+%%
+%\Vol{28}        %% <-- 28th（変更しないでください）
+%\session{0A0-00}%% <-- 講演ID（必須)
+
+\begin{abstract}
+   ここに\\
+   アブストラクトを\\
+   5行程度\\
+   書き\\
+   ます\\
+\end{abstract}
+
+%\setcounter{page}{1}
+\def\Style{``jsaiac.sty''}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em%
+ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\def\JBibTeX{\leavevmode\lower .6ex\hbox{J}\kern-0.15em\BibTeX}
+\def\LaTeXe{\LaTeX\kern.15em2$_{\textstyle\varepsilon}$}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+
+\section{研究背景・目的}
+階層的強化学習 (HRL) は、探索において有益であると知られており \cite{9}、効率的な報酬割り当て、転移学習、解釈性などといった点で優位性があると考えられている\cite{14}。
+
+また、世界モデルは高いサンプル効率を実現し、エージェントが少ない環境との相互作用で学習することを可能にする。
+
+この２つの要素を組み合わせたモデルに、Director\cite{1}、Hieros\cite{2}があり、ベースラインとして使用されている世界モデルを上回る性能を示している。
+一方で、解釈性やモデルをスケールさせる方向での研究は知られておらず、階層的な世界モデルの理論および評価実験は知られていない。
+
+
+
+
+\section{関連研究}
+\subsection{世界モデル}
+世界モデルは、「説明」。
+世界モデルは大きく、1. 状態空間モデル、2. 状態予測モデル、3. 観測予測モデル に分けることができる。
+代表的な世界モデルとして、Dreamer および TD-MPC2が挙げられる。
+Dreamerは、状態空間モデルの一つであり、
+
+\subsection{階層的強化学習 (HRL)}
+
+
+
+\subsection{階層的世界モデル (HWM)}
+階層的世界モデルも、世界モデルと同様、
+状態空間モデルであるDreamerの方策を階層化したものがDirectorである。マネージャーとワーカーの２つの方策が存在し、マネージャーはより長い時間軸で目標とする状態を圧縮された形でワーカーに渡し、ワーカーは通常の強化学習と同様の短い時間軸で行動を出力する。
+ワーカーの損失関数にマネージャーの提示した目標がどの程度達成されたかを組み込むことで、ワーカーとマネージャーの２つの方策がそれぞれ役割分担しながら同時に学習できるようにしている。
+
+Directorの拡張としてHierosがある。
+Hierosでは、
+\begin{enumerate}
+   \item 方策だけでなく世界モデルも階層化している。
+   \item 2階層だけでなくそれより多い階層でも実験を行っている。
+   \item 計算効率を上げるために、状態空間モデルとしてRSSMではなくS5WMを用いている。
+   \item リプレイバッファからのサンプリングを工夫し、偏りを減らすことと時間計算量の削減を実現している。
+\end{enumerate}
+という工夫が加えられたモデルが提案されており、AtariにおいてDreamerV3を超える性能を示した。
+本稿では方策だけでなく世界モデルも階層化しているという点でHierosに着目し、その限界と可能性を調べる。
+
+状態予測モデルであるTD-MPC2を階層的にしたものがPuppeteerである。これは、「説明」
+
+
+
+
+\section{実験・考察}
+本稿では、階層的世界モデルのHieros\cite{2}モデルの評価を行った。
+特に、論文中では検証されていなかった、長期タスクの評価に適しているVisual Pinpad環境での検証を行った。また、Atariでのモデルの内部状態の確認を行った。
+
+\section{手法}
+Hierosのモデル検証では、既存のレポジトリ\cite{11}を変更して実験を行った。
+また、Directorではこのレポジトリ\cite{12}を用いて実験を行った。
+RTX-5070TiまたはRTX-6000一つを用いて学習をした。
+
+\subsection{Pinpad}
+PinpadにおけるHierosの学習状況を調査した。まずは、Hierosのベースラインでの検証を行った。
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{media/pinpad/Hieros-baseline.png}
+  \caption{Visual Pinpad環境におけるHierosの学習および内部報酬曲線。}
+  \label{fig:hieros-baseline}
+\end{figure}
+
+
+
+1. 報酬設計の変更
+
+2. 報酬割り当て係数の変更
+Hierosでは、各レイヤごとの方策は、external reward, subgoal rewardとintrinsic rewardの3つを用いて学習を行っている。
+
+
+
+
+3. 方策エントロピーの変更
+\subsection{Subgoal可視化}
+より詳しくHierosの性能について調査するために、Hierosの各レイヤが提示している状態の可視化を行った。元の論文では過去の経験を参考にしたノイズを加えての可視化を行っていたが、モデルの予測のみに焦点を当てるために、ノイズなしでの可視化を行った。
+
+
+\subsection{探索位置のヒートマップ}
+
+
+\subsection{結果}
+1. 時間的抽象化方向
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{media/pinpad/sweep-episode-scores.png}
+  \caption{異なるsubactor-update-everyパラメータでの学習曲線の比較。}
+  \label{fig:sweep-scores}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{media/pinpad/sweep-subgoal-temporal.png}
+  \caption{学習過程におけるサブゴール可視化の時間的変化。}
+  \label{fig:subgoal-temporal}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{media/pinpad/sweep-heatmap-temporal.png}
+  \caption{探索位置のヒートマップの時間的変化。}
+  \label{fig:heatmap-temporal}
+\end{figure}
+
+update-everyは、それぞれの階層が、下の階層と比較してどの程度時間的抽象化を行っているかを表している。例えば、update-every=4では、4ステップごとに上の階層が下の階層に与えるサブゴールを更新しているという意味である。
+図からわかるように、多少の差異がある一方で、最終的に報酬が1になる程度に方策が収束している。
+
+\subsection{考察}
+なぜ方策が
+ベースラインコードにエラーが含まれている可能性は否めない一方で、世界モデルを階層的にすることによって学習が不安定になっている可能性も高い。
+特に世界モデルは目的関数や誤差蓄積に起因して、また階層的モデルは階層の同時学習による非定常性によってハイパーパラメータに繊細であることが知られており、それらの組み合わせによって学習が不安定になってしまっている可能性もある。
+この理論的、実証実験的解析は今後の課題である。
+
+
+\section{まとめ}
+
+
+
+
+
+\section{展望}
+本稿ではHierosの3つの報酬係数を手動で設定し比較を行ったが、HarmonyDream \cite{13} のように、報酬を自動でバランスすると、より多様なタスクにおいて学習ができるようになると予想する。
+
+
+\section{Limitation}
+実験が一つのseed値でしか行われなかったこと。これはモデル改善の方向に力を注いでいたためである。
+
+\begin{thebibliography}{99}
+\bibitem[Director]{1} Hafner, D. et al.: Deep Hierarchical Planning from Pixels, NeurIPS (2022).
+\bibitem[Hieros]{2} Mattes, et al.: Hieros - Hierarchical Imagination on Structured State Space Sequence World Models (2023).
+\bibitem[DreamerV1]{3}
+\bibitem[DreamerV2]{4}
+\bibitem[DreamerV3]{5}
+\bibitem[TD-MPC]{6}
+\bibitem[TD-MPC2]{7}
+\bibitem[Puppeteer]{8}
+\bibitem[HRL benefit]{9} Nachum, O. et al.: Why Does Hierarchy (Sometimes) Work So Well in Reinforcement Learning? (2019).
+\bibitem[THICK]{10} 
+\bibitem[Hieros Repo]{11} https://github.com/Snagnar/Hieros
+\bibitem[Director Repo]{12} https://github.com/danijar/director
+\bibitem[HarmonyDream]{13} Ma, H. et al.: HarmonyDream: Task Harmonization Inside World Models (2024).
+\bibitem[HRL survey]{14} Pateria, S. et al.: Hierarchical Reinforcement Learning: A Comprehensive Survey, preprint (2021).
+\bibitem{15} 
+
+
+
+\end{thebibliography}
+
+%%
