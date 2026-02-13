@@ -17,8 +17,8 @@
 \jname{劉 智優\second}
 \ename{Jiu You}
 \and
-\jname{山田\third}
-\ename{Third Author's Name}
+\jname{山田 達也\third}
+\ename{Yamada Tatsuya}
 %\and
 %Given-name Surname\third{}%%英文は左を使用
 }
@@ -30,8 +30,8 @@
 \jname{\second{}所属}
 \ename{Affiliation \#2 in English}
 \and
-\jname{\third{}所属}
-\ename{Affiliation \#3 in English}
+\jname{\third{}大阪大学}
+\ename{The University of Osaka}
 %\and
 %\third{}Affiliation \#3 in English%%英文は左を使用
 }
@@ -68,7 +68,7 @@
 この２つの要素を組み合わせたモデルに、Director\cite{1}、Hieros\cite{2}があり、ベースラインとして使用されている世界モデルを上回る性能を示している。
 一方で、解釈性やモデルをスケールさせる方向での研究は知られておらず、階層的な世界モデルの理論および評価実験は知られていない。
 
-
+そこで本研究では、階層的世界モデルの現状を理解し発展方向を特定するために、Hierosの性能評価および内部状態の理解を試みた。
 
 
 \section{関連研究}
@@ -112,7 +112,6 @@ Hierosのモデル検証では、既存のレポジトリ\cite{11}を変更して実験を行った。
 また、Directorではこのレポジトリ\cite{12}を用いて実験を行った。
 RTX-5070TiまたはRTX-6000一つを用いて学習をした。
 
-\subsection{Pinpad}
 PinpadにおけるHierosの学習状況を調査した。まずは、Hierosのベースラインでの検証を行った。
 \begin{figure}[t]
   \centering
@@ -121,44 +120,42 @@ PinpadにおけるHierosの学習状況を調査した。まずは、Hierosのベースラインでの検証を
   \label{fig:hieros-baseline}
 \end{figure}
 
+図からわかるように、報酬が0のまま学習が進まないことが確認された。
+そこで、以下ではpinpadの報酬設計を、から、
 
 
-1. 報酬設計の変更
 
-2. 報酬割り当て係数の変更
+1. 報酬割り当て係数の変更
 Hierosでは、各レイヤごとの方策は、external reward, subgoal rewardとintrinsic rewardの3つを用いて学習を行っている。
 
 
 
-
-3. 方策エントロピーの変更
-\subsection{Subgoal可視化}
-より詳しくHierosの性能について調査するために、Hierosの各レイヤが提示している状態の可視化を行った。元の論文では過去の経験を参考にしたノイズを加えての可視化を行っていたが、モデルの予測のみに焦点を当てるために、ノイズなしでの可視化を行った。
 
 
 \subsection{探索位置のヒートマップ}
 
 
 \subsection{結果}
-1. 時間的抽象化方向
+
+1. 時間的抽象化の調整
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/sweep-episode-scores.png}
+  \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-episode-scores.png}
   \caption{異なるsubactor-update-everyパラメータでの学習曲線の比較。}
   \label{fig:sweep-scores}
 \end{figure}
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/sweep-subgoal-temporal.png}
+  \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-subgoal-temporal.png}
   \caption{学習過程におけるサブゴール可視化の時間的変化。}
   \label{fig:subgoal-temporal}
 \end{figure}
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/sweep-heatmap-temporal.png}
+  \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-heatmap-temporal.png}
   \caption{探索位置のヒートマップの時間的変化。}
   \label{fig:heatmap-temporal}
 \end{figure}
@@ -166,8 +163,46 @@ Hierosでは、各レイヤごとの方策は、external reward, subgoal rewardとintrinsic rew
 update-everyは、それぞれの階層が、下の階層と比較してどの程度時間的抽象化を行っているかを表している。例えば、update-every=4では、4ステップごとに上の階層が下の階層に与えるサブゴールを更新しているという意味である。
 図からわかるように、多少の差異がある一方で、最終的に報酬が1になる程度に方策が収束している。
 
+
+
+2. 方策エントロピーの変更
+\subsection{Subgoal可視化}
+より詳しくHierosの性能について調査するために、Hierosの各レイヤが提示している状態の可視化を行った。元の論文では過去の経験を参考にしたノイズを加えての可視化を行っていたが、モデルの予測のみに焦点を当てるために、ノイズなしでの可視化を行った。
+update-everyは8で実験を行った。
+
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-episode-scores.png}
+  \caption{異なるactor\_entropyパラメータでの学習曲線の比較。}
+  \label{fig:entropy-sweep-scores}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-subgoal-temporal.png}
+  \caption{エントロピー調整実験におけるサブゴール可視化の時間的変化。}
+  \label{fig:entropy-subgoal-temporal}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-heatmap-temporal.png}
+  \caption{エントロピー調整実験における探索位置のヒートマップの時間的変化。}
+  \label{fig:entropy-heatmap-temporal}
+\end{figure}
+
+3. Pinpadの報酬設計の変更
+
+
 \subsection{考察}
-なぜ方策が
+実験当初はpinpadで学習が進まない理由が報酬が疎であるからだと考えていたが、Pinpadの報酬設計を密にした時にも学習が進まなかったため、そうでは無いと考えた。
+さらにAtariのモデルの可視化もする中で、Atariでも有意義な方策が学習できていないと思われ、Hierosのモデルそのものに、不安定性あるいは改良の余地があるのではないかと考える。
+一方で、有意義だと思えない学習をしているにも関わらず、なぜHierosがAtariで性能が高く出ていたのかの理由の解明も今後の課題である。
+Atariの最適方策が学習しやすく、\cite{9}で提示されているような階層化による探索の改善が関連しているとも考えられるが、検証が必要である。
+検証結果からはHierosの上手く学習ができておらず汎化性能が低く、より頑健性の高いモデルの理論的、実験的模索が必要であると結論づける。
+
+
 ベースラインコードにエラーが含まれている可能性は否めない一方で、世界モデルを階層的にすることによって学習が不安定になっている可能性も高い。
 特に世界モデルは目的関数や誤差蓄積に起因して、また階層的モデルは階層の同時学習による非定常性によってハイパーパラメータに繊細であることが知られており、それらの組み合わせによって学習が不安定になってしまっている可能性もある。
 この理論的、実証実験的解析は今後の課題である。
@@ -202,6 +237,13 @@ update-everyは、それぞれの階層が、下の階層と比較してどの程度時間的抽象化を行って
 \bibitem[HarmonyDream]{13} Ma, H. et al.: HarmonyDream: Task Harmonization Inside World Models (2024).
 \bibitem[HRL survey]{14} Pateria, S. et al.: Hierarchical Reinforcement Learning: A Comprehensive Survey, preprint (2021).
 \bibitem{15} 
+
+\section{Appendix}
+\subsection{Director}
+Directorを用いたPinpad-3およびPinpad-easy-3の結果。学習進んでいることが確認される。
+
+\subsection{RSSM}
+HierosはS5WMを用いているが、ベースラインにはRSSMも用意されている。以下は、RSSMを用いてHierosをpinpadで結果。
 
 
 

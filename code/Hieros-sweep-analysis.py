@@ -6,6 +6,10 @@ from PIL import Image
 import io
 import os
 
+# Create output directory
+output_dir = "media/pinpad/subactor-update-sweep"
+os.makedirs(output_dir, exist_ok=True)
+
 # Initialize the API
 api = wandb.Api()
 
@@ -59,9 +63,9 @@ ax.tick_params(axis="both", labelsize=8)
 ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
-fig.savefig("media/pinpad/sweep-episode-scores.png", dpi=300, bbox_inches="tight")
+fig.savefig(f"{output_dir}/sweep-episode-scores.png", dpi=300, bbox_inches="tight")
 plt.close(fig)
-print("✓ Saved: media/pinpad/sweep-episode-scores.png")
+print(f"✓ Saved: {output_dir}/sweep-episode-scores.png")
 
 # =============================================================================
 # 2. Subgoal Visualization (temporal progression from left to right)
@@ -141,9 +145,9 @@ else:
             axes[idx].axis("off")
         
         plt.tight_layout()
-        fig.savefig("media/pinpad/sweep-subgoal-temporal.png", dpi=300, bbox_inches="tight")
+        fig.savefig(f"{output_dir}/sweep-subgoal-temporal.png", dpi=300, bbox_inches="tight")
         plt.close(fig)
-        print("✓ Saved: media/pinpad/sweep-subgoal-temporal.png")
+        print(f"✓ Saved: {output_dir}/sweep-subgoal-temporal.png")
     else:
         print("⚠ No valid report/subgoal_visualization data found")
 
@@ -213,9 +217,9 @@ else:
             axes[idx].axis("off")
         
         plt.tight_layout()
-        fig.savefig("media/pinpad/sweep-heatmap-temporal.png", dpi=300, bbox_inches="tight")
+        fig.savefig(f"{output_dir}/sweep-heatmap-temporal.png", dpi=300, bbox_inches="tight")
         plt.close(fig)
-        print("✓ Saved: media/pinpad/sweep-heatmap-temporal.png")
+        print(f"✓ Saved: {output_dir}/sweep-heatmap-temporal.png")
     else:
         print("⚠ No valid position_heatmap data found")
 

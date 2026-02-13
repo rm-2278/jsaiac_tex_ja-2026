@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Watch `data.tex` and rebuild `guide-2e.tex` using pLaTeX + dvipdfmx.
+# Watch `data.tex` and rebuild `paper.tex` using pLaTeX + dvipdfmx.
 # Uses inotifywait if available, otherwise falls back to a 1s polling loop.
 set -euo pipefail
 cd "$(dirname "$0")"
 
-TARGET_TEX=guide-2e.tex
+TARGET_TEX=paper.tex
 WATCH_FILE=data.tex
 
 build() {
