@@ -134,7 +134,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"actor_entropy={label}", fontsize=9)
+            ax.set_title(f"actor_entropy={label}", fontsize=12)
             ax.axis("off")
         
         # Hide unused subplots
@@ -142,7 +142,7 @@ else:
             axes[idx].axis("off")
         
         plt.suptitle("Subgoal Visualization @ 400k steps", fontsize=11, fontweight='bold')
-        plt.tight_layout()
+        plt.subplots_adjust(wspace=0.1, hspace=0.2)
         fig.savefig(f"{output_dir}/sweep-subgoal-temporal.png", dpi=300, bbox_inches="tight")
         plt.close(fig)
         print(f"✓ Saved: {output_dir}/sweep-subgoal-temporal.png")
@@ -214,7 +214,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"actor_entropy={label}", fontsize=9)
+            ax.set_title(f"actor_entropy={label}", fontsize=12)
             ax.axis("off")
         
         plt.suptitle("Position Heatmap @ 400k steps", fontsize=11, fontweight='bold')

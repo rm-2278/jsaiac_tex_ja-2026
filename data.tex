@@ -117,8 +117,7 @@ PinpadにおけるHierosの学習状況を調査した。まずは、Hierosのベースラインでの検証を
 \end{figure}
 
 図からわかるように、報酬が0のまま学習が進まないことが確認された。
-そこで、以下ではpinpadの報酬設計を元の実装から、末尾の一致度が上がるとスコアが与えられるように変更した（例えば、赤 $\rightarrow$ 赤緑に変化した場合、+2の報酬、赤緑 $\rightarrow$ 赤緑赤に変化した場合、-1の報酬が与えられる）。
-
+そこで、以下ではpinpadの報酬設計を元の実装から、末尾の一致度が上がるとスコアが与えられるように変更した（例えば、赤 $\rightarrow$ 赤緑に変化した場合、+1の報酬、赤緑 $\rightarrow$ 赤緑緑に変化した場合、-2の報酬が与えられる）。
 
 より詳しくHierosの性能について調査するために、Hierosの各レイヤが提示している状態の可視化を行った。元の論文では過去の経験を参考にしたノイズを加えての可視化を行っていたが、モデルの予測のみに焦点を当てるために、ノイズなしでの可視化を行った。
 update-everyは8で実験を行った。\subsection{時間的抽象化の調整}
@@ -162,14 +161,14 @@ Hierosでは、各レイヤごとの方策は、external reward, subgoal rewardとintrinsic rew
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-subgoal-temporal.png}
+  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-subgoal-temporal.png}
   \caption{報酬割り当て実験におけるサブゴール可視化の時間的変化。}
   \label{fig:reward-ratio-subgoal-temporal}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-heatmap-temporal.png}
+  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-heatmap-temporal.png}
   \caption{報酬割り当て実験における探索位置のヒートマップの時間的変化。}
   \label{fig:reward-ratio-heatmap-temporal}
 \end{figure}
@@ -189,14 +188,14 @@ Hierosでは、各レイヤごとの方策は、external reward, subgoal rewardとintrinsic rew
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-subgoal-temporal.png}
+  \includegraphics[width=0.75\columnwidth]{media/pinpad/entropy-sweep/sweep-subgoal-temporal.png}
   \caption{エントロピー調整実験におけるサブゴール可視化の時間的変化。}
   \label{fig:entropy-subgoal-temporal}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-heatmap-temporal.png}
+  \includegraphics[width=0.75\columnwidth]{media/pinpad/entropy-sweep/sweep-heatmap-temporal.png}
   \caption{エントロピー調整実験における探索位置のヒートマップの時間的変化。}
   \label{fig:entropy-heatmap-temporal}
 \end{figure}
@@ -227,14 +226,14 @@ pinpad-easy-threeタスクにおいて、報酬設計を変更した実験結果。
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-subgoal-temporal.png}
+  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-design-sweep/sweep-subgoal-temporal.png}
   \caption{報酬設計実験におけるサブゴール可視化の時間的変化。}
   \label{fig:reward-design-subgoal-temporal}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-heatmap-temporal.png}
+  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-design-sweep/sweep-heatmap-temporal.png}
   \caption{報酬設計実験における探索位置のヒートマップの時間的変化。}
   \label{fig:reward-design-heatmap-temporal}
 \end{figure}

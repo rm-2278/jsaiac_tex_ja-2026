@@ -184,7 +184,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"novelty={label}", fontsize=12)
+            ax.set_title(label, fontsize=12)
             ax.axis("off")
         
         # Hide unused subplots

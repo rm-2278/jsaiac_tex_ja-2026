@@ -158,7 +158,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"{label}", fontsize=9)
+            ax.set_title(f"{label}", fontsize=12)
             ax.axis("off")
         
         # Hide unused subplots
@@ -166,7 +166,7 @@ else:
             axes[idx].axis("off")
         
         plt.suptitle("Subgoal Visualization @ 400k steps", fontsize=11, fontweight='bold')
-        plt.tight_layout()
+        plt.subplots_adjust(wspace=0.1, hspace=0.2)
         fig.savefig(f"{output_dir}/sweep-subgoal-temporal.png", dpi=300, bbox_inches="tight")
         plt.close(fig)
         print(f"✓ Saved: {output_dir}/sweep-subgoal-temporal.png")
@@ -220,8 +220,8 @@ else:
     else:
         n_samples = len(images_data)
         
-        # Create a figure with max 3 images per row
-        n_cols = min(3, n_samples)
+        # Create a figure with max 4 images per row
+        n_cols = min(4, n_samples)
         n_rows = (n_samples + n_cols - 1) // n_cols
         fig, axes = plt.subplots(n_rows, n_cols, figsize=(4*n_cols, 4*n_rows), dpi=300)
         if n_samples == 1:
@@ -243,7 +243,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"{label}", fontsize=9)
+            ax.set_title(f"{label}", fontsize=12)
             ax.axis("off")
         
         plt.suptitle("Position Heatmap @ 400k steps", fontsize=11, fontweight='bold')
