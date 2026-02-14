@@ -153,25 +153,36 @@ update-everyは、それぞれの階層が、下の階層と比較してどの程度時間的抽象化を行って
 Hierosでは、各レイヤごとの方策は、external reward, subgoal rewardとintrinsic rewardの3つを用いて学習を行っている。
 これらの比率を変更することによって、学習がどう変化するかを確認した。
 
-\begin{figure}[htbp]
+% --- グラフとヒートマップをコンパクトにまとめる ---
+\begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-episode-scores.png}
-  \caption{異なる報酬割り当て係数での学習曲線の比較（novelty\_reward\_weightごとに分割）。}
-  \label{fig:reward-ratio-sweep-scores}
+  % 上段：学習曲線
+  \begin{subfigure}[b]{\columnwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/pinpad/reward-ratio-sweep/sweep-episode-scores.png}
+    \caption{学習曲線 (Scores)}
+  \end{subfigure}
+  
+  \vspace{0.3cm}
+  
+  % 下段：ヒートマップ
+  \begin{subfigure}[b]{\columnwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/pinpad/reward-ratio-sweep/sweep-heatmap-temporal.png}
+    \caption{探索位置のヒートマップ (Heatmap)}
+  \end{subfigure}
+  
+  \caption{報酬割り当て係数の変更による学習への影響。}
+  \label{fig:reward-sweep-analysis}
 \end{figure}
 
-\begin{figure}[htbp]
+% --- 縦長の図は独立させて配置（高さ制限をつける）---
+\begin{figure}[t]
   \centering
-  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-subgoal-temporal.png}
-  \caption{報酬割り当て実験におけるサブゴール可視化の時間的変化。}
-  \label{fig:reward-ratio-subgoal-temporal}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-heatmap-temporal.png}
-  \caption{報酬割り当て実験における探索位置のヒートマップの時間的変化。}
-  \label{fig:reward-ratio-heatmap-temporal}
+  % keepaspectratioで歪みを防ぎつつ、高さをページ高の80%に制限
+  \includegraphics[height=0.85\textheight, keepaspectratio]{media/pinpad/reward-ratio-sweep/sweep-subgoal-temporal.png}
+  \caption{サブゴールの時間的変化。特定の報酬設定においてサブゴールが固定化される傾向が見られる。}
+  \label{fig:reward-sweep-subgoal}
 \end{figure}
 
 限定的な向上が確認でき、報酬割り当て係数を変更することの有効性が示唆される。
