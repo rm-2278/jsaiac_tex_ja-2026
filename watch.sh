@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# Watch `data.tex` and rebuild `paper.tex` using pLaTeX + dvipdfmx.
+# Watch `paper.tex` and rebuild `paper.tex` using pLaTeX + dvipdfmx.
 # Uses inotifywait if available, otherwise falls back to a 1s polling loop.
 set -euo pipefail
 cd "$(dirname "$0")"
 
 TARGET_TEX=paper.tex
-WATCH_FILE=data.tex
+WATCH_FILE="$TARGET_TEX"
 
 build() {
 	echo "[watch] Building $TARGET_TEX ..."
 	platex -interaction=nonstopmode "$TARGET_TEX"
+	platex -interaction=nonstopmode "$TARGET_TEX"
 	dvipdfmx "${TARGET_TEX%.tex}.dvi"
-	echo "[watch] Built ${TARGET_TEX%.tex}.pdf"
+		echo "[watch] Built ${TARGET_TEX%.tex}.pdf"
 }
 
 build
