@@ -1,13 +1,11 @@
 \usepackage{color}
 \usepackage[dvipdfmx]{graphicx}
+\usepackage{url}
 %%
 \title{
 \jtitle{ŠK‘w“I¢ŠEƒ‚ƒfƒ‹‚É‚¨‚¯‚éŒ»ó‚Æ‰Û‘èFHieros‚ÌŒÀŠE‚Æ«—ˆ‚Ì“W–]}
 \etitle{Current Status and Challenges in Hierarchical World Models: Identifying Limitations of Hieros and Future Prospects}
 }
-%%‰p•¶‚ÍˆÈ‰º‚ğg—p
-%\title{Style file for manuscripts of JSAI 20XX}
-
 \jaddress{–¼CŠ‘®CZŠCrm2278@cam.ac.uk}
 
 \author{%
@@ -19,8 +17,6 @@
 \and
 \jname{R“c ’B–ç\third}
 \ename{Yamada Tatsuya}
-%\and
-%Given-name Surname\third{}%%‰p•¶‚Í¶‚ğg—p
 }
 
 \affiliate{
@@ -32,14 +28,9 @@
 \and
 \jname{\third{}‘åã‘åŠw}
 \ename{The University of Osaka}
-%\and
-%\third{}Affiliation \#3 in English%%‰p•¶‚Í¶‚ğg—p
 }
 
 %%
-%\Vol{28}        %% <-- 28thi•ÏX‚µ‚È‚¢‚Å‚­‚¾‚³‚¢j
-%\session{0A0-00}%% <-- u‰‰IDi•K{)
-
 \begin{abstract}
    ‚±‚±‚É\\
    ƒAƒuƒXƒgƒ‰ƒNƒg‚ğ\\
@@ -111,13 +102,13 @@ THICK‚àADirector‚ğƒx[ƒX‚Æ‚µ‚Ä’ñˆÄ‚³‚ê‚½è–@‚Å‚ ‚éBuà–¾vB
 –{e‚Å‚ÍAŠK‘w“I¢ŠEƒ‚ƒfƒ‹‚ÌHieros\cite{2}ƒ‚ƒfƒ‹‚Ì•]‰¿‚ğs‚Á‚½B
 “Á‚ÉA˜_•¶’†‚Å‚ÍŒŸØ‚³‚ê‚Ä‚¢‚È‚©‚Á‚½A’·Šúƒ^ƒXƒN‚Ì•]‰¿‚É“K‚µ‚Ä‚¢‚éVisual PinpadŠÂ‹«‚Å‚ÌŒŸØ‚ğs‚Á‚½B‚Ü‚½AAtari‚Å‚Ìƒ‚ƒfƒ‹‚Ì“à•”ó‘Ô‚ÌŠm”F‚ğs‚Á‚½B
 
-\section{è–@}
+\subsection{è–@}
 Hieros‚Ìƒ‚ƒfƒ‹ŒŸØ‚Å‚ÍAŠù‘¶‚ÌƒŒƒ|ƒWƒgƒŠ\cite{11}‚ğ•ÏX‚µ‚ÄÀŒ±‚ğs‚Á‚½B
 ‚Ü‚½ADirector‚Å‚Í‚±‚ÌƒŒƒ|ƒWƒgƒŠ\cite{12}‚ğ—p‚¢‚ÄÀŒ±‚ğs‚Á‚½B
 RTX-5070Ti‚Ü‚½‚ÍRTX-6000ˆê‚Â‚ğ—p‚¢‚ÄŠwK‚ğ‚µ‚½B
 
 Pinpad‚É‚¨‚¯‚éHieros‚ÌŠwKó‹µ‚ğ’²¸‚µ‚½B‚Ü‚¸‚ÍAHieros‚Ìƒx[ƒXƒ‰ƒCƒ“‚Å‚ÌŒŸØ‚ğs‚Á‚½B
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/Hieros-baseline.png}
   \caption{Visual PinpadŠÂ‹«‚É‚¨‚¯‚éHieros‚ÌŠwK‚¨‚æ‚Ñ“à•”•ñV‹ÈüB}
@@ -129,108 +120,106 @@ Pinpad‚É‚¨‚¯‚éHieros‚ÌŠwKó‹µ‚ğ’²¸‚µ‚½B‚Ü‚¸‚ÍAHieros‚Ìƒx[ƒXƒ‰ƒCƒ“‚Å‚ÌŒŸØ‚ğ
 
 
 ‚æ‚èÚ‚µ‚­Hieros‚Ì«”\‚É‚Â‚¢‚Ä’²¸‚·‚é‚½‚ß‚ÉAHieros‚ÌŠeƒŒƒCƒ„‚ª’ñ¦‚µ‚Ä‚¢‚éó‘Ô‚Ì‰Â‹‰»‚ğs‚Á‚½BŒ³‚Ì˜_•¶‚Å‚Í‰ß‹‚ÌŒoŒ±‚ğQl‚É‚µ‚½ƒmƒCƒY‚ğ‰Á‚¦‚Ä‚Ì‰Â‹‰»‚ğs‚Á‚Ä‚¢‚½‚ªAƒ‚ƒfƒ‹‚Ì—\‘ª‚Ì‚İ‚ÉÅ“_‚ğ“–‚Ä‚é‚½‚ß‚ÉAƒmƒCƒY‚È‚µ‚Å‚Ì‰Â‹‰»‚ğs‚Á‚½B
-update-every‚Í8‚ÅÀŒ±‚ğs‚Á‚½B
+update-every‚Í8‚ÅÀŒ±‚ğs‚Á‚½B\subsection{ŠÔ“I’ŠÛ‰»‚Ì’²®}
 
+update-every‚ÍA‚»‚ê‚¼‚ê‚ÌŠK‘w‚ªA‰º‚ÌŠK‘w‚Æ”äŠr‚µ‚Ä‚Ç‚Ì’ö“xŠÔ“I’ŠÛ‰»‚ğs‚Á‚Ä‚¢‚é‚©‚ğ•\‚µ‚Ä‚¢‚éB—á‚¦‚ÎAupdate-every=4‚Å‚ÍA4ƒXƒeƒbƒv‚²‚Æ‚Éã‚ÌŠK‘w‚ª‰º‚ÌŠK‘w‚É—^‚¦‚éƒTƒuƒS[ƒ‹‚ğXV‚µ‚Ä‚¢‚é‚Æ‚¢‚¤ˆÓ–¡‚Å‚ ‚éB
 
-
-
-
-\subsection{ŠÔ“I’ŠÛ‰»‚Ì’²®}
-
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-episode-scores.png}
   \caption{ˆÙ‚È‚ésubactor-update-everyƒpƒ‰ƒ[ƒ^‚Å‚ÌŠwK‹Èü‚Ì”äŠrB}
   \label{fig:sweep-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-subgoal-temporal.png}
-  \caption{ŠwK‰ß’ö‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
+  \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-subgoal-temporal-compressed.png}
+  \caption{ŠwK‰ß’ö‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»iãˆÊ2‘wjB}
   \label{fig:subgoal-temporal}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-heatmap-temporal.png}
   \caption{’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚ÌŠÔ“I•Ï‰»B}
   \label{fig:heatmap-temporal}
 \end{figure}
 
-update-every‚ÍA‚»‚ê‚¼‚ê‚ÌŠK‘w‚ªA‰º‚ÌŠK‘w‚Æ”äŠr‚µ‚Ä‚Ç‚Ì’ö“xŠÔ“I’ŠÛ‰»‚ğs‚Á‚Ä‚¢‚é‚©‚ğ•\‚µ‚Ä‚¢‚éB—á‚¦‚ÎAupdate-every=4‚Å‚ÍA4ƒXƒeƒbƒv‚²‚Æ‚Éã‚ÌŠK‘w‚ª‰º‚ÌŠK‘w‚É—^‚¦‚éƒTƒuƒS[ƒ‹‚ğXV‚µ‚Ä‚¢‚é‚Æ‚¢‚¤ˆÓ–¡‚Å‚ ‚éB
 }‚©‚ç‚í‚©‚é‚æ‚¤‚ÉA‘½­‚Ì·ˆÙ‚ª‚ ‚éˆê•û‚ÅAÅI“I‚É•ñV‚ª1‚É‚È‚é’ö“x‚É•ûô‚ªû‘©‚µ‚Ä‚¢‚éB
 
 \subsection{•ñVŠ„‚è“–‚ÄŒW”‚Ì•ÏX}
 Hieros‚Å‚ÍAŠeƒŒƒCƒ„‚²‚Æ‚Ì•ûô‚ÍAexternal reward, subgoal reward‚Æintrinsic reward‚Ì3‚Â‚ğ—p‚¢‚ÄŠwK‚ğs‚Á‚Ä‚¢‚éB
-‚±‚ê‚ç‚Ì”ä—¦‚ğ•ÏX‚·‚é‚±‚Æ‚É‚æ‚Á‚ÄAŠwK‚ª‚Ç‚¤•Ï‰»‚·‚é‚©‚ğŠm”F‚µ‚½BŒÀ’è“I‚ÈŒüã‚ªŠm”F‚Å‚«A•ñVŠ„‚è“–‚ÄŒW”‚ğ•ÏX‚·‚é‚±‚Æ‚Ì—LŒø«‚ª¦´‚³‚ê‚éB
+‚±‚ê‚ç‚Ì”ä—¦‚ğ•ÏX‚·‚é‚±‚Æ‚É‚æ‚Á‚ÄAŠwK‚ª‚Ç‚¤•Ï‰»‚·‚é‚©‚ğŠm”F‚µ‚½B
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-episode-scores.png}
   \caption{ˆÙ‚È‚é•ñVŠ„‚è“–‚ÄŒW”‚Å‚ÌŠwK‹Èü‚Ì”äŠrinovelty\_reward\_weight‚²‚Æ‚É•ªŠ„jB}
   \label{fig:reward-ratio-sweep-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-subgoal-temporal.png}
-  \caption{•ñVŠ„‚è“–‚ÄÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
+  \includegraphics[width=\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-subgoal-temporal-compressed.png}
+  \caption{•ñVŠ„‚è“–‚ÄÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»iãˆÊ2‘wjB}
   \label{fig:reward-ratio-subgoal-temporal}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/reward-ratio-sweep/sweep-heatmap-temporal.png}
   \caption{•ñVŠ„‚è“–‚ÄÀŒ±‚É‚¨‚¯‚é’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚ÌŠÔ“I•Ï‰»B}
   \label{fig:reward-ratio-heatmap-temporal}
 \end{figure}
 
+ŒÀ’è“I‚ÈŒüã‚ªŠm”F‚Å‚«A•ñVŠ„‚è“–‚ÄŒW”‚ğ•ÏX‚·‚é‚±‚Æ‚Ì—LŒø«‚ª¦´‚³‚ê‚éB
+
 \subsection{•ûôƒGƒ“ƒgƒƒs[‚Ì•ÏX}
 
 •ûôƒGƒ“ƒgƒƒs[‚ğ•ÏX‚µ‚½‚Æ‚«‚ÌŒ‹‰Ê‚ğŠm”F‚µ‚½B
-ƒGƒ“ƒgƒƒs[‚ª‘å‚«‚­‚È‚é‚Æ‚æ‚èû‘©‚µ‚É‚­‚­‚È‚è•ñV‚à‚‚­‚È‚Á‚½‚ªAŒ°’˜‚ÉŠwK‚ªi‚Ş‚±‚Æ‚Í‚È‚©‚Á‚½B
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-episode-scores.png}
   \caption{ˆÙ‚È‚éactor\_entropyƒpƒ‰ƒ[ƒ^‚Å‚ÌŠwK‹Èü‚Ì”äŠrB}
   \label{fig:entropy-sweep-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-subgoal-temporal.png}
-  \caption{ƒGƒ“ƒgƒƒs[’²®ÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
+  \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-subgoal-temporal-compressed.png}
+  \caption{ƒGƒ“ƒgƒƒs[’²®ÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»iãˆÊ2‘wjB}
   \label{fig:entropy-subgoal-temporal}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-heatmap-temporal.png}
   \caption{ƒGƒ“ƒgƒƒs[’²®ÀŒ±‚É‚¨‚¯‚é’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚ÌŠÔ“I•Ï‰»B}
   \label{fig:entropy-heatmap-temporal}
 \end{figure}
 
+ƒGƒ“ƒgƒƒs[‚ª‘å‚«‚­‚È‚é‚Æ‚æ‚èû‘©‚µ‚É‚­‚­‚È‚è•ñV‚à‚‚­‚È‚Á‚½‚ªAŒ°’˜‚ÉŠwK‚ªi‚Ş‚±‚Æ‚Í‚È‚©‚Á‚½B
+
 \subsection{Pinpad‚Ì•ñVİŒv‚Ì•ÏX}
 
 pinpad-easy-threeƒ^ƒXƒN‚É‚¨‚¢‚ÄA•ñVİŒv‚ğ•ÏX‚µ‚½ÀŒ±Œ‹‰ÊB
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-episode-scores.png}
   \caption{Pinpad-easy\_threeƒ^ƒXƒN‚É‚¨‚¯‚éˆÙ‚È‚é•ñVİŒv‚Å‚ÌŠwK‹Èü‚Ì”äŠrB}
   \label{fig:reward-design-sweep-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-subgoal-temporal.png}
-  \caption{•ñVİŒvÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
+  \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-subgoal-temporal-compressed.png}
+  \caption{•ñVİŒvÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»iãˆÊ2‘wjB}
   \label{fig:reward-design-subgoal-temporal}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-heatmap-temporal.png}
   \caption{•ñVİŒvÀŒ±‚É‚¨‚¯‚é’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚ÌŠÔ“I•Ï‰»B}
@@ -262,57 +251,58 @@ Atari‚ÌÅ“K•ûô‚ªŠwK‚µ‚â‚·‚­A\cite{9}‚Å’ñ¦‚³‚ê‚Ä‚¢‚é‚æ‚¤‚ÈŠK‘w‰»‚É‚æ‚é’Tõ‚Ì‰
 \section{Appendix}
 \subsection{Atari}
 Hieros‚ÌAtari‚ÌÀŒ±‚ğÄŒ»‚µAƒ‚ƒfƒ‹‚ÌŠwK‚ğŠm”F‚µ‚½BƒXƒRƒA‚ÍŠm‚©‚É˜_•¶’Ê‚è‚‚©‚Á‚½ˆê•û‚ÅApolicy-image‚ğŠm”F‚·‚é‚Æ’Pƒ‚È•ûô‚ªŠwK‚³‚ê‚Ä‚¨‚èifreeway‚Å‚Í‚½‚¾‘O‚Éi‚ŞjAHieros‚Å‚Í•¡G‚È•ûô‚ğŠw‚×‚Ä‚¢‚È‚¢‚Ì‚Å‚Í‚È‚¢‚©‚Æl‚¦‚éB
+‚È‚¨ŒvZ‘Œ¹‚Ì“s‡ãAfreeway‚Ì‚İ‚ÍHieros‚ÌŒ³‚Ì˜_•¶‚Æ“¯‚¶‚Å(batch size, batch length)‚ª(16, 64)A‘¼‚Í(16, 16)‚ÅŒŸØ‚ğs‚Á‚½B
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_freeway-scores.png}
   \caption{Atari Freewayƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
   \label{fig:atari-freeway-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_freeway-policy-temporal.png}
   \caption{Atari Freewayƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
   \label{fig:atari-freeway-policy}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_breakout-scores.png}
   \caption{Atari Breakoutƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
   \label{fig:atari-breakout-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_breakout-policy-temporal.png}
   \caption{Atari Breakoutƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
   \label{fig:atari-breakout-policy}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_krull-scores.png}
   \caption{Atari Krullƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
   \label{fig:atari-krull-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_krull-policy-temporal.png}
   \caption{Atari Krullƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
   \label{fig:atari-krull-policy}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_battle_zone-scores.png}
   \caption{Atari Battle Zoneƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
   \label{fig:atari-battlezone-scores}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/atari/atari_battle_zone-policy-temporal.png}
   \caption{Atari Battle Zoneƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
@@ -323,7 +313,7 @@ Hieros‚ÌAtari‚ÌÀŒ±‚ğÄŒ»‚µAƒ‚ƒfƒ‹‚ÌŠwK‚ğŠm”F‚µ‚½BƒXƒRƒA‚ÍŠm‚©‚É˜_•¶’Ê‚è‚‚©‚
 \subsection{Director}
 Director‚ğ—p‚¢‚½Pinpad-3‚¨‚æ‚ÑPinpad-easy-3‚ÌŒ‹‰ÊBŠwK‚ªi‚ñ‚Å‚¢‚é‚±‚Æ‚ªŠm”F‚³‚ê‚éBpinpad-3‚ÌŒ‹‰Ê‚Í\cite{1}‚Å•ñ‚³‚ê‚Ä‚¢‚éŒ‹‰Ê‚É‹ß‚¢‚à‚Ì‚Æ‚È‚Á‚Ä‚¢‚éB
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/director-results/director-episode-scores.png}
   \caption{Director‚É‚æ‚éPinpad-3‚¨‚æ‚ÑPinpad-dense-3‚ÌŠwK‹ÈüB}
@@ -336,7 +326,7 @@ Director‚ğ—p‚¢‚½Pinpad-3‚¨‚æ‚ÑPinpad-easy-3‚ÌŒ‹‰ÊBŠwK‚ªi‚ñ‚Å‚¢‚é‚±‚Æ‚ªŠm”F‚³‚
 \subsection{RSSM}
 Hieros‚ÍS5WM‚ğ—p‚¢‚Ä‚¢‚é‚ªAƒx[ƒXƒ‰ƒCƒ“‚É‚ÍRSSM‚à—pˆÓ‚³‚ê‚Ä‚¢‚éBˆÈ‰º‚ÍARSSM‚ğ—p‚¢‚ÄHieros‚ğpinpad‚ÅŒ‹‰ÊB
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/rssm-sweep/sweep-episode-scores.png}
   \caption{RSSM‚ğ—p‚¢‚½Hieros‚ÌPinpad‚Å‚ÌŠwK‹ÈüB}
@@ -353,102 +343,13 @@ Hieros‚ÍS5WM‚ğ—p‚¢‚Ä‚¢‚é‚ªAƒx[ƒXƒ‰ƒCƒ“‚É‚ÍRSSM‚à—pˆÓ‚³‚ê‚Ä‚¢‚éBˆÈ‰º‚ÍARSSM‚ğ
 \bibitem[DreamerV2]{4}
 \bibitem[DreamerV3]{5}
 \bibitem[TD-MPC]{6}
-\bibitem[TD-MPC2]{7}
-\bibitem[Puppeteer]{8}
-\bibitem[HRL benefit]{9} Nachum, O. et al.: Why Does Hierarchy (Sometimes) Work So Well in Reinforcement Learning? (2019).
-\bibitem[THICK]{10} 
+\bibitem[TD-MPC2]{7} Hansen, N. et al.: TD-MPC2: Scalable, Robust World Models for Continuous Control, ICLR (2024).
+\bibitem[Puppeteer]{8} Hansen, N. et al.: Hierarchical World Models as Visual Whole-Body Humanoid Controllers, ICLR (2025).
+\bibitem[HRL benefit]{9} Nachum, O. et al.: Why Does Hierarchy (Sometimes) Work So Well in Reinforcement Learning?, NeurIPS (2019).
+\bibitem[THICK]{10} Gumbsch, C. et al.: Learning Hierarchical World Models with Adaptive Temporal Abstractions from Discrete Latent Dynamics, EWRL (2023).
 \bibitem[Hieros Repo]{11} \url{https://github.com/Snagnar/Hieros}
 \bibitem[Director Repo]{12} \url{https://github.com/danijar/director}
-\bibitem[HarmonyDream]{13} Ma, H. et al.: HarmonyDream: Task Harmonization Inside World Models (2024).
-\bibitem[HRL survey]{14} Pateria, S. et al.: Hierarchical Reinforcement Learning: A Comprehensive Survey, preprint (2021). 
+\bibitem[HarmonyDream]{13} Ma, H. et al.: HarmonyDream: Task Harmonization Inside World Models, ICML (2024).
+\bibitem[HRL survey]{14} Pateria, S. et al.: Hierarchical Reinforcement Learning: A Comprehensive Survey, ACM Computing Surveys (2021). 
 \end{thebibliography}
 
-\section{Appendix}
-\subsection{Atari}
-Hieros‚ÌAtari‚ÌÀŒ±‚ğÄŒ»‚µAƒ‚ƒfƒ‹‚ÌŠwK‚ğŠm”F‚µ‚½BƒXƒRƒA‚ÍŠm‚©‚É˜_•¶’Ê‚è‚‚©‚Á‚½ˆê•û‚ÅApolicy-image‚ğŠm”F‚·‚é‚Æ’Pƒ‚È•ûô‚ªŠwK‚³‚ê‚Ä‚¨‚èifreeway‚Å‚Í‚½‚¾‘O‚Éi‚ŞjAHieros‚Å‚Í•¡G‚È•ûô‚ğŠw‚×‚Ä‚¢‚È‚¢‚Ì‚Å‚Í‚È‚¢‚©‚Æl‚¦‚éB
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_freeway-scores.png}
-  \caption{Atari Freewayƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-freeway-scores}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_freeway-policy-temporal.png}
-  \caption{Atari Freewayƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-freeway-policy}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_breakout-scores.png}
-  \caption{Atari Breakoutƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-breakout-scores}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_breakout-policy-temporal.png}
-  \caption{Atari Breakoutƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-breakout-policy}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_krull-scores.png}
-  \caption{Atari Krullƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-krull-scores}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_krull-policy-temporal.png}
-  \caption{Atari Krullƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-krull-policy}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_battle_zone-scores.png}
-  \caption{Atari Battle Zoneƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-battlezone-scores}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_battle_zone-policy-temporal.png}
-  \caption{Atari Battle Zoneƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-battlezone-policy}
-\end{figure}
-
-
-\subsection{Director}
-Director‚ğ—p‚¢‚½Pinpad-3‚¨‚æ‚ÑPinpad-easy-3‚ÌŒ‹‰ÊBŠwK‚ªi‚ñ‚Å‚¢‚é‚±‚Æ‚ªŠm”F‚³‚ê‚éBpinpad-3‚ÌŒ‹‰Ê‚Í\cite{1}‚Å•ñ‚³‚ê‚Ä‚¢‚éŒ‹‰Ê‚É‹ß‚¢‚à‚Ì‚Æ‚È‚Á‚Ä‚¢‚éB
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/director-results/director-episode-scores.png}
-  \caption{Director‚É‚æ‚éPinpad-3‚¨‚æ‚ÑPinpad-dense-3‚ÌŠwK‹ÈüB}
-  \label{fig:director-scores}
-\end{figure}
-
-‚Ü‚½A”äŠr‚Ì‚½‚ß‚ÉAì¬‚µ‚½pinpad-dense‚Å‚ÌŠwK‚às‚¢A‚‚¢«”\‚ªo‚é‚±‚Æ‚ğŠm”F‚µ‚½B‚±‚ê‚É‚æ‚èA•ñVİŒv‚É‚Í–â‘è‚ª‚È‚¢‚±‚Æ‚ªŠm”F‚³‚ê‚½B
-‚È‚¨AGPU‚Ìƒƒ‚ƒŠ‚Ì“s‡ã“r’†‚Ü‚Å‚µ‚©ŠwK‚ª‚Å‚«‚È‚©‚Á‚½B
-
-\subsection{RSSM}
-Hieros‚ÍS5WM‚ğ—p‚¢‚Ä‚¢‚é‚ªAƒx[ƒXƒ‰ƒCƒ“‚É‚ÍRSSM‚à—pˆÓ‚³‚ê‚Ä‚¢‚éBˆÈ‰º‚ÍARSSM‚ğ—p‚¢‚ÄHieros‚ğpinpad‚ÅŒ‹‰ÊB
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/rssm-sweep/sweep-episode-scores.png}
-  \caption{RSSM‚ğ—p‚¢‚½Hieros‚ÌPinpad‚Å‚ÌŠwK‹ÈüB}
-  \label{fig:rssm-scores}
-\end{figure}
-
-ŠwK‚ªi‚Ü‚È‚©‚Á‚½‚½‚ßAmax-hierarchy=1‚Ì‚Æ‚«‚Í320k‚ÅŠwK‚ğ‘Å‚¿Ø‚Á‚½B
-ŠK‘w”‚ğ­‚È‚¢‚É‚æ‚èŠwK‚ªi‚ñ‚Å‚¢‚é‚±‚Æ‚©‚çAŠK‘w‚ğ‰Á‚¦‚é‚±‚Æ‚ªƒ‚ƒfƒ‹‚ÌŠæŒ’«‚ğ‰º‚°‚Ä‚¢‚é‚±‚Æ‚ª„‘ª‚Å‚«‚éB
-
-
-%%

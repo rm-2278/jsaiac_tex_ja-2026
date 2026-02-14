@@ -19,6 +19,10 @@ sweep = api.sweep("rm2278-university-of-cambridge/Hieros-hieros/llr4r8er")
 print(f"Sweep: {sweep.name}")
 print(f"Found {len(sweep.runs)} runs")
 
+# For freeway, use specific run from different sweep
+freeway_run = api.run("rm2278-university-of-cambridge/Hieros-hieros/19ymhh01")
+print(f"\nSpecial freeway run: {freeway_run.name}")
+
 # Group runs by task
 runs_by_task = {}
 for run in sweep.runs:
@@ -29,6 +33,12 @@ for run in sweep.runs:
         runs_by_task[task].append(run)
         print(f"Run {run.name}: task={task}, seed={run.config.get('seed', 'unknown')}")
 
+# Add freeway run to the group
+if 'atari_freeway' not in runs_by_task:
+    runs_by_task['atari_freeway'] = []
+runs_by_task['atari_freeway'].append(freeway_run)
+print(f"Added freeway run: {freeway_run.name}")
+
 print(f"\nFound {len(runs_by_task)} different tasks")
 
 # =============================================================================
@@ -38,10 +48,44 @@ print(f"\nFound {len(runs_by_task)} different tasks")
 for task, task_runs in runs_by_task.items():
     fig, ax = plt.subplots(figsize=(6, 3.5), dpi=300)
     
+    # Check max steps for each run to decide threshold
+    run_max_steps = []
+    for run in task_runs:
+        try:
+            history = run.history(keys=["episode/score", "_step"])
+            df = history.dropna(subset=["episode/score"])
+            if not df.empty:
+                max_step = df["_step"].max()
+                run_max_steps.append((run, max_step))
+                print(f"  {run.name}: max_step={max_step}")
+        except Exception as e:
+            print(f"Error checking run {run.name}: {e}")
+    
+    if not run_max_steps:
+        print(f"⚠ No valid runs for task {task}")
+        continue
+    
+    # Find the maximum step across all runs
+    overall_max = max(step for _, step in run_max_steps)
+    print(f"Task {task}: overall_max={overall_max}")
+    
+    # Filter runs: keep those that reached at least 90% of overall_max or >= 350k
+    filtered_runs = []
+    threshold = max(350000, 0.9 * overall_max)
+    for run, max_step in run_max_steps:
+        if max_step >= threshold:
+            filtered_runs.append(run)
+    
+    if not filtered_runs:
+        print(f"⚠ No runs passed threshold for task {task}")
+        continue
+    
+    print(f"Using {len(filtered_runs)} runs for task {task}")
+    
     # Collect all scores for this task
     all_scores = []
     
-    for run in task_runs:
+    for run in filtered_runs:
         history = run.history(keys=["episode/score", "_step"])
         
         if history.empty or "episode/score" not in history.columns:
@@ -81,7 +125,7 @@ for task, task_runs in runs_by_task.items():
     y_smooth = df_mean['score'].rolling(window=window, min_periods=1).mean()
     
     # Plot with shaded std
-    ax.plot(x, y_smooth, linewidth=1.4, label=f"{task} (n={len(task_runs)})", alpha=0.8)
+    ax.plot(x, y_smooth, linewidth=1.4, label=f"{task} (n={len(filtered_runs)})", alpha=0.8)
     ax.fill_between(x, y_smooth - std_scores, y_smooth + std_scores, alpha=0.2)
     
     ax.set_xlabel("Env. Steps (×10³)", fontsize=9)
@@ -117,16 +161,23 @@ for task, task_runs in runs_by_task.items():
     
     selected_run = None
     selected_key = None
+    max_steps = 0
     
+    # Prefer run with most steps and valid policy images
     for key in possible_keys:
         for run in task_runs:
             try:
-                history = run.history(keys=[key])
+                history = run.history(keys=[key, "_step"])
                 if not history.empty and key in history.columns:
-                    if history[key].notna().any():
-                        selected_run = run
-                        selected_key = key
-                        break
+                    valid_data = history[key].notna()
+                    if valid_data.any():
+                        # Get the max step for this run
+                        run_max_step = history[valid_data]["_step"].max()
+                        # Select run with most steps
+                        if run_max_step > max_steps:
+                            selected_run = run
+                            selected_key = key
+                            max_steps = run_max_step
             except:
                 continue
         if selected_run:
@@ -151,13 +202,16 @@ for task, task_runs in runs_by_task.items():
     # Select specific steps: 100k, 200k, 300k, 400k, 500k
     target_steps = [100000, 200000, 300000, 400000, 500000]
     sampled_rows = []
+    df_remaining = df.copy()
     
     for target in target_steps:
         # Find the closest available step
-        if len(df) == 0:
+        if len(df_remaining) == 0:
             break
-        closest_idx = (df["_step"] - target).abs().idxmin()
-        sampled_rows.append(df.loc[closest_idx])
+        closest_idx = (df_remaining["_step"] - target).abs().idxmin()
+        sampled_rows.append(df_remaining.loc[closest_idx])
+        # Remove this row to avoid selecting it again
+        df_remaining = df_remaining.drop(closest_idx)
     
     if not sampled_rows:
         print(f"⚠ No sampled rows for task {task}")
