@@ -134,7 +134,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"actor_entropy={label}", fontsize=12)
+            ax.set_title(f"actor_entropy={label}", fontsize=16)
             ax.axis("off")
         
         # Hide unused subplots
@@ -214,7 +214,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"actor_entropy={label}", fontsize=12)
+            ax.set_title(f"actor_entropy={label}", fontsize=16)
             ax.axis("off")
         
         plt.suptitle("Position Heatmap @ 400k steps", fontsize=11, fontweight='bold')

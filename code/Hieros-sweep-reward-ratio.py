@@ -152,8 +152,10 @@ else:
         closest_idx = (df["_step"] - target_step).abs().idxmin()
         row = df.loc[closest_idx]
         
-        # Get novelty_reward_weight for labeling
-        label = run.config.get("novelty_reward_weight", "unknown")
+        # Get novelty_reward_weight and subgoal_reward_weight for labeling
+        novelty = run.config.get("novelty_reward_weight", "unknown")
+        subgoal = run.config.get("subgoal_reward_weight", "unknown")
+        label = f"novelty={novelty}, subgoal={subgoal}"
         images_data.append((run, row, label))
     
     if not images_data:
@@ -184,7 +186,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(label, fontsize=12)
+            ax.set_title(label, fontsize=16)
             ax.axis("off")
         
         # Hide unused subplots
@@ -232,8 +234,10 @@ else:
         closest_idx = (df["_step"] - target_step).abs().idxmin()
         row = df.loc[closest_idx]
         
-        # Get novelty_reward_weight for labeling
-        label = run.config.get("novelty_reward_weight", "unknown")
+        # Get novelty_reward_weight and subgoal_reward_weight for labeling
+        novelty = run.config.get("novelty_reward_weight", "unknown")
+        subgoal = run.config.get("subgoal_reward_weight", "unknown")
+        label = f"novelty={novelty}, subgoal={subgoal}"
         images_data.append((run, row, label))
     
     if not images_data:
@@ -264,7 +268,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"novelty={label}", fontsize=9)
+            ax.set_title(label, fontsize=16)
             ax.axis("off")
         
         plt.suptitle("Position Heatmap @ 400k steps", fontsize=11, fontweight='bold')

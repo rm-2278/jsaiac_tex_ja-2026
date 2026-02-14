@@ -1,9 +1,10 @@
 \usepackage{color}
 \usepackage[dvipdfmx]{graphicx}
+\usepackage{subcaption}
 \usepackage{url}
 %%
 \title{
-\jtitle{ŠK‘w“I¢ŠEƒ‚ƒfƒ‹‚É‚¨‚¯‚éŒ»ó‚Æ‰Û‘èFHieros‚ÌŒÀŠE‚Æ«—ˆ‚Ì“W–]}
+\jtitle{ŠK‘w“I¢ŠEƒ‚ƒfƒ‹‚ÌŒ»ó‚Æ‰Û‘èFHieros‚ÌŒÀŠE‚Æ«—ˆ‚Ì“W–]}
 \etitle{Current Status and Challenges in Hierarchical World Models: Identifying Limitations of Hieros and Future Prospects}
 }
 \jaddress{OD—‹PCrm2278@cam.ac.uk}
@@ -205,16 +206,15 @@ Hieros‚Å‚ÍAŠeƒŒƒCƒ„‚²‚Æ‚Ì•ûô‚ÍAexternal reward, subgoal reward‚Æintrinsic rew
 \subsection{Pinpad‚Ì•ñVİŒv‚Ì•ÏX}
 
 pinpad-easy-threeƒ^ƒXƒN‚É‚¨‚¢‚ÄA•ñVİŒv‚ğ•ÏX‚µ‚½ÀŒ±Œ‹‰ÊB
-ˆÈ‰º‚Ì8í—Ş‚Ì•ñVİŒv‚ğ”äŠr‚µ‚½F
+ˆÈ‰º‚Ì7í—Ş‚Ì•ñVİŒv‚ğ”äŠr‚µ‚½F
 \begin{itemize}
-  \item \textbf{flatiƒfƒtƒHƒ‹ƒgj}: ƒXƒRƒA‘‰Á‚²‚Æ‚Éˆê—¥+1.0‚Ì•ñV
-  \item \textbf{progressive}: ƒXƒRƒA‘‰Á‚²‚Æ‚Éw”ŠÖ”“I‚È•ñVi$2^{pos}$j
-  \item \textbf{sequence\_bonus}: ƒx[ƒX•ñV{ƒXƒRƒA‘‰Á‚²‚Æ‚Éƒ{[ƒiƒX
-  \item \textbf{decaying}: ŠÔŒo‰ß‚Æ‚Æ‚à‚ÉŒ¸Š‚·‚é•ñV
-  \item \textbf{sparse}: Š®‘S‚ÈƒV[ƒPƒ“ƒXŠ®—¹‚Ì‚İ•ñV
-  \item \textbf{progressive\_steep}: ‹}Œù”z‚Èw”ŠÖ”“I•ñVi$3^{pos}$j
-  \item \textbf{dense\_guidance}: ƒXƒeƒbƒv‚²‚Æ‚Ì×‚©‚¢•ñVi³‚µ‚¢•ûŒü+0.1AŠÔˆá‚Á‚½ƒ^ƒCƒ‹-0.1j
-  \item \textbf{progress\_any}: flat‚Æ“¯—lAƒXƒRƒA‘‰Á‚²‚Æ‚Éˆê—¥+1.0
+  \item \textbf{flatiƒfƒtƒHƒ‹ƒgj}: ƒ^ƒCƒ‹‚ğ“¥‚ñ‚¾‚Æ‚«‚Ì––”ö‚Ìˆê’v“x‚Ì‘Œ¸‚ª•ñV
+  \item \textbf{progressive}: ƒ^ƒCƒ‹‚ğ“¥‚ñ‚¾‚Æ‚«‚Ì––”ö‚Ìˆê’v“x‚Ì‘Œ¸‚ğw”ŠÖ”“I‚É‚µ‚½‚à‚Ì‚ª•ñVi$2^{tail-match}$j
+  \item \textbf{sequence\_bonus}: flat‚Ì•ñV‚É‰Á‚¦A––”öˆê’v“x‚ª‘‰Á‚²‚Æ‚Éƒ{[ƒiƒX•ñVB
+  \item \textbf{decaying}: ŠÔŒo‰ß‚Æ‚Æ‚à‚É•ñV‚ğŒ¸Š
+  \item \textbf{sparse}: Š®‘S‚ÈƒV[ƒPƒ“ƒXˆê’v‚Ì‚İ•ñV (Œ³‚Ìpinpad)
+  \item \textbf{progressive\_steep}: ‹}Œù”z‚Èw”ŠÖ”“I•ñVi$3^{tail-match}$j
+  \item \textbf{dense\_guidance}: flat‚Ì•ñV‚É‰Á‚¦ƒXƒeƒbƒv‚²‚Æ‚Ì×‚©‚¢•ñVi³‚µ‚¢•ûŒü‚Éi‚ñ‚¾ê‡+0.1AŠÔˆá‚Á‚½•ûŒü‚Éi‚ñ‚¾ê‡-0.1j
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -226,14 +226,14 @@ pinpad-easy-threeƒ^ƒXƒN‚É‚¨‚¢‚ÄA•ñVİŒv‚ğ•ÏX‚µ‚½ÀŒ±Œ‹‰ÊB
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-design-sweep/sweep-subgoal-temporal.png}
+  \includegraphics[width=0.85\columnwidth]{media/pinpad/reward-design-sweep/sweep-subgoal-temporal.png}
   \caption{•ñVİŒvÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
   \label{fig:reward-design-subgoal-temporal}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.75\columnwidth]{media/pinpad/reward-design-sweep/sweep-heatmap-temporal.png}
+  \includegraphics[width=0.85\columnwidth]{media/pinpad/reward-design-sweep/sweep-heatmap-temporal.png}
   \caption{•ñVİŒvÀŒ±‚É‚¨‚¯‚é’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚ÌŠÔ“I•Ï‰»B}
   \label{fig:reward-design-heatmap-temporal}
 \end{figure}
@@ -249,6 +249,83 @@ Atari‚ÌÅ“K•ûô‚ªŠwK‚µ‚â‚·‚­A\cite{9}‚Å’ñ¦‚³‚ê‚Ä‚¢‚é‚æ‚¤‚ÈŠK‘w‰»‚É‚æ‚é’Tõ‚Ì‰
 ƒx[ƒXƒ‰ƒCƒ“ƒR[ƒh‚ÉƒGƒ‰[‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‰Â”\«‚Í”Û‚ß‚È‚¢ˆê•û‚ÅA¢ŠEƒ‚ƒfƒ‹‚ğŠK‘w“I‚É‚·‚é‚±‚Æ‚É‚æ‚Á‚ÄŠwK‚ª•sˆÀ’è‚É‚È‚Á‚Ä‚¢‚é‰Â”\«‚à‚‚¢B
 “Á‚É¢ŠEƒ‚ƒfƒ‹‚Í–Ú“IŠÖ”‚âŒë·’~Ï‚É‹Nˆö‚µ‚ÄA‚Ü‚½ŠK‘w“Iƒ‚ƒfƒ‹‚ÍŠK‘w‚Ì“¯ŠwK‚É‚æ‚é”ñ’èí«‚É‚æ‚Á‚ÄƒnƒCƒp[ƒpƒ‰ƒ[ƒ^‚É‘@×‚Å‚ ‚é‚±‚Æ‚ª’m‚ç‚ê‚Ä‚¨‚èA‚»‚ê‚ç‚Ì‘g‚İ‡‚í‚¹‚É‚æ‚Á‚ÄŠwK‚ª•sˆÀ’è‚É‚È‚Á‚Ä‚µ‚Ü‚Á‚Ä‚¢‚é‰Â”\«‚à‚ ‚éB
 ‚±‚Ì—˜_“IAÀØÀŒ±“I‰ğÍ‚Í¡Œã‚Ì‰Û‘è‚Å‚ ‚éB
+
+\subsection{Atari‚É‚¨‚¯‚é’è«‰ğÍ}
+–{ß‚Å‚ÍAAtariƒxƒ“ƒ`ƒ}[ƒN‚É‚¨‚¯‚éHieros‚Ì“à•”‹““®‚ğ‰ğÍ‚·‚éB‚»‚Ì‚½‚ßAŠwK‰ß’ö‚É‚¨‚¯‚é•ûô‚ÌŠÔ•Ï‰»‚ğ‰Â‹‰»‚µ‚½B
+‚È‚¨ŒvZ‘Œ¹‚Ì“s‡ãAfreeway‚Ì‚İ‚ÍHieros‚ÌŒ³‚Ì˜_•¶‚Æ“¯‚¶‚Å(batch size, batch length)‚ª(16, 64)A‘¼‚Í(16, 16)‚ÅŒŸØ‚ğs‚Á‚½B
+
+% 2’i”²‚«ƒŒƒCƒAƒEƒg‚Å‘SAtariŒ‹‰Ê‚ğ”z’u
+\begin{figure*}[t]
+  \centering
+  % --- 1s–ÚFFreeway & Breakout ‚ÌƒXƒRƒA ---
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_freeway-scores.png}
+    \caption{Freeway: Score}
+    \label{fig:freeway-score}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_breakout-scores.png}
+    \caption{Breakout: Score}
+    \label{fig:breakout-score}
+  \end{subfigure}
+
+  % --- 2s–ÚFFreeway & Breakout ‚Ì•ûôiƒXƒRƒA‚Ì‚·‚®‰ºj---
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_freeway-policy-temporal.png}
+    \caption{Freeway: Policy (Monotonic 'Up' action)}
+    \label{fig:freeway-policy}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_breakout-policy-temporal.png}
+    \caption{Breakout: Policy}
+    \label{fig:breakout-policy}
+  \end{subfigure}
+
+  \vspace{0.5cm}
+
+  % --- 3s–ÚFKrull & Battle Zone ‚ÌƒXƒRƒA ---
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_krull-scores.png}
+    \caption{Krull: Score}
+    \label{fig:krull-score}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_battle_zone-scores.png}
+    \caption{Battle Zone: Score}
+    \label{fig:battlezone-score}
+  \end{subfigure}
+
+  % --- 4s–ÚFKrull & Battle Zone ‚Ì•ûô ---
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_krull-policy-temporal.png}
+    \caption{Krull: Policy}
+    \label{fig:krull-policy}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{media/atari/atari_battle_zone-policy-temporal.png}
+    \caption{Battle Zone: Policy}
+    \label{fig:battlezone-policy}
+  \end{subfigure}
+
+  \caption{Atari 100kƒxƒ“ƒ`ƒ}[ƒN‚É‚¨‚¯‚éŠwKŒ‹‰ÊBã’i‚ªŠwK‹ÈüA‰º’i‚ª•ûô‚Ì‰Â‹‰»‚ğ¦‚·BFreeway‚È‚Ç‚Å‚Í‘Šú‚É•ûô‚ªŒÅ’è‰»‚³‚ê‚Ä‚¢‚é—lq‚ªA‘å‚«‚È‰æ‘œ‚ÅŠm”F‚Å‚«‚éB}
+  \label{fig:atari-analysis}
+\end{figure*}
+
+}\ref{fig:atari-analysis}‚É¦‚·‚æ‚¤‚ÉAHieros‚ÌAtariŠÂ‹«‚É‚¨‚¯‚éŠwK‚ÍAƒXƒRƒA‚ÌŠÏ“_‚Å‚Í˜_•¶’Ê‚è‚‚¢«”\‚ğ¦‚µ‚Ä‚¢‚é‚ªA•ûô‚Ì‰Â‹‰»‚ğs‚¤‚Æ’Pƒ‚Ès“®ƒpƒ^[ƒ“‚Éû‘©‚µ‚Ä‚¢‚é‚±‚Æ‚ªŠm”F‚³‚ê‚éB
+“Á‚ÉFreeway(a)(b)‚Å‚ÍAƒXƒRƒA‚Í‚‚¢‚à‚Ì‚Ì•ûô‰æ‘œ‚ğŠm”F‚·‚é‚Æu‘OiiUpjv“®ì‚Ì‚İ‚ªŠwK‚³‚ê‚Ä‚¨‚èA•¡G‚È•ûô‚ÍŠwK‚Å‚«‚Ä‚¢‚È‚¢B
+‚±‚Ì‚±‚Æ‚©‚çAHieros‚ª•ñ‚·‚é‚ƒXƒRƒA‚Í•K‚¸‚µ‚àuŒ«‚¢ŠK‘w“IŒv‰æv‚É‚æ‚é‚à‚Ì‚Å‚Í‚È‚­AŠÂ‹«‚Ì“Á«ãA’Pƒ‚È•ûô‚Å‚à‚•ñV‚ª“¾‚ç‚ê‚é‰Â”\«‚ª¦´‚³‚ê‚éB
 
 
 \section{‚Ü‚Æ‚ß}
@@ -279,68 +356,7 @@ Atari‚ÌÅ“K•ûô‚ªŠwK‚µ‚â‚·‚­A\cite{9}‚Å’ñ¦‚³‚ê‚Ä‚¢‚é‚æ‚¤‚ÈŠK‘w‰»‚É‚æ‚é’Tõ‚Ì‰
 \end{thebibliography}
 
 \section{Appendix}
-\subsection{Atari}
-Hieros‚ÌAtari‚ÌÀŒ±‚ğÄŒ»‚µAƒ‚ƒfƒ‹‚ÌŠwK‚ğŠm”F‚µ‚½BƒXƒRƒA‚ÍŠm‚©‚É˜_•¶’Ê‚è‚‚©‚Á‚½ˆê•û‚ÅApolicy-image‚ğŠm”F‚·‚é‚Æ’Pƒ‚È•ûô‚ªŠwK‚³‚ê‚Ä‚¨‚èifreeway‚Å‚Í‚½‚¾‘O‚Éi‚ŞjAHieros‚Å‚Í•¡G‚È•ûô‚ğŠw‚×‚Ä‚¢‚È‚¢‚Ì‚Å‚Í‚È‚¢‚©‚Æl‚¦‚éB
-‚È‚¨ŒvZ‘Œ¹‚Ì“s‡ãAfreeway‚Ì‚İ‚ÍHieros‚ÌŒ³‚Ì˜_•¶‚Æ“¯‚¶‚Å(batch size, batch length)‚ª(16, 64)A‘¼‚Í(16, 16)‚ÅŒŸØ‚ğs‚Á‚½B
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_freeway-scores.png}
-  \caption{Atari Freewayƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-freeway-scores}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_freeway-policy-temporal.png}
-  \caption{Atari Freewayƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-freeway-policy}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_breakout-scores.png}
-  \caption{Atari Breakoutƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-breakout-scores}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_breakout-policy-temporal.png}
-  \caption{Atari Breakoutƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-breakout-policy}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_krull-scores.png}
-  \caption{Atari Krullƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-krull-scores}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_krull-policy-temporal.png}
-  \caption{Atari Krullƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-krull-policy}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_battle_zone-scores.png}
-  \caption{Atari Battle Zoneƒ^ƒXƒN‚ÌŠwK‹Èüiseed‚Å•½‹ÏjB}
-  \label{fig:atari-battlezone-scores}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/atari/atari_battle_zone-policy-temporal.png}
-  \caption{Atari Battle Zoneƒ^ƒXƒN‚É‚¨‚¯‚é•ûô‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:atari-battlezone-policy}
-\end{figure}
-
-
-\subsection{Director}
+\subsection{DirectorÀŒ±Œ‹‰Ê}
 Director‚ğ—p‚¢‚½Pinpad-3‚¨‚æ‚ÑPinpad-easy-3‚ÌŒ‹‰ÊBŠwK‚ªi‚ñ‚Å‚¢‚é‚±‚Æ‚ªŠm”F‚³‚ê‚éBpinpad-3‚ÌŒ‹‰Ê‚Í\cite{1}‚Å•ñ‚³‚ê‚Ä‚¢‚éŒ‹‰Ê‚É‹ß‚¢‚à‚Ì‚Æ‚È‚Á‚Ä‚¢‚éB
 
 \begin{figure}[htbp]

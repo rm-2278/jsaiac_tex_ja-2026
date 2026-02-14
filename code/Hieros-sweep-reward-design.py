@@ -49,6 +49,10 @@ for run in pinpad3_runs:
     else:
         label = run.name
     
+    # Skip progress_any
+    if label == 'progress_any':
+        continue
+    
     # Fetch history
     history = run.history(keys=["episode/score", "_step"])
     
@@ -128,6 +132,11 @@ else:
             label = run.config['reward_mode']
         else:
             label = run.name
+        
+        # Skip progress_any
+        if label == 'progress_any':
+            continue
+        
         images_data.append((run, row, label))
     
     if not images_data:
@@ -158,7 +167,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"{label}", fontsize=12)
+            ax.set_title(f"{label}", fontsize=16)
             ax.axis("off")
         
         # Hide unused subplots
@@ -213,6 +222,11 @@ else:
             label = run.config['reward_mode']
         else:
             label = run.name
+        
+        # Skip progress_any
+        if label == 'progress_any':
+            continue
+        
         images_data.append((run, row, label))
     
     if not images_data:
@@ -243,7 +257,7 @@ else:
                 img = media_obj
             
             ax.imshow(img)
-            ax.set_title(f"{label}", fontsize=12)
+            ax.set_title(f"{label}", fontsize=16)
             ax.axis("off")
         
         plt.suptitle("Position Heatmap @ 400k steps", fontsize=11, fontweight='bold')
