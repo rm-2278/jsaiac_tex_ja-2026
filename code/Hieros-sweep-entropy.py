@@ -68,159 +68,159 @@ plt.close(fig)
 print(f"✓ Saved: {output_dir}/sweep-episode-scores.png")
 
 # =============================================================================
-# 2. Subgoal Visualization (temporal progression from left to right)
+# 2. Subgoal Visualization (all seeds at 400k step)
 # =============================================================================
 
-# Pick the first run that has report/subgoal_visualization data
-selected_run = None
+# Collect all runs with subgoal_visualization
+runs_with_subgoal = []
 for run in sweep.runs:
-    # Check if this run has any report/subgoal_visualization media
     try:
-        history = run.history(keys=["report/subgoal_visualization"])
+        history = run.history(keys=["report/subgoal_visualization", "_step"])
         if not history.empty and "report/subgoal_visualization" in history.columns:
             if history["report/subgoal_visualization"].notna().any():
-                selected_run = run
-                break
+                runs_with_subgoal.append(run)
     except:
         continue
 
-if selected_run is None:
+if not runs_with_subgoal:
     print("⚠ No runs found with report/subgoal_visualization data")
 else:
-    print(f"Using run {selected_run.name} for report/subgoal_visualization")
+    print(f"Found {len(runs_with_subgoal)} runs with subgoal_visualization")
     
-    # Fetch the full history with report/subgoal_visualization
-    history = selected_run.history(keys=["report/subgoal_visualization", "_step"])
+    # Collect images from all runs at 400k step
+    target_step = 400000
+    images_data = []
     
-    # Filter out NaN rows and sort
-    df = history.dropna(subset=["report/subgoal_visualization"]).sort_values("_step")
+    for run in runs_with_subgoal:
+        history = run.history(keys=["report/subgoal_visualization", "_step"])
+        df = history.dropna(subset=["report/subgoal_visualization"]).sort_values("_step")
+        
+        if df.empty:
+            continue
+        
+        # Find closest to 400k
+        closest_idx = (df["_step"] - target_step).abs().idxmin()
+        row = df.loc[closest_idx]
+        
+        # Get actor_entropy for labeling
+        label = run.config.get("actor_entropy", "unknown")
+        images_data.append((run, row, label))
     
-    # Skip the first step (uniform initialization)
-    if len(df) > 1:
-        df = df.iloc[1:]
-    
-    if not df.empty:
-        # Select specific steps: 1k, 100k, 200k, 300k, 400k
-        target_steps = [1000, 100000, 200000, 300000, 400000]
-        sampled_rows = []
+    if not images_data:
+        print("⚠ No images found at 400k")
+    else:
+        n_samples = len(images_data)
         
-        for target in target_steps:
-            # Find the closest available step
-            closest_idx = (df["_step"] - target).abs().idxmin()
-            sampled_rows.append(df.loc[closest_idx])
+        # Create a figure with max 2 images per row
+        n_cols = min(2, n_samples)
+        n_rows = (n_samples + n_cols - 1) // n_cols
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(6*n_cols, 5*n_rows), dpi=300)
+        if n_samples == 1:
+            axes = [axes]
+        else:
+            axes = axes.flatten()
         
-        sampled = pd.DataFrame(sampled_rows)
-        n_samples = len(sampled)
-        
-        # Create a figure with 5 rows × 1 column (vertical layout)
-        fig, axes = plt.subplots(5, 1, figsize=(6, 10), dpi=300)
-        axes = axes.flatten()
-        
-        for idx, (ax, (_, row)) in enumerate(zip(axes, sampled.iterrows())):
-            # W&B stores media as wandb.data_types.Image objects
-            # We need to download the actual image
+        for idx, (ax, (run, row, label)) in enumerate(zip(axes, images_data)):
             media_obj = row["report/subgoal_visualization"]
             
             if hasattr(media_obj, "_image"):
-                # It's a wandb.Image, get the PIL image
                 img = media_obj._image
             elif isinstance(media_obj, dict) and "path" in media_obj:
-                # Fetch from wandb file
                 file_path = media_obj["path"]
-                # Download the file to a temporary location
-                file_obj = selected_run.file(file_path)
+                file_obj = run.file(file_path)
                 downloaded_path = file_obj.download(replace=True).name
                 img = Image.open(downloaded_path)
             else:
-                # Try to render as-is
                 img = media_obj
             
             ax.imshow(img)
-            step_thousands = row['_step'] / 1000
-            ax.set_title(f"Step {step_thousands:.0f}k", fontsize=7)
+            ax.set_title(f"actor_entropy={label}", fontsize=9)
             ax.axis("off")
         
         # Hide unused subplots
         for idx in range(n_samples, len(axes)):
             axes[idx].axis("off")
         
+        plt.suptitle("Subgoal Visualization @ 400k steps", fontsize=11, fontweight='bold')
         plt.tight_layout()
         fig.savefig(f"{output_dir}/sweep-subgoal-temporal.png", dpi=300, bbox_inches="tight")
         plt.close(fig)
         print(f"✓ Saved: {output_dir}/sweep-subgoal-temporal.png")
-    else:
-        print("⚠ No valid report/subgoal_visualization data found")
 
 # =============================================================================
-# 3. Position Heatmap (temporal progression)
+# 3. Position Heatmap (all seeds at 400k step)
 # =============================================================================
 
-selected_run = None
+# Collect all runs with position_heatmap
+runs_with_heatmap = []
 for run in sweep.runs:
     try:
-        history = run.history(keys=["exploration/position_heatmap"])
+        history = run.history(keys=["exploration/position_heatmap", "_step"])
         if not history.empty and "exploration/position_heatmap" in history.columns:
             if history["exploration/position_heatmap"].notna().any():
-                selected_run = run
-                break
+                runs_with_heatmap.append(run)
     except:
         continue
 
-if selected_run is None:
+if not runs_with_heatmap:
     print("⚠ No runs found with exploration/position_heatmap data")
 else:
-    print(f"Using run {selected_run.name} for position_heatmap")
+    print(f"Found {len(runs_with_heatmap)} runs with position_heatmap")
     
-    history = selected_run.history(keys=["exploration/position_heatmap", "_step"])
-    df = history.dropna(subset=["exploration/position_heatmap"]).sort_values("_step")
+    # Collect images from all runs at 400k step
+    target_step = 400000
+    images_data = []
     
-    # Skip the first step (uniform initialization)
-    if len(df) > 1:
-        df = df.iloc[1:]
+    for run in runs_with_heatmap:
+        history = run.history(keys=["exploration/position_heatmap", "_step"])
+        df = history.dropna(subset=["exploration/position_heatmap"]).sort_values("_step")
+        
+        if df.empty:
+            continue
+        
+        # Find closest to 400k
+        closest_idx = (df["_step"] - target_step).abs().idxmin()
+        row = df.loc[closest_idx]
+        
+        # Get actor_entropy for labeling
+        label = run.config.get("actor_entropy", "unknown")
+        images_data.append((run, row, label))
     
-    if not df.empty:
-        # Select specific steps: 1k, 100k, 200k, 300k, 400k
-        target_steps = [1000, 100000, 200000, 300000, 400000]
-        sampled_rows = []
+    if not images_data:
+        print("⚠ No images found at 400k")
+    else:
+        n_samples = len(images_data)
         
-        for target in target_steps:
-            # Find the closest available step
-            closest_idx = (df["_step"] - target).abs().idxmin()
-            sampled_rows.append(df.loc[closest_idx])
+        # Create a figure with max 3 images per row
+        n_cols = min(3, n_samples)
+        n_rows = (n_samples + n_cols - 1) // n_cols
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(4*n_cols, 4*n_rows), dpi=300)
+        if n_samples == 1:
+            axes = [axes]
+        else:
+            axes = axes.flatten()
         
-        sampled = pd.DataFrame(sampled_rows)
-        n_samples = len(sampled)
-        
-        fig, axes = plt.subplots(2, 3, figsize=(9, 6), dpi=300)
-        axes = axes.flatten()
-        
-        for idx, (ax, (_, row)) in enumerate(zip(axes, sampled.iterrows())):
+        for idx, (ax, (run, row, label)) in enumerate(zip(axes, images_data)):
             media_obj = row["exploration/position_heatmap"]
             
             if hasattr(media_obj, "_image"):
                 img = media_obj._image
             elif isinstance(media_obj, dict) and "path" in media_obj:
                 file_path = media_obj["path"]
-                file_obj = selected_run.file(file_path)
+                file_obj = run.file(file_path)
                 downloaded_path = file_obj.download(replace=True).name
                 img = Image.open(downloaded_path)
             else:
                 img = media_obj
             
             ax.imshow(img)
-            step_thousands = row['_step'] / 1000
-            ax.set_title(f"Step {step_thousands:.0f}k", fontsize=7)
+            ax.set_title(f"actor_entropy={label}", fontsize=9)
             ax.axis("off")
         
-        # Hide unused subplots
-        for idx in range(n_samples, len(axes)):
-            axes[idx].axis("off")
-        
+        plt.suptitle("Position Heatmap @ 400k steps", fontsize=11, fontweight='bold')
         plt.tight_layout()
         fig.savefig(f"{output_dir}/sweep-heatmap-temporal.png", dpi=300, bbox_inches="tight")
         plt.close(fig)
         print(f"✓ Saved: {output_dir}/sweep-heatmap-temporal.png")
-    else:
-        print("⚠ No valid position_heatmap data found")
 
 print("\n✓ All visualizations complete!")

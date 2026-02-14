@@ -69,15 +69,11 @@ for task, task_runs in runs_by_task.items():
     overall_max = max(step for _, step in run_max_steps)
     print(f"Task {task}: overall_max={overall_max}")
     
-    # Filter runs: keep those that reached at least 90% of overall_max or >= 350k
-    filtered_runs = []
-    threshold = max(350000, 0.9 * overall_max)
-    for run, max_step in run_max_steps:
-        if max_step >= threshold:
-            filtered_runs.append(run)
+    # Use all available runs to get meaningful std (no filtering)
+    filtered_runs = [run for run, _ in run_max_steps]
     
     if not filtered_runs:
-        print(f"⚠ No runs passed threshold for task {task}")
+        print(f"⚠ No runs for task {task}")
         continue
     
     print(f"Using {len(filtered_runs)} runs for task {task}")
@@ -115,18 +111,21 @@ for task, task_runs in runs_by_task.items():
     # Convert to array and compute statistics
     score_array = np.array(interpolated_scores)
     mean_scores = np.mean(score_array, axis=0)
-    std_scores = np.std(score_array, axis=0)
+    min_scores = np.min(score_array, axis=0)
+    max_scores = np.max(score_array, axis=0)
     
     x = np.array(all_steps) / 1000  # thousands of steps
     
-    # Smooth the mean curve
-    df_mean = pd.DataFrame({'score': mean_scores})
+    # Smooth mean, min, and max curves
+    df_mean = pd.DataFrame({'score': mean_scores, 'min': min_scores, 'max': max_scores})
     window = 20
     y_smooth = df_mean['score'].rolling(window=window, min_periods=1).mean()
+    min_smooth = df_mean['min'].rolling(window=window, min_periods=1).mean()
+    max_smooth = df_mean['max'].rolling(window=window, min_periods=1).mean()
     
-    # Plot with shaded std
+    # Plot with shaded min/max
     ax.plot(x, y_smooth, linewidth=1.4, label=f"{task} (n={len(filtered_runs)})", alpha=0.8)
-    ax.fill_between(x, y_smooth - std_scores, y_smooth + std_scores, alpha=0.2)
+    ax.fill_between(x, min_smooth, max_smooth, alpha=0.2)
     
     ax.set_xlabel("Env. Steps (×10³)", fontsize=9)
     ax.set_ylabel("Episode Return", fontsize=9)
@@ -199,19 +198,19 @@ for task, task_runs in runs_by_task.items():
         print(f"⚠ No valid {selected_key} data found for task {task}")
         continue
     
-    # Select specific steps: 100k, 200k, 300k, 400k, 500k
-    target_steps = [100000, 200000, 300000, 400000, 500000]
+    # Select specific steps: exactly 100k, 200k, 300k, 400k (4 images)
+    target_steps = [100000, 200000, 300000, 400000]
     sampled_rows = []
-    df_remaining = df.copy()
     
     for target in target_steps:
-        # Find the closest available step
-        if len(df_remaining) == 0:
-            break
-        closest_idx = (df_remaining["_step"] - target).abs().idxmin()
-        sampled_rows.append(df_remaining.loc[closest_idx])
-        # Remove this row to avoid selecting it again
-        df_remaining = df_remaining.drop(closest_idx)
+        # Find the exact step or closest available step
+        if target in df["_step"].values:
+            # Exact match
+            sampled_rows.append(df[df["_step"] == target].iloc[0])
+        else:
+            # Find closest step
+            closest_idx = (df["_step"] - target).abs().idxmin()
+            sampled_rows.append(df.loc[closest_idx])
     
     if not sampled_rows:
         print(f"⚠ No sampled rows for task {task}")
