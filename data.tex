@@ -1,44 +1,40 @@
-\usepackage{color}
-\usepackage[dvipdfmx]{graphicx}
-\usepackage{subcaption}
-\usepackage{url}
-\usepackage{amsmath}
+
 %%
 \title{
-\jtitle{�K�w�I���E���f���̌���Ɖۑ�FHieros�̌��E�Ə����̓W�]}
+\jtitle{階層的世界モデルの現状と課題：Hierosの限界と将来の展望}
 \etitle{Current Status and Challenges in Hierarchical World Models: Identifying Limitations of Hieros and Future Prospects}
 }
-\jaddress{�O�D���P�Crm2278@cam.ac.uk}
+\jaddress{三好理輝，rm2278@cam.ac.uk}
 
 \author{%
-\jname{�O�D ���P\first}
+\jname{三好 理輝\first}
 \ename{Riki Miyoshi}
 \and
-\jname{�� �q�D\second}
-\ename{Jiu You}
+\jname{劉 智優\second}
+\ename{Ziwoo You}
 \and
-\jname{�R�c �B��\third}
+\jname{山田 達也\third}
 \ename{Yamada Tatsuya}
 }
 
 \affiliate{
-\jname{\first{}�P���u���b�W��w}
+\jname{\first{}ケンブリッジ大学}
 \ename{University of Cambridge}
 \and
-\jname{\second{}�d�C�ʐM��w}
+\jname{\second{}電気通信大学}
 \ename{University of Electro-Communications}
 \and
-\jname{\third{}����w}
+\jname{\third{}大阪大学}
 \ename{The University of Osaka}
 }
 
 %%
 \begin{abstract}
-   ������\\
-   �A�u�X�g���N�g��\\
-   5�s���x\\
-   ����\\
-   �܂�\\
+   ここに\\
+   アブストラクトを\\
+   5行程度\\
+   書き\\
+   ます\\
 \end{abstract}
 
 %\setcounter{page}{1}
@@ -50,217 +46,204 @@
 
 \begin{document}
 \maketitle
+\section{はじめに}
 
-\section{�͂��߂�}
-1\\
-2\\
-3\\
-4\\
-5\\
-6\\
-7\\
-8\\
-9\\
-10\\
-\section{�����w�i�E�ړI}
-�K�w�I�����w�K (HRL) �́A�T���ɂ����ėL�v�ł���ƒm���Ă��� \cite{9}�A�����I�ȕ�V���蓖�āA�]�ڊw�K�A���ߐ��ȂǂƂ������_�ŗD�ʐ�������ƍl�����Ă���\cite{14}�B
+深層強化学習は多くの分野で成功を収めている一方で，環境との大量の相互作用を必要とするサンプル効率の低さや，長期的依存を伴うタスクにおける学習の不安定性が依然として課題である\cite{14,9}。この問題に対し，環境ダイナミクスを潜在空間上に学習し，内部モデル上で想像学習を行うワールドモデルが提案されてきた\cite{15,16}。特に Dreamer 系列\cite{3,4,5}は高いサンプル効率を示し，モデルベース強化学習の有効性を実証している。
 
-�܂��A���E���f���͍����T���v���������������A�G�[�W�F���g�����Ȃ����Ƃ̑��ݍ�p�Ŋw�K���邱�Ƃ��\�ɂ���B
+一方，階層的強化学習は時間抽象化を導入することで長期計画を可能にする枠組みとして知られており\cite{14,9}，近年では世界モデルと階層構造を統合した手法も提案されている\cite{1,8,10}。さらに，長期シーケンスを効率的に扱うために構造化状態空間モデル（S4）およびその改良版である S5 が提案されており\cite{17,18}，ワールドモデルへの応用も進んでいる\cite{19}。
 
-����ŁA�K�w���Ɛ��E���f����g�ݍ��킹�������͏��Ȃ��B
-���̂Q�̗v�f��g�ݍ��킹�������Ȃ����f���Ƃ��āADirector\cite{1}��Hieros\cite{2}������A�x�[�X���C���Ƃ��Ďg�p����Ă��鐢�E���f�������鐫�\�������Ă���B
-����ŁA���ߐ��⃂�f�����X�P�[������������ł̌����͂���Ă��炸�A�K�w�I�Ȑ��E���f���̗��_����ѕ]�������͒m���Ă��Ȃ��B
+しかしながら，階層的世界モデルが実際にどのような抽象表現を獲得しているのか，あるいは真に階層的な想像や長期計画が実現されているのかについての実証的検証は十分とは言えない。
 
-�����Ŗ{�����ł́A�K�w�I���E���f���̌���𗝉����ۑ����肷�邽�߂ɁAHieros�̐��\�]������ѓ�����Ԃ̗��������݂��B
-\\
-1\\
-2\\
-3\\
-4\\
-5\\
-6\\
-7\\
-8\\
-9\\
-10\\
+そこで本研究では，階層的世界モデルの代表的手法である Hieros\cite{2} に着目し，再現実験および内部状態の可視化を通じて，階層的想像学習の実態を検証する。これにより，階層的世界モデルの構造的限界と今後の設計指針を明らかにすることを目的とする。
 
-\section{�֘A����}
-\subsection{���E���f��}
-���E���f���́A�u�����E�����v�B
-���E���f���͑傫���A1. ��ԋ�ԃ��f���A2. ��ԗ\�����f���A3. �ϑ��\�����f�� �ɕ����邱�Ƃ��ł���B
-��\�I�Ȑ��E���f���Ƃ��āADreamer ����� TD-MPC2����������B
-Dreamer�́A��ԋ�ԃ��f���̈�ł���A�u�����v�B
+\section{研究背景・目的}
 
-\subsection{�K�w�I�����w�K (HRL)}
+階層的強化学習（HRL）は，探索性能の向上\cite{9}，効率的な報酬割り当て，転移学習，解釈性の向上といった観点から有効であると報告されている\cite{14}。
 
+また，世界モデルは環境の潜在ダイナミクスを学習することで高いサンプル効率を実現し，少ない環境相互作用で方策を改善することを可能にする\cite{15,3}。
 
+しかしながら，階層性と世界モデルを同時に統合した研究は依然として限定的である。Director\cite{1} や Hieros\cite{2} はその代表例であり，ベースラインの世界モデルを上回る性能を示している。一方で，獲得された内部表現の解釈や階層構造の有効性に関する体系的な分析は十分に行われていない。
 
-\subsection{�K�w�I���E���f�� (HWM)}
-�K�w�I���E���f�����A���E���f���Ɠ��l�A
-��ԋ�ԃ��f���ł���Dreamer�̕�����K�w���������̂�Director�ł���B�}�l�[�W���[�ƃ��[�J�[�̂Q�̕��􂪑��݂��A�}�l�[�W���[�͂�蒷�����Ԏ��ŖڕW�Ƃ����Ԃ����k���ꂽ�`�Ń��[�J�[�ɓn���A���[�J�[�͒ʏ�̋����w�K�Ɠ��l�̒Z�����Ԏ��ōs�����o�͂���B
-���[�J�[�̑����֐��Ƀ}�l�[�W���[�̒񎦂����ڕW���ǂ̒��x�B�����ꂽ����g�ݍ��ނ��ƂŁA���[�J�[�ƃ}�l�[�W���[�̂Q�̕��􂪂��ꂼ��������S���Ȃ��瓯���Ɋw�K�ł���悤�ɂ��Ă���B
+そこで本研究では，Hieros を対象として，
 
-Director�̊g���Ƃ���Hieros������B
-Hieros�ł́A
 \begin{enumerate}
-   \item ���􂾂��łȂ����E���f�����K�w�����Ă���B
-   \item 2�K�w�����łȂ������葽���K�w�ł��������s���Ă���B
-   \item �v�Z�������グ�邽�߂ɁA��ԋ�ԃ��f���Ƃ���RSSM�ł͂Ȃ�S5WM��p���Ă���B
-   \item ���v���C�o�b�t�@����̃T���v�����O���H�v���A�΂�����炷���ƂƎ��Ԍv�Z�ʂ̍팸���������Ă���B
+    \item 再現実験による性能検証
+    \item 各階層の潜在状態表現の可視化
+    \item 階層間の情報伝播構造の分析
 \end{enumerate}
-�Ƃ����H�v��������ꂽ���f������Ă���Ă���AAtari�ɂ�����DreamerV3�𒴂��鐫�\���������B
-�{�e�ł͕��􂾂��łȂ����E���f�����K�w�����Ă���Ƃ����_��Hieros�ɒ��ڂ��A���̌��E�Ɖ\���𒲂ׂ�B
+
+を行い，階層的世界モデルの構造的特性および限界を明らかにすることを目的とする。
+
+\section{関連研究}
+
+\subsection{世界モデル}
+
+世界モデルは，観測 $o_t$ から潜在状態 $z_t$ を推定し，
+\[
+p(z_{t+1} \mid z_t, a_t)
+\]
+により将来状態を予測する確率モデルである。代表的手法である Dreamer\cite{3,4,5} は，Recurrent State Space Model（RSSM）を用いて潜在状態遷移を学習し，想像ロールアウトを通じて方策を最適化する。
+
+一方，TD-MPC2\cite{7} は状態予測モデルに基づくモデル予測制御型のアプローチであり，連続制御タスクにおいて高い性能を示している。
+
+近年では，長期依存を効率的に扱うために構造化状態空間モデル S4\cite{17} および S5\cite{18} が提案されている。従来の Transformer ベースの系列モデルでは，自己注意機構により全時刻のコンテキストを同時に参照する必要があり，計算量が系列長に対して二乗オーダーで増加するという課題があった。このため，長期シーケンスを扱う際には計算資源の制約や推論効率の低下が問題となる。これに対し，S4 および S5 は線形時間での計算を可能とする構造化状態空間表現を導入することで，長期依存を効率的にモデル化できることが示されている。また，これらを世界モデルに適用した S4WM\cite{19} も報告されている。
+
+\subsection{階層的強化学習 (HRL)}
+
+HRL は時間抽象化を導入することで長期計画を可能にする枠組みである。Nachum ら\cite{9} は階層構造が探索を改善することを理論的・実験的に示し，HRL の有効性を明らかにした。
+
+\subsection{階層的世界モデル (HWM)}
+
+Director\cite{1} は Dreamer を基盤とし，マネージャーとワーカーの二層方策構造を導入した手法である。マネージャーは長期的な潜在目標を生成し，ワーカーは短期的行動を出力する。ワーカーの損失関数に目標達成度を組み込むことで，同時学習を可能にしている。
+
+Hieros\cite{2} は Director を拡張し，
+
+\begin{enumerate}
+   \item 方策だけでなく世界モデルも階層化
+   \item 二層を超える多層構造への拡張
+   \item RSSM の代わりに S5WM を採用
+   \item 時間計算量を削減するサンプリング戦略の導入
+\end{enumerate}
+
+といった改良を加えている。Atari ベンチマークにおいて DreamerV3 を上回る性能が報告されている。
+
+また，THICK\cite{10} は Director を基盤に離散潜在ダイナミクスを用いた階層的時間抽象化を提案している。Puppeteer\cite{8} は TD-MPC 系列を階層化し，視覚入力から全身制御を行うヒューマノイド制御へ応用している。
+
+本稿では，方策のみならず世界モデル自体を階層化している点に着目し，Hieros の構造的特性とその限界を検討する。
 
 
-THICK���ADirector���x�[�X�Ƃ��Ē�Ă��ꂽ��@�ł���B�u�����v�B
+\section{実験・考察}
+本稿では、階層的世界モデルのHieros\cite{2}モデルの評価を行った。
+特に、論文中では検証されていなかった、長期タスクの評価に適しているVisual Pinpad環境での検証を行った。また、Atariでのモデルの内部状態の確認を行った。
 
+\subsection{手法}
+Hierosのモデル検証では、既存のレポジトリ\cite{11}を変更して実験を行った。
+また、Directorではこのレポジトリ\cite{12}を用いて実験を行った。
+RTX-5070TiまたはRTX-6000一つを用いて学習をした。
 
-��ԗ\�����f���ł���TD-MPC2���K�w�I�ɂ������̂�Puppeteer�ł���B����́A�u�����v
-
-
-1\\
-2\\
-3\\
-4\\
-5\\
-6\\
-7\\
-8\\
-9\\
-10\\
-
-\section{�����E�l�@}
-�{�e�ł́A�K�w�I���E���f����Hieros\cite{2}���f���̕]�����s�����B
-���ɁA�_�����ł͌��؂���Ă��Ȃ������A�����^�X�N�̕]���ɓK���Ă���Visual Pinpad���ł̌��؂��s�����B�܂��AAtari�ł̃��f���̓�����Ԃ̊m�F���s�����B
-
-\subsection{��@}
-Hieros�̃��f�����؂ł́A�����̃��|�W�g��\cite{11}��ύX���Ď������s�����B
-�܂��ADirector�ł͂��̃��|�W�g��\cite{12}��p���Ď������s�����B
-RTX-5070Ti�܂���RTX-6000���p���Ċw�K�������B
-
-Pinpad�ɂ�����Hieros�̊w�K�󋵂𒲍������B�܂��́AHieros�̃x�[�X���C���ł̌��؂��s�����B
+PinpadにおけるHierosの学習状況を調査した。まずは、Hierosのベースラインでの検証を行った。
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/Hieros-baseline.png}
-  \caption{Visual Pinpad���ɂ�����Hieros�̊w�K����ѓ�����V�Ȑ��B}
+  \caption{Visual Pinpad環境におけるHierosの学習および内部報酬曲線。}
   \label{fig:hieros-baseline}
 \end{figure}
 
-�}����킩��悤�ɁA��V��0�̂܂܊w�K���i�܂Ȃ����Ƃ��m�F���ꂽ�B
-�����ŁA�ȉ��ł�pinpad�̕�V�݌v�����̎�������A�����̈�v�x���オ��ƃX�R�A���^������悤�ɕύX�����i�Ⴆ�΁A�� $\rightarrow$ �ԗ΂ɕω������ꍇ�A+1�̕�V�A�ԗ� $\rightarrow$ �ԗΗ΂ɕω������ꍇ�A-2�̕�V���^������j�B
+図からわかるように、報酬が0のまま学習が進まないことが確認された。
+そこで、以下ではpinpadの報酬設計を元の実装から、末尾の一致度が上がるとスコアが与えられるように変更した（例えば、赤 $\rightarrow$ 赤緑に変化した場合、+1の報酬、赤緑 $\rightarrow$ 赤緑緑に変化した場合、-2の報酬が与えられる）。
 
-���ڂ���Hieros�̐��\�ɂ��Ē������邽�߂ɁAHieros�̊e���C�����񎦂��Ă����Ԃ̉������s�����B���̘_���ł͉ߋ��̌o�����Q�l�ɂ����m�C�Y�������Ẳ������s���Ă������A���f���̗\���݂̂ɏœ_�𓖂Ă邽�߂ɁA�m�C�Y�Ȃ��ł̉������s�����B
-update-every��8�Ŏ������s�����B\subsection{���ԓI���ۉ��̒���}
+より詳しくHierosの性能について調査するために、Hierosの各レイヤが提示している状態の可視化を行った。元の論文では過去の経験を参考にしたノイズを加えての可視化を行っていたが、モデルの予測のみに焦点を当てるために、ノイズなしでの可視化を行った。
+update-everyは8で実験を行った。\subsection{時間的抽象化の調整}
 
-update-every�́A���ꂼ��̊K�w���A���̊K�w�Ɣ�r���Ăǂ̒��x���ԓI���ۉ����s���Ă��邩��\���Ă���B�Ⴆ�΁Aupdate-every=4�ł́A4�X�e�b�v���Ƃɏ�̊K�w�����̊K�w�ɗ^����T�u�S�[�����X�V���Ă���Ƃ����Ӗ��ł���B
+update-everyは、それぞれの階層が、下の階層と比較してどの程度時間的抽象化を行っているかを表している。例えば、update-every=4では、4ステップごとに上の階層が下の階層に与えるサブゴールを更新しているという意味である。
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-episode-scores.png}
-  \caption{�قȂ�subactor-update-every�p�����[�^�ł̊w�K�Ȑ��̔�r�B}
+  \caption{異なるsubactor-update-everyパラメータでの学習曲線の比較。}
   \label{fig:sweep-scores}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-subgoal-temporal.png}
-  \caption{�w�K�ߒ��ɂ�����T�u�S�[�������̎��ԓI�ω��B�T�^�I�ł킩��₷����Ƃ���15k�X�e�b�v��300k�X�e�b�v�𒊏o�����B}
+  \caption{学習過程におけるサブゴール可視化の時間的変化。典型的でわかりやすい例として15kステップと300kステップを抽出した。}
   \label{fig:subgoal-temporal}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-heatmap-temporal.png}
-  \caption{�T���ʒu�̃q�[�g�}�b�v�̎��ԓI�ω��B}
+  \caption{探索位置のヒートマップの時間的変化。}
   \label{fig:heatmap-temporal}
 \end{figure}
 
-�}����킩��悤�ɁA�����̍��ق��������ŁA�ŏI�I�ɕ�V��1�ɂȂ���x�ɕ��􂪎������Ă���B
-�܂��A�񎦂���Ă���T�u�S�[�����A�Ԃ܂ł����w�K����Ă��炸�A���߂Ă���ԗΐ̃t���V�[�P���X�͊w�K����Ȃ������B�@
+図からわかるように、多少の差異がある一方で、最終的に報酬が1になる程度に方策が収束している。
+また、提示されているサブゴールも、赤までしか学習されておらず、求めている赤緑青のフルシーケンスは学習されなかった。　
 
-\subsection{��V���蓖�ČW���̕ύX}
-Hieros�ł́A�e���C�����Ƃ̕���́Aexternal reward, subgoal reward��intrinsic reward��3��p���Ċw�K���s���Ă���B
-�����̔䗦��ύX���邱�Ƃɂ���āA�w�K���ǂ��ω����邩���m�F�����B
+\subsection{報酬割り当て係数の変更}
+Hierosでは、各レイヤごとの方策は、external reward, subgoal rewardとintrinsic rewardの3つを用いて学習を行っている。
+これらの比率を変更することによって、学習がどう変化するかを確認した。
 
-% --- �O���t�ƃq�[�g�}�b�v���R���p�N�g�ɂ܂Ƃ߂� ---
+% --- グラフとヒートマップをコンパクトにまとめる ---
 \begin{figure}[t]
   \centering
-  % ��i�F�w�K�Ȑ�
+  % 上段：学習曲線
   \begin{subfigure}[b]{\columnwidth}
     \centering
     \includegraphics[width=\linewidth]{media/pinpad/reward-ratio-sweep/sweep-episode-scores.png}
-    \caption{�قȂ��V���蓖�ČW���̊w�K�Ȑ�}
+    \caption{異なる報酬割り当て係数の学習曲線}
   \end{subfigure}
   
   \vspace{0.3cm}
   
-  % ���i�F�q�[�g�}�b�v
+  % 下段：ヒートマップ
   \begin{subfigure}[b]{\columnwidth}
     \centering
     \includegraphics[width=\linewidth]{media/pinpad/reward-ratio-sweep/sweep-heatmap-temporal.png}
-    \caption{�قȂ��V���蓖�ČW���̒T���ʒu�̃q�[�g�}�b�v}
+    \caption{異なる報酬割り当て係数の探索位置のヒートマップ}
   \end{subfigure}
   
-  \caption{��V���蓖�ČW���̕ύX�ɂ��w�K�ւ̉e���B400k�X�e�b�v���̒T���̕΂�������Ă���B}
+  \caption{報酬割り当て係数の変更による学習への影響。400kステップ時の探索の偏りを示している。}
   \label{fig:reward-sweep-analysis}
 \end{figure}
 
-����I�Ȍ��オ�m�F�ł��A��V���蓖�ČW����ύX���邱�Ƃ̗L���������������B
-�}3�Ɠ��l�A�t���V�[�P���X���w�K�������f���͂Ȃ��A�Ԃ݂̂̃T�u�S�[�����Ă��邩�A�����I�ɂ͖��ɗ����Ȃ��T�u�S�[�����w�K���邩�ł������B
+限定的な向上が確認でき、報酬割り当て係数を変更することの有効性が示唆される。
+図3と同様、フルシーケンスを学習したモデルはなく、赤のみのサブゴールを提案するか、直感的には役に立たないサブゴールを学習するかであった。
 
-\subsection{����G���g���s�[�̕ύX}
+\subsection{方策エントロピーの変更}
 
-����G���g���s�[��ύX�����Ƃ��̌��ʂ��m�F�����B
+方策エントロピーを変更したときの結果を確認した。
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-episode-scores.png}
-  \caption{�قȂ�actor\_entropy�p�����[�^�ł̊w�K�Ȑ��̔�r�B}
+  \caption{異なるactor\_entropyパラメータでの学習曲線の比較。}
   \label{fig:entropy-sweep-scores}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.75\columnwidth]{media/pinpad/entropy-sweep/sweep-heatmap-temporal.png}
-  \caption{�G���g���s�[���������ɂ�����T���ʒu�̃q�[�g�}�b�v�̎��ԓI�ω��B}
+  \caption{エントロピー調整実験における探索位置のヒートマップの時間的変化。}
   \label{fig:entropy-heatmap-temporal}
 \end{figure}
 
-�G���g���s�[���傫���Ȃ�Ƃ��������ɂ����Ȃ��V�������Ȃ������A�����Ɋw�K���i�ނ��Ƃ͂Ȃ������B
-�T�u�S�[���̉����ɂ��ẮA�}3�Ɠ��l�A�t���V�[�P���X���w�K�������f���͂Ȃ��A�Ԃ݂̂̃T�u�S�[�����Ă��邩�A�����I�ɂ͖��ɗ����Ȃ��T�u�S�[�����w�K���邩�ł������B
+エントロピーが大きくなるとより収束しにくくなり報酬も高くなったが、顕著に学習が進むことはなかった。
+サブゴールの可視化については、図3と同様、フルシーケンスを学習したモデルはなく、赤のみのサブゴールを提案するか、直感的には役に立たないサブゴールを学習するかであった。
 
-\subsection{Pinpad�̕�V�݌v�̕ύX}
+\subsection{Pinpadの報酬設計の変更}
 
-pinpad-easy-three�^�X�N�ɂ����āA��V�݌v��ύX�����������ʁB
-�ȉ���7��ނ̕�V�݌v���r�����F
+pinpad-easy-threeタスクにおいて、報酬設計を変更した実験結果。
+以下の7種類の報酬設計を比較した：
 \begin{itemize}
-  \item \textbf{flat�i�f�t�H���g�j}: �^�C���𓥂񂾂Ƃ��̖����̈�v�x�̑�������V
-  \item \textbf{progressive}: �^�C���𓥂񂾂Ƃ��̖����̈�v�x�̑������w���֐��I�ɂ������̂���V�i$2^{\text{tail-match}}$�j
-  \item \textbf{sequence\_bonus}: flat�̕�V�ɉ����A������v�x���������ƂɃ{�[�i�X��V�B
-  \item \textbf{decaying}: ���Ԍo�߂ƂƂ��ɕ�V������
-  \item \textbf{sparse}: ���S�ȃV�[�P���X��v���̂ݕ�V (����pinpad)
-  \item \textbf{progressive\_steep}: �}���z�Ȏw���֐��I��V�i$3^{\text{tail-match}}$�j
-  \item \textbf{dense\_guidance}: flat�̕�V�ɉ����X�e�b�v���Ƃׂ̍�����V�i�����������ɐi�񂾏ꍇ+0.1�A�Ԉ���������ɐi�񂾏ꍇ-0.1�j
+  \item \textbf{flat（デフォルト）}: タイルを踏んだときの末尾の一致度の増減が報酬
+  \item \textbf{progressive}: タイルを踏んだときの末尾の一致度の増減を指数関数的にしたものが報酬（$2^{\text{tail-match}}$）
+  \item \textbf{sequence\_bonus}: flatの報酬に加え、末尾一致度が増加ごとにボーナス報酬。
+  \item \textbf{decaying}: 時間経過とともに報酬を減衰
+  \item \textbf{sparse}: 完全なシーケンス一致時のみ報酬 (元のpinpad)
+  \item \textbf{progressive\_steep}: 急勾配な指数関数的報酬（$3^{\text{tail-match}}$）
+  \item \textbf{dense\_guidance}: flatの報酬に加えステップごとの細かい報酬（正しい方向に進んだ場合+0.1、間違った方向に進んだ場合-0.1）
 \end{itemize}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-episode-scores.png}
-  \caption{Pinpad-easy\_three�^�X�N�ɂ�����قȂ��V�݌v�ł̊w�K�Ȑ��̔�r�B}
+  \caption{Pinpad-easy\_threeタスクにおける異なる報酬設計での学習曲線の比較。}
   \label{fig:reward-design-sweep-scores}
 \end{figure}
 
-�}3�Ɠ��l�A�t���V�[�P���X���w�K�������f���͂Ȃ��A�Ԃ݂̂̃T�u�S�[�����Ă��邩�A�����I�ɂ͖��ɗ����Ȃ��T�u�S�[�����w�K���邩�ł������B
-�Ȃ��A�����ɂ͌f�ڂ��Ȃ����A�T���ʒu�̃q�[�g�}�b�v��������􂪓���̗̈�Ɏ������Ă��邱�Ƃ��m�F���ꂽ�B
+図3と同様、フルシーケンスを学習したモデルはなく、赤のみのサブゴールを提案するか、直感的には役に立たないサブゴールを学習するかであった。
+なお、ここには掲載しないが、探索位置のヒートマップからも方策が特定の領域に収束していることが確認された。
 
-\subsection{Atari�ɂ�����萫���}
-�{�߂ł́AAtari�x���`�}�[�N�ɂ�����Hieros�̓�����������͂���B���̂��߁A�w�K�ߒ��ɂ��������̎��ԕω������������B
-�Ȃ��v�Z�����̓s����Afreeway�݂̂�Hieros�̌��̘_���Ɠ�����(batch size, batch length)��(16, 64)�A����(16, 16)�Ō��؂��s�����B
+\subsection{Atariにおける定性解析}
+本節では、AtariベンチマークにおけるHierosの内部挙動を解析する。そのため、学習過程における方策の時間変化を可視化した。
+なお計算資源の都合上、freewayのみはHierosの元の論文と同じで(batch size, batch length)が(16, 64)、他は(16, 16)で検証を行った。
 
-% 2�i�������C�A�E�g�őSAtari���ʂ�z�u
+% 2段抜きレイアウトで全Atari結果を配置
 \begin{figure*}[t]
   \centering
-  % --- 1�s�ځF�X�R�A (Score) ---
+  % --- 1行目：スコア (Score) ---
   % Freeway Score
   \begin{subfigure}[t]{0.23\textwidth}
     \centering
@@ -293,9 +276,9 @@ pinpad-easy-three�^�X�N�ɂ����āA��V�݌v��ύX�����������ʁB
     \label{fig:battlezone-score}
   \end{subfigure}
 
-  \vspace{0.2cm} % �s�Ԃ̒���
+  \vspace{0.2cm} % 行間の調整
 
-  % --- 2�s�ځF���� (Policy) ---
+  % --- 2行目：方策 (Policy) ---
   % Freeway Policy
   \begin{subfigure}[t]{0.23\textwidth}
     \centering
@@ -328,13 +311,13 @@ pinpad-easy-three�^�X�N�ɂ����āA��V�݌v��ύX�����������ʁB
     \label{fig:battlezone-policy}
   \end{subfigure}
 
-  \caption{Atari 100k�x���`�}�[�N�ɂ�����w�K���ʁB��i���w�K�Ȑ��A���i��400k�X�e�b�v���_�ł̕���摜�i5�t���[���Ԋu�Œ��o�j�������BFreeway�ł͒P���ȑO�i����݂̂��J��Ԃ���Ă��邱�Ƃ��m�F�ł���B}
+  \caption{Atari 100kベンチマークにおける学習結果。上段が学習曲線、下段が400kステップ時点での方策画像（5フレーム間隔で抽出）を示す。Freewayでは単調な前進動作のみが繰り返されていることが確認できる。}
   \label{fig:atari-analysis}
 \end{figure*}
 
-�}\ref{fig:atari-analysis}�Ɏ����悤�ɁAHieros��Atari���ɂ�����w�K�́A�X�R�A�̊ϓ_�ł͘_���ʂ荂�����\�������Ă��邪�A400k�X�e�b�v���_�ł̍��𑜓x����摜���璊�o�����A���t���[�����m�F����ƒP���ȍs���p�^�[�����J��Ԃ���Ă��邱�Ƃ��m�F�����B
-����Freeway�ł́A�X�R�A�͍������̘̂A�������t���[�����m�F����ƑO�i����݂̂��J��Ԃ���Ă���A���G�ȕ���͊w�K�ł��Ă��Ȃ��B
-���̂��Ƃ���AHieros���񍐂��鍂�X�R�A�͕K�������u�����K�w�I�v��v�ɂ����̂ł͂Ȃ��A���̓�����A�P���ȕ���ł�����V��������\�������������B
+図\ref{fig:atari-analysis}に示すように、HierosのAtari環境における学習は、スコアの観点では論文通り高い性能を示しているが、400kステップ時点での高解像度方策画像から抽出した連続フレームを確認すると単純な行動パターンが繰り返されていることが確認される。
+特にFreewayでは、スコアは高いものの連続したフレームを確認すると前進動作のみが繰り返されており、複雑な方策は学習できていない。
+このことから、Hierosが報告する高スコアは必ずしも「賢い階層的計画」によるものではなく、環境の特性上、単純な方策でも高報酬が得られる可能性が示唆される。
 \\
 1\\
 2\\
@@ -347,20 +330,20 @@ pinpad-easy-three�^�X�N�ɂ����āA��V�݌v��ύX�����������ʁB
 9\\
 10\\
 
-\subsection{�l�@}
-����������pinpad�Ŋw�K���i�܂Ȃ����R����V���a�ł��邩�炾�ƍl���Ă������APinpad�̕�V�݌v�𖧂ɂ������ɂ��w�K���i�܂Ȃ��������߁A�����ł͖����ƍl�����B
-�����Atari�̃��f���̉��������钆�ŁAAtari�ł��L�Ӌ`�ȕ��􂪊w�K�ł��Ă��Ȃ��Ǝv���AHieros�̃��f�����̂��̂ɁA�s���萫���邢�͉��ǂ̗]�n������̂ł͂Ȃ����ƍl����B
-����ŁA�L�Ӌ`���Ǝv���Ȃ��w�K�����Ă���ɂ��ւ�炸�A�Ȃ�Hieros��Atari�Ő��\�������o�Ă����̂��̗��R�̉𖾂�����̉ۑ�ł���B
-Atari�̍œK���􂪊w�K���₷���A\cite{9}�Œ񎦂���Ă���悤�ȊK�w���ɂ��T���̉��P���֘A���Ă���Ƃ��l�����邪�A���؂��K�v�ł���B
-���،��ʂ����Hieros�̏�肭�w�K���ł��Ă��炸�ĉ����\���Ⴍ�A���挒���̍������f���̗��_�I�A�����I�͍����K�v�ł���ƌ��_�Â���B
+\subsection{考察}
+実験当初はpinpadで学習が進まない理由が報酬が疎であるからだと考えていたが、Pinpadの報酬設計を密にした時にも学習が進まなかったため、そうでは無いと考えた。
+さらにAtariのモデルの可視化もする中で、Atariでも有意義な方策が学習できていないと思われ、Hierosのモデルそのものに、不安定性あるいは改良の余地があるのではないかと考える。
+一方で、有意義だと思えない学習をしているにも関わらず、なぜHierosがAtariで性能が高く出ていたのかの理由の解明も今後の課題である。
+Atariの最適方策が学習しやすく、\cite{9}で提示されているような階層化による探索の改善が関連しているとも考えられるが、検証が必要である。
+検証結果からはHierosの上手く学習ができておらず汎化性能が低く、より頑健性の高いモデルの理論的、実験的模索が必要であると結論づける。
 
 
-�x�[�X���C���R�[�h�ɃG���[���܂܂�Ă���\���͔ۂ߂Ȃ�����ŁA���E���f�����K�w�I�ɂ��邱�Ƃɂ���Ċw�K���s����ɂȂ��Ă���\���������ƍl����B
-���ɐ��E���f���͖ړI�֐���덷�~�ςɋN�����āA�܂��K�w�I���f���͊K�w�̓����w�K�ɂ����퐫�ɂ���ăn�C�p�[�p�����[�^�ɑ@�ׂł��邱�Ƃ��m���Ă���A�����̑g�ݍ��킹�ɂ���Ċw�K���s����ɂȂ��Ă��܂��Ă���\��������B
-���̗��_�I�A���؎����I��͍͂���̉ۑ�ł���B
+ベースラインコードにエラーが含まれている可能性は否めない一方で、世界モデルを階層的にすることによって学習が不安定になっている可能性も高いと考える。
+特に世界モデルは目的関数や誤差蓄積に起因して、また階層的モデルは階層の同時学習による非定常性によってハイパーパラメータに繊細であることが知られており、それらの組み合わせによって学習が不安定になってしまっている可能性もある。
+この理論的、実証実験的解析は今後の課題である。
 
 
-\section{�܂Ƃ�}
+\section{まとめ}
 1\\
 2\\
 3\\
@@ -375,8 +358,8 @@ Atari�̍œK���􂪊w�K���₷���A\cite{9}�Œ񎦂���Ă���悤�ȊK�w���ɂ��T���̉
 
 
 
-\section{�W�]}
-�{�e�ł�Hieros��3�̕�V�W�����蓮�Őݒ肵��r���s�������AHarmonyDream \cite{13} �̂悤�ɁA��V�������Ńo�����X����ƁA��葽�l�ȃ^�X�N�ɂ����Ċw�K���ł���悤�ɂȂ�Ɨ\�z����B
+\section{展望}
+本稿ではHierosの3つの報酬係数を手動で設定し比較を行ったが、HarmonyDream \cite{13} のように、報酬を自動でバランスすると、より多様なタスクにおいて学習ができるようになると予想する。
 \\
 1\\
 2\\
@@ -399,32 +382,39 @@ Atari�̍œK���􂪊w�K���₷���A\cite{9}�Œ񎦂���Ă���悤�ȊK�w���ɂ��T���̉
 \bibitem[Director Repo]{12} \url{https://github.com/danijar/director}
 \bibitem[HarmonyDream]{13} Ma, H. et al.: HarmonyDream: Task Harmonization Inside World Models, ICML (2024).
 \bibitem[HRL survey]{14} Pateria, S. et al.: Hierarchical Reinforcement Learning: A Comprehensive Survey, ACM Computing Surveys (2021). 
+\bibitem[WorldModels]{15} Ha, D. and Schmidhuber, J.: World Models, NeurIPS (2018).
+% 追加分
+\bibitem[PlaNet]{16} Hafner, D. et al.: Learning Latent Dynamics for Planning from Pixels, ICML (2019).
+\bibitem[S4]{17} Gu, A. et al.: Efficiently Modeling Long Sequences with Structured State Spaces, ICLR (2022).
+\bibitem[S5]{18} Smith, J. T. et al.: Simplified State Space Layers for Sequence Modeling, ICLR (2023).
+\bibitem[S4WM]{19} Deng, F. et al.: S4WM: Structured State Space World Models, arXiv (2024).
+
 \end{thebibliography}
 
 \section{Appendix}
-\subsection{Director��������}
-Director��p����Pinpad-3�����Pinpad-easy-3�̌��ʁB�w�K���i��ł��邱�Ƃ��m�F�����Bpinpad-3�̌��ʂ�\cite{1}�ŕ񍐂���Ă��錋�ʂɋ߂����̂ƂȂ��Ă���B
+\subsection{Director実験結果}
+Directorを用いたPinpad-3およびPinpad-easy-3の結果。学習が進んでいることが確認される。pinpad-3の結果は\cite{1}で報告されている結果に近いものとなっている。
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/director-results/director-episode-scores.png}
-  \caption{Director�ɂ��Pinpad-3�����Pinpad-dense-3�̊w�K�Ȑ��B}
+  \caption{DirectorによるPinpad-3およびPinpad-dense-3の学習曲線。}
   \label{fig:director-scores}
 \end{figure}
 
-�܂��A��r�̂��߂ɁA�쐬����pinpad-dense�ł̊w�K���s���A�������\���o�邱�Ƃ��m�F�����B����ɂ��A��V�݌v�ɂ͖�肪�Ȃ����Ƃ��m�F���ꂽ�B
-�Ȃ��AGPU�̃������̓s����r���܂ł����w�K���ł��Ȃ������B
+また、比較のために、作成したpinpad-denseでの学習も行い、高い性能が出ることを確認した。これにより、報酬設計には問題がないことが確認された。
+なお、GPUのメモリの都合上途中までしか学習ができなかった。
 
 \subsection{RSSM}
-Hieros��S5WM��p���Ă��邪�A�x�[�X���C���ɂ�RSSM���p�ӂ���Ă���B�ȉ��́ARSSM��p����Hieros��pinpad�Ō��ʁB
+HierosはS5WMを用いているが、ベースラインにはRSSMも用意されている。以下は、RSSMを用いてHierosをpinpadで結果。
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/rssm-sweep/sweep-episode-scores.png}
-  \caption{RSSM��p����Hieros��Pinpad�ł̊w�K�Ȑ��B}
+  \caption{RSSMを用いたHierosのPinpadでの学習曲線。}
   \label{fig:rssm-scores}
 \end{figure}
 
-�w�K���i�܂Ȃ��������߁Amax-hierarchy=1�̂Ƃ���320k�Ŋw�K��ł��؂����B
-�K�w�������Ȃ����ɂ��w�K���i��ł��邱�Ƃ���A�K�w�������邱�Ƃ����f���̊挒���������Ă��邱�Ƃ������ł���B
+学習が進まなかったため、max-hierarchy=1のときは320kで学習を打ち切った。
+階層数を少ない時により学習が進んでいることから、階層を加えることがモデルの頑健性を下げていることが推測できる。
 
