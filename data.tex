@@ -2,6 +2,7 @@
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{subcaption}
 \usepackage{url}
+\usepackage{amsmath}
 %%
 \title{
 \jtitle{ŠK‘w“I¢ŠEƒ‚ƒfƒ‹‚ÌŒ»ó‚Æ‰Û‘èFHieros‚ÌŒÀŠE‚Æ«—ˆ‚Ì“W–]}
@@ -135,7 +136,7 @@ update-every‚ÍA‚»‚ê‚¼‚ê‚ÌŠK‘w‚ªA‰º‚ÌŠK‘w‚Æ”äŠr‚µ‚Ä‚Ç‚Ì’ö“xŠÔ“I’ŠÛ‰»‚ğs‚Á‚Ä
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-subgoal-temporal.png}
-  \caption{ŠwK‰ß’ö‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
+  \caption{ŠwK‰ß’ö‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B“TŒ^“I‚Å‚í‚©‚è‚â‚·‚¢—á‚Æ‚µ‚Ä15kƒXƒeƒbƒv‚Æ300kƒXƒeƒbƒv‚ğ’Šo‚µ‚½B}
   \label{fig:subgoal-temporal}
 \end{figure}
 
@@ -160,7 +161,7 @@ Hieros‚Å‚ÍAŠeƒŒƒCƒ„‚²‚Æ‚Ì•ûô‚ÍAexternal reward, subgoal reward‚Æintrinsic rew
   \begin{subfigure}[b]{\columnwidth}
     \centering
     \includegraphics[width=\linewidth]{media/pinpad/reward-ratio-sweep/sweep-episode-scores.png}
-    \caption{ŠwK‹Èü (Scores)}
+    \caption{ˆÙ‚È‚é•ñVŠ„‚è“–‚ÄŒW”‚ÌŠwK‹Èü}
   \end{subfigure}
   
   \vspace{0.3cm}
@@ -169,23 +170,15 @@ Hieros‚Å‚ÍAŠeƒŒƒCƒ„‚²‚Æ‚Ì•ûô‚ÍAexternal reward, subgoal reward‚Æintrinsic rew
   \begin{subfigure}[b]{\columnwidth}
     \centering
     \includegraphics[width=\linewidth]{media/pinpad/reward-ratio-sweep/sweep-heatmap-temporal.png}
-    \caption{’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv (Heatmap)}
+    \caption{ˆÙ‚È‚é•ñVŠ„‚è“–‚ÄŒW”‚Ì’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv}
   \end{subfigure}
   
-  \caption{•ñVŠ„‚è“–‚ÄŒW”‚Ì•ÏX‚É‚æ‚éŠwK‚Ö‚Ì‰e‹¿B}
+  \caption{•ñVŠ„‚è“–‚ÄŒW”‚Ì•ÏX‚É‚æ‚éŠwK‚Ö‚Ì‰e‹¿B400kƒXƒeƒbƒv‚Ì’Tõ‚Ì•Î‚è‚ğ¦‚µ‚Ä‚¢‚éB}
   \label{fig:reward-sweep-analysis}
 \end{figure}
 
-% --- c’·‚Ì}‚Í“Æ—§‚³‚¹‚Ä”z’ui‚‚³§ŒÀ‚ğ‚Â‚¯‚éj---
-\begin{figure}[t]
-  \centering
-  % keepaspectratio‚Å˜c‚İ‚ğ–h‚¬‚Â‚ÂA‚‚³‚ğƒy[ƒW‚‚Ì80%‚É§ŒÀ
-  \includegraphics[height=0.85\textheight, keepaspectratio]{media/pinpad/reward-ratio-sweep/sweep-subgoal-temporal.png}
-  \caption{ƒTƒuƒS[ƒ‹‚ÌŠÔ“I•Ï‰»B“Á’è‚Ì•ñVİ’è‚É‚¨‚¢‚ÄƒTƒuƒS[ƒ‹‚ªŒÅ’è‰»‚³‚ê‚éŒXŒü‚ªŒ©‚ç‚ê‚éB}
-  \label{fig:reward-sweep-subgoal}
-\end{figure}
-
 ŒÀ’è“I‚ÈŒüã‚ªŠm”F‚Å‚«A•ñVŠ„‚è“–‚ÄŒW”‚ğ•ÏX‚·‚é‚±‚Æ‚Ì—LŒø«‚ª¦´‚³‚ê‚éB
+}3‚Æ“¯—lAƒtƒ‹ƒV[ƒPƒ“ƒX‚ğŠwK‚µ‚½ƒ‚ƒfƒ‹‚Í‚È‚­AÔ‚Ì‚İ‚ÌƒTƒuƒS[ƒ‹‚ğ’ñˆÄ‚·‚é‚©A’¼Š´“I‚É‚Í–ğ‚É—§‚½‚È‚¢ƒTƒuƒS[ƒ‹‚ğŠwK‚·‚é‚©‚Å‚ ‚Á‚½B
 
 \subsection{•ûôƒGƒ“ƒgƒƒs[‚Ì•ÏX}
 
@@ -200,19 +193,13 @@ Hieros‚Å‚ÍAŠeƒŒƒCƒ„‚²‚Æ‚Ì•ûô‚ÍAexternal reward, subgoal reward‚Æintrinsic rew
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.75\columnwidth]{media/pinpad/entropy-sweep/sweep-subgoal-temporal.png}
-  \caption{ƒGƒ“ƒgƒƒs[’²®ÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:entropy-subgoal-temporal}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
   \includegraphics[width=0.75\columnwidth]{media/pinpad/entropy-sweep/sweep-heatmap-temporal.png}
   \caption{ƒGƒ“ƒgƒƒs[’²®ÀŒ±‚É‚¨‚¯‚é’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚ÌŠÔ“I•Ï‰»B}
   \label{fig:entropy-heatmap-temporal}
 \end{figure}
 
 ƒGƒ“ƒgƒƒs[‚ª‘å‚«‚­‚È‚é‚Æ‚æ‚èû‘©‚µ‚É‚­‚­‚È‚è•ñV‚à‚‚­‚È‚Á‚½‚ªAŒ°’˜‚ÉŠwK‚ªi‚Ş‚±‚Æ‚Í‚È‚©‚Á‚½B
+ƒTƒuƒS[ƒ‹‚Ì‰Â‹‰»‚É‚Â‚¢‚Ä‚ÍA}3‚Æ“¯—lAƒtƒ‹ƒV[ƒPƒ“ƒX‚ğŠwK‚µ‚½ƒ‚ƒfƒ‹‚Í‚È‚­AÔ‚Ì‚İ‚ÌƒTƒuƒS[ƒ‹‚ğ’ñˆÄ‚·‚é‚©A’¼Š´“I‚É‚Í–ğ‚É—§‚½‚È‚¢ƒTƒuƒS[ƒ‹‚ğŠwK‚·‚é‚©‚Å‚ ‚Á‚½B
 
 \subsection{Pinpad‚Ì•ñVİŒv‚Ì•ÏX}
 
@@ -220,11 +207,11 @@ pinpad-easy-threeƒ^ƒXƒN‚É‚¨‚¢‚ÄA•ñVİŒv‚ğ•ÏX‚µ‚½ÀŒ±Œ‹‰ÊB
 ˆÈ‰º‚Ì7í—Ş‚Ì•ñVİŒv‚ğ”äŠr‚µ‚½F
 \begin{itemize}
   \item \textbf{flatiƒfƒtƒHƒ‹ƒgj}: ƒ^ƒCƒ‹‚ğ“¥‚ñ‚¾‚Æ‚«‚Ì––”ö‚Ìˆê’v“x‚Ì‘Œ¸‚ª•ñV
-  \item \textbf{progressive}: ƒ^ƒCƒ‹‚ğ“¥‚ñ‚¾‚Æ‚«‚Ì––”ö‚Ìˆê’v“x‚Ì‘Œ¸‚ğw”ŠÖ”“I‚É‚µ‚½‚à‚Ì‚ª•ñVi$2^{tail-match}$j
+  \item \textbf{progressive}: ƒ^ƒCƒ‹‚ğ“¥‚ñ‚¾‚Æ‚«‚Ì––”ö‚Ìˆê’v“x‚Ì‘Œ¸‚ğw”ŠÖ”“I‚É‚µ‚½‚à‚Ì‚ª•ñVi$2^{\text{tail-match}}$j
   \item \textbf{sequence\_bonus}: flat‚Ì•ñV‚É‰Á‚¦A––”öˆê’v“x‚ª‘‰Á‚²‚Æ‚Éƒ{[ƒiƒX•ñVB
   \item \textbf{decaying}: ŠÔŒo‰ß‚Æ‚Æ‚à‚É•ñV‚ğŒ¸Š
   \item \textbf{sparse}: Š®‘S‚ÈƒV[ƒPƒ“ƒXˆê’v‚Ì‚İ•ñV (Œ³‚Ìpinpad)
-  \item \textbf{progressive\_steep}: ‹}Œù”z‚Èw”ŠÖ”“I•ñVi$3^{tail-match}$j
+  \item \textbf{progressive\_steep}: ‹}Œù”z‚Èw”ŠÖ”“I•ñVi$3^{\text{tail-match}}$j
   \item \textbf{dense\_guidance}: flat‚Ì•ñV‚É‰Á‚¦ƒXƒeƒbƒv‚²‚Æ‚Ì×‚©‚¢•ñVi³‚µ‚¢•ûŒü‚Éi‚ñ‚¾ê‡+0.1AŠÔˆá‚Á‚½•ûŒü‚Éi‚ñ‚¾ê‡-0.1j
 \end{itemize}
 
@@ -235,31 +222,8 @@ pinpad-easy-threeƒ^ƒXƒN‚É‚¨‚¢‚ÄA•ñVİŒv‚ğ•ÏX‚µ‚½ÀŒ±Œ‹‰ÊB
   \label{fig:reward-design-sweep-scores}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.85\columnwidth]{media/pinpad/reward-design-sweep/sweep-subgoal-temporal.png}
-  \caption{•ñVİŒvÀŒ±‚É‚¨‚¯‚éƒTƒuƒS[ƒ‹‰Â‹‰»‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:reward-design-subgoal-temporal}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.85\columnwidth]{media/pinpad/reward-design-sweep/sweep-heatmap-temporal.png}
-  \caption{•ñVİŒvÀŒ±‚É‚¨‚¯‚é’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚ÌŠÔ“I•Ï‰»B}
-  \label{fig:reward-design-heatmap-temporal}
-\end{figure}
-
-\subsection{l@}
-ÀŒ±“–‰‚Ípinpad‚ÅŠwK‚ªi‚Ü‚È‚¢——R‚ª•ñV‚ª‘a‚Å‚ ‚é‚©‚ç‚¾‚Æl‚¦‚Ä‚¢‚½‚ªAPinpad‚Ì•ñVİŒv‚ğ–§‚É‚µ‚½‚É‚àŠwK‚ªi‚Ü‚È‚©‚Á‚½‚½‚ßA‚»‚¤‚Å‚Í–³‚¢‚Æl‚¦‚½B
-‚³‚ç‚ÉAtari‚Ìƒ‚ƒfƒ‹‚Ì‰Â‹‰»‚à‚·‚é’†‚ÅAAtari‚Å‚à—LˆÓ‹`‚È•ûô‚ªŠwK‚Å‚«‚Ä‚¢‚È‚¢‚Æv‚í‚êAHieros‚Ìƒ‚ƒfƒ‹‚»‚Ì‚à‚Ì‚ÉA•sˆÀ’è«‚ ‚é‚¢‚Í‰ü—Ç‚Ì—]’n‚ª‚ ‚é‚Ì‚Å‚Í‚È‚¢‚©‚Æl‚¦‚éB
-ˆê•û‚ÅA—LˆÓ‹`‚¾‚Æv‚¦‚È‚¢ŠwK‚ğ‚µ‚Ä‚¢‚é‚É‚àŠÖ‚í‚ç‚¸A‚È‚ºHieros‚ªAtari‚Å«”\‚ª‚‚­o‚Ä‚¢‚½‚Ì‚©‚Ì——R‚Ì‰ğ–¾‚à¡Œã‚Ì‰Û‘è‚Å‚ ‚éB
-Atari‚ÌÅ“K•ûô‚ªŠwK‚µ‚â‚·‚­A\cite{9}‚Å’ñ¦‚³‚ê‚Ä‚¢‚é‚æ‚¤‚ÈŠK‘w‰»‚É‚æ‚é’Tõ‚Ì‰ü‘P‚ªŠÖ˜A‚µ‚Ä‚¢‚é‚Æ‚àl‚¦‚ç‚ê‚é‚ªAŒŸØ‚ª•K—v‚Å‚ ‚éB
-ŒŸØŒ‹‰Ê‚©‚ç‚ÍHieros‚Ìãè‚­ŠwK‚ª‚Å‚«‚Ä‚¨‚ç‚¸”Ä‰»«”\‚ª’á‚­A‚æ‚èŠæŒ’«‚Ì‚‚¢ƒ‚ƒfƒ‹‚Ì—˜_“IAÀŒ±“I–Íõ‚ª•K—v‚Å‚ ‚é‚ÆŒ‹˜_‚Ã‚¯‚éB
-
-
-ƒx[ƒXƒ‰ƒCƒ“ƒR[ƒh‚ÉƒGƒ‰[‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‰Â”\«‚Í”Û‚ß‚È‚¢ˆê•û‚ÅA¢ŠEƒ‚ƒfƒ‹‚ğŠK‘w“I‚É‚·‚é‚±‚Æ‚É‚æ‚Á‚ÄŠwK‚ª•sˆÀ’è‚É‚È‚Á‚Ä‚¢‚é‰Â”\«‚à‚‚¢B
-“Á‚É¢ŠEƒ‚ƒfƒ‹‚Í–Ú“IŠÖ”‚âŒë·’~Ï‚É‹Nˆö‚µ‚ÄA‚Ü‚½ŠK‘w“Iƒ‚ƒfƒ‹‚ÍŠK‘w‚Ì“¯ŠwK‚É‚æ‚é”ñ’èí«‚É‚æ‚Á‚ÄƒnƒCƒp[ƒpƒ‰ƒ[ƒ^‚É‘@×‚Å‚ ‚é‚±‚Æ‚ª’m‚ç‚ê‚Ä‚¨‚èA‚»‚ê‚ç‚Ì‘g‚İ‡‚í‚¹‚É‚æ‚Á‚ÄŠwK‚ª•sˆÀ’è‚É‚È‚Á‚Ä‚µ‚Ü‚Á‚Ä‚¢‚é‰Â”\«‚à‚ ‚éB
-‚±‚Ì—˜_“IAÀØÀŒ±“I‰ğÍ‚Í¡Œã‚Ì‰Û‘è‚Å‚ ‚éB
+}3‚Æ“¯—lAƒtƒ‹ƒV[ƒPƒ“ƒX‚ğŠwK‚µ‚½ƒ‚ƒfƒ‹‚Í‚È‚­AÔ‚Ì‚İ‚ÌƒTƒuƒS[ƒ‹‚ğ’ñˆÄ‚·‚é‚©A’¼Š´“I‚É‚Í–ğ‚É—§‚½‚È‚¢ƒTƒuƒS[ƒ‹‚ğŠwK‚·‚é‚©‚Å‚ ‚Á‚½B
+‚È‚¨A‚±‚±‚É‚ÍŒfÚ‚µ‚È‚¢‚ªA’TõˆÊ’u‚Ìƒq[ƒgƒ}ƒbƒv‚©‚ç‚à•ûô‚ª“Á’è‚Ì—Ìˆæ‚Éû‘©‚µ‚Ä‚¢‚é‚±‚Æ‚ªŠm”F‚³‚ê‚½B
 
 \subsection{Atari‚É‚¨‚¯‚é’è«‰ğÍ}
 –{ß‚Å‚ÍAAtariƒxƒ“ƒ`ƒ}[ƒN‚É‚¨‚¯‚éHieros‚Ì“à•”‹““®‚ğ‰ğÍ‚·‚éB‚»‚Ì‚½‚ßAŠwK‰ß’ö‚É‚¨‚¯‚é•ûô‚ÌŠÔ•Ï‰»‚ğ‰Â‹‰»‚µ‚½B
@@ -287,7 +251,7 @@ Atari‚ÌÅ“K•ûô‚ªŠwK‚µ‚â‚·‚­A\cite{9}‚Å’ñ¦‚³‚ê‚Ä‚¢‚é‚æ‚¤‚ÈŠK‘w‰»‚É‚æ‚é’Tõ‚Ì‰
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\linewidth]{media/atari/atari_freeway-policy-temporal.png}
-    \caption{Freeway: Policy (Monotonic 'Up' action)}
+    \caption{Freeway: Policy (’P’²‚È‘Oi)}
     \label{fig:freeway-policy}
   \end{subfigure}
   \hfill
@@ -330,13 +294,26 @@ Atari‚ÌÅ“K•ûô‚ªŠwK‚µ‚â‚·‚­A\cite{9}‚Å’ñ¦‚³‚ê‚Ä‚¢‚é‚æ‚¤‚ÈŠK‘w‰»‚É‚æ‚é’Tõ‚Ì‰
     \label{fig:battlezone-policy}
   \end{subfigure}
 
-  \caption{Atari 100kƒxƒ“ƒ`ƒ}[ƒN‚É‚¨‚¯‚éŠwKŒ‹‰ÊBã’i‚ªŠwK‹ÈüA‰º’i‚ª•ûô‚Ì‰Â‹‰»‚ğ¦‚·BFreeway‚È‚Ç‚Å‚Í‘Šú‚É•ûô‚ªŒÅ’è‰»‚³‚ê‚Ä‚¢‚é—lq‚ªA‘å‚«‚È‰æ‘œ‚ÅŠm”F‚Å‚«‚éB}
+  \caption{Atari 100kƒxƒ“ƒ`ƒ}[ƒN‚É‚¨‚¯‚éŠwKŒ‹‰ÊBã’i‚ªŠwK‹ÈüA‰º’i‚ª400kƒXƒeƒbƒv“_‚Å‚Ì•ûô‰æ‘œ‚©‚ç5ƒtƒŒ[ƒ€ŠÔŠu‚Å’Šo‚µ‚½6ƒtƒŒ[ƒ€‚ğ¦‚·BFreeway‚Å‚Í’P’²‚È‘Oi“®ì‚Ì‚İ‚ªŒJ‚è•Ô‚³‚êA•¡G‚È•ûô‚ÍŠl“¾‚³‚ê‚Ä‚¢‚È‚¢B}
   \label{fig:atari-analysis}
 \end{figure*}
 
-}\ref{fig:atari-analysis}‚É¦‚·‚æ‚¤‚ÉAHieros‚ÌAtariŠÂ‹«‚É‚¨‚¯‚éŠwK‚ÍAƒXƒRƒA‚ÌŠÏ“_‚Å‚Í˜_•¶’Ê‚è‚‚¢«”\‚ğ¦‚µ‚Ä‚¢‚é‚ªA•ûô‚Ì‰Â‹‰»‚ğs‚¤‚Æ’Pƒ‚Ès“®ƒpƒ^[ƒ“‚Éû‘©‚µ‚Ä‚¢‚é‚±‚Æ‚ªŠm”F‚³‚ê‚éB
-“Á‚ÉFreeway(a)(b)‚Å‚ÍAƒXƒRƒA‚Í‚‚¢‚à‚Ì‚Ì•ûô‰æ‘œ‚ğŠm”F‚·‚é‚Æu‘OiiUpjv“®ì‚Ì‚İ‚ªŠwK‚³‚ê‚Ä‚¨‚èA•¡G‚È•ûô‚ÍŠwK‚Å‚«‚Ä‚¢‚È‚¢B
+}\ref{fig:atari-analysis}‚É¦‚·‚æ‚¤‚ÉAHieros‚ÌAtariŠÂ‹«‚É‚¨‚¯‚éŠwK‚ÍAƒXƒRƒA‚ÌŠÏ“_‚Å‚Í˜_•¶’Ê‚è‚‚¢«”\‚ğ¦‚µ‚Ä‚¢‚é‚ªA400kƒXƒeƒbƒv“_‚Å‚Ì‚‰ğ‘œ“x•ûô‰æ‘œ‚©‚ç’Šo‚µ‚½˜A‘±ƒtƒŒ[ƒ€‚ğŠm”F‚·‚é‚Æ’Pƒ‚Ès“®ƒpƒ^[ƒ“‚ªŒJ‚è•Ô‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ªŠm”F‚³‚ê‚éB
+“Á‚ÉFreeway‚Å‚ÍAƒXƒRƒA‚Í‚‚¢‚à‚Ì‚Ì˜A‘±‚µ‚½ƒtƒŒ[ƒ€‚ğŠm”F‚·‚é‚Æ‘Oi“®ì‚Ì‚İ‚ªŒJ‚è•Ô‚³‚ê‚Ä‚¨‚èA•¡G‚È•ûô‚ÍŠwK‚Å‚«‚Ä‚¢‚È‚¢B
 ‚±‚Ì‚±‚Æ‚©‚çAHieros‚ª•ñ‚·‚é‚ƒXƒRƒA‚Í•K‚¸‚µ‚àuŒ«‚¢ŠK‘w“IŒv‰æv‚É‚æ‚é‚à‚Ì‚Å‚Í‚È‚­AŠÂ‹«‚Ì“Á«ãA’Pƒ‚È•ûô‚Å‚à‚•ñV‚ª“¾‚ç‚ê‚é‰Â”\«‚ª¦´‚³‚ê‚éB
+
+
+\subsection{l@}
+ÀŒ±“–‰‚Ípinpad‚ÅŠwK‚ªi‚Ü‚È‚¢——R‚ª•ñV‚ª‘a‚Å‚ ‚é‚©‚ç‚¾‚Æl‚¦‚Ä‚¢‚½‚ªAPinpad‚Ì•ñVİŒv‚ğ–§‚É‚µ‚½‚É‚àŠwK‚ªi‚Ü‚È‚©‚Á‚½‚½‚ßA‚»‚¤‚Å‚Í–³‚¢‚Æl‚¦‚½B
+‚³‚ç‚ÉAtari‚Ìƒ‚ƒfƒ‹‚Ì‰Â‹‰»‚à‚·‚é’†‚ÅAAtari‚Å‚à—LˆÓ‹`‚È•ûô‚ªŠwK‚Å‚«‚Ä‚¢‚È‚¢‚Æv‚í‚êAHieros‚Ìƒ‚ƒfƒ‹‚»‚Ì‚à‚Ì‚ÉA•sˆÀ’è«‚ ‚é‚¢‚Í‰ü—Ç‚Ì—]’n‚ª‚ ‚é‚Ì‚Å‚Í‚È‚¢‚©‚Æl‚¦‚éB
+ˆê•û‚ÅA—LˆÓ‹`‚¾‚Æv‚¦‚È‚¢ŠwK‚ğ‚µ‚Ä‚¢‚é‚É‚àŠÖ‚í‚ç‚¸A‚È‚ºHieros‚ªAtari‚Å«”\‚ª‚‚­o‚Ä‚¢‚½‚Ì‚©‚Ì——R‚Ì‰ğ–¾‚à¡Œã‚Ì‰Û‘è‚Å‚ ‚éB
+Atari‚ÌÅ“K•ûô‚ªŠwK‚µ‚â‚·‚­A\cite{9}‚Å’ñ¦‚³‚ê‚Ä‚¢‚é‚æ‚¤‚ÈŠK‘w‰»‚É‚æ‚é’Tõ‚Ì‰ü‘P‚ªŠÖ˜A‚µ‚Ä‚¢‚é‚Æ‚àl‚¦‚ç‚ê‚é‚ªAŒŸØ‚ª•K—v‚Å‚ ‚éB
+ŒŸØŒ‹‰Ê‚©‚ç‚ÍHieros‚Ìãè‚­ŠwK‚ª‚Å‚«‚Ä‚¨‚ç‚¸”Ä‰»«”\‚ª’á‚­A‚æ‚èŠæŒ’«‚Ì‚‚¢ƒ‚ƒfƒ‹‚Ì—˜_“IAÀŒ±“I–Íõ‚ª•K—v‚Å‚ ‚é‚ÆŒ‹˜_‚Ã‚¯‚éB
+
+
+ƒx[ƒXƒ‰ƒCƒ“ƒR[ƒh‚ÉƒGƒ‰[‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‰Â”\«‚Í”Û‚ß‚È‚¢ˆê•û‚ÅA¢ŠEƒ‚ƒfƒ‹‚ğŠK‘w“I‚É‚·‚é‚±‚Æ‚É‚æ‚Á‚ÄŠwK‚ª•sˆÀ’è‚É‚È‚Á‚Ä‚¢‚é‰Â”\«‚à‚‚¢‚Æl‚¦‚éB
+“Á‚É¢ŠEƒ‚ƒfƒ‹‚Í–Ú“IŠÖ”‚âŒë·’~Ï‚É‹Nˆö‚µ‚ÄA‚Ü‚½ŠK‘w“Iƒ‚ƒfƒ‹‚ÍŠK‘w‚Ì“¯ŠwK‚É‚æ‚é”ñ’èí«‚É‚æ‚Á‚ÄƒnƒCƒp[ƒpƒ‰ƒ[ƒ^‚É‘@×‚Å‚ ‚é‚±‚Æ‚ª’m‚ç‚ê‚Ä‚¨‚èA‚»‚ê‚ç‚Ì‘g‚İ‡‚í‚¹‚É‚æ‚Á‚ÄŠwK‚ª•sˆÀ’è‚É‚È‚Á‚Ä‚µ‚Ü‚Á‚Ä‚¢‚é‰Â”\«‚à‚ ‚éB
+‚±‚Ì—˜_“IAÀØÀŒ±“I‰ğÍ‚Í¡Œã‚Ì‰Û‘è‚Å‚ ‚éB
 
 
 \section{‚Ü‚Æ‚ß}

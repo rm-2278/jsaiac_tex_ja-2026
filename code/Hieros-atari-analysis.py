@@ -5,6 +5,8 @@ import numpy as np
 from PIL import Image
 import io
 import os
+import cv2
+import tempfile
 
 # Create output directory
 output_dir = "media/atari"
@@ -155,102 +157,148 @@ image_keys = [col for col in history.columns if 'image' in col.lower() or 'polic
 print(f"Available media keys: {image_keys}")
 
 for task, task_runs in runs_by_task.items():
-    # Try different possible keys for policy visualization
-    possible_keys = ['train_stats/policy_image', 'eval/policy', 'report/policy', 'report/openl_image', 'report/openl', 'eval/openl_image']
+    # Look for policy_image data at 400k steps
+    policy_key = 'train_stats/policy_image'
     
     selected_run = None
-    selected_key = None
     max_steps = 0
     
-    # Prefer run with most steps and valid policy images
-    for key in possible_keys:
-        for run in task_runs:
-            try:
-                history = run.history(keys=[key, "_step"])
-                if not history.empty and key in history.columns:
-                    valid_data = history[key].notna()
-                    if valid_data.any():
-                        # Get the max step for this run
-                        run_max_step = history[valid_data]["_step"].max()
-                        # Select run with most steps
-                        if run_max_step > max_steps:
-                            selected_run = run
-                            selected_key = key
-                            max_steps = run_max_step
-            except:
-                continue
-        if selected_run:
-            break
+    # Find run with policy_image data closest to 400k
+    for run in task_runs:
+        try:
+            history = run.history(keys=[policy_key, "_step"])
+            if not history.empty and policy_key in history.columns:
+                valid_data = history[policy_key].notna()
+                if valid_data.any():
+                    run_max_step = history[valid_data]["_step"].max()
+                    if run_max_step > max_steps:
+                        selected_run = run
+                        max_steps = run_max_step
+        except:
+            continue
     
-    if selected_run is None or selected_key is None:
-        print(f"⚠ No runs found with policy/image data for task {task}")
+    if selected_run is None:
+        print(f"⚠ No runs found with policy_image data for task {task}")
         continue
     
-    print(f"Using run {selected_run.name} with key '{selected_key}' for visualization (task: {task})")
+    print(f"Using run {selected_run.name} with policy_image data for visualization (task: {task})")
     
-    # Fetch the full history
-    history = selected_run.history(keys=[selected_key, "_step"])
+    # Fetch the full history with policy_image
+    history = selected_run.history(keys=[policy_key, "_step"])
     
     # Filter out NaN rows and sort
-    df = history.dropna(subset=[selected_key]).sort_values("_step")
+    df = history.dropna(subset=[policy_key]).sort_values("_step")
     
     if df.empty:
-        print(f"⚠ No valid {selected_key} data found for task {task}")
+        print(f"⚠ No valid policy_image data found for task {task}")
         continue
     
-    # Select specific steps: exactly 100k, 200k, 300k, 400k (4 images)
-    target_steps = [100000, 200000, 300000, 400000]
-    sampled_rows = []
+    # Find the policy_image closest to 400k steps
+    target_step = 400000
+    closest_idx = (df["_step"] - target_step).abs().idxmin()
+    policy_row = df.loc[closest_idx]
     
-    for target in target_steps:
-        # Find the exact step or closest available step
-        if target in df["_step"].values:
-            # Exact match
-            sampled_rows.append(df[df["_step"] == target].iloc[0])
+    print(f"Using policy_image at step {policy_row['_step']}")
+    
+    # Extract policy_image object
+    media_obj = policy_row[policy_key]
+    
+    # Download and process the policy_image (GIF/video)
+    try:
+        if isinstance(media_obj, dict) and "path" in media_obj:
+            file_path = media_obj["path"]
+            file_obj = selected_run.file(file_path)
+            downloaded_path = file_obj.download(replace=True).name
+        elif hasattr(media_obj, "_image"):
+            # If it's a static image, convert to temporary file for cv2
+            img = media_obj._image
+            import tempfile
+            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+                img.save(tmp.name)
+                downloaded_path = tmp.name
         else:
-            # Find closest step
-            closest_idx = (df["_step"] - target).abs().idxmin()
-            sampled_rows.append(df.loc[closest_idx])
-    
-    if not sampled_rows:
-        print(f"⚠ No sampled rows for task {task}")
-        continue
-    
-    sampled = pd.DataFrame(sampled_rows)
-    n_samples = len(sampled)
-    
-    # Create a figure with 1 row × n_samples columns (horizontal layout)
-    fig, axes = plt.subplots(1, n_samples, figsize=(3*n_samples, 3), dpi=300)
-    if n_samples == 1:
-        axes = [axes]
-    
-    for idx, (ax, (_, row)) in enumerate(zip(axes, sampled.iterrows())):
-        media_obj = row[selected_key]
+            print(f"⚠ Unexpected policy_image format for task {task}")
+            continue
         
-        try:
-            if hasattr(media_obj, "_image"):
-                img = media_obj._image
-            elif isinstance(media_obj, dict) and "path" in media_obj:
-                file_path = media_obj["path"]
-                file_obj = selected_run.file(file_path)
-                downloaded_path = file_obj.download(replace=True).name
-                img = Image.open(downloaded_path)
-            else:
-                img = media_obj
-            
-            ax.imshow(img)
-            step_thousands = row['_step'] / 1000
-            ax.set_title(f"{step_thousands:.0f}k", fontsize=9)
+        # Try to open as video/GIF with cv2
+        cap = cv2.VideoCapture(downloaded_path)
+        
+        if not cap.isOpened():
+            print(f"⚠ Could not open policy_image as video for task {task}")
+            continue
+        
+        # Get total frame count and frame dimensions
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        print(f"Total frames in policy_image: {total_frames}, Frame size: {frame_width}x{frame_height}")
+        
+        # Extract 6 frames with 5-frame intervals for better motion visibility
+        n_frames = 6
+        frame_interval = 5
+        
+        if total_frames >= (n_frames - 1) * frame_interval + 1:
+            # Take frames with 5-frame intervals from the end
+            last_frame = total_frames - 1
+            frame_indices = []
+            for i in range(n_frames):
+                frame_idx = last_frame - (n_frames - 1 - i) * frame_interval
+                frame_indices.append(frame_idx)
+        else:
+            # If not enough frames, use evenly spaced frames
+            frame_indices = np.linspace(0, total_frames - 1, min(n_frames, total_frames), dtype=int).tolist()
+        
+        print(f"Extracting frames {frame_indices} with {frame_interval}-frame intervals from {total_frames} total frames")
+        
+        frames = []
+        for frame_idx in frame_indices:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
+            ret, frame = cap.read()
+            if ret:
+                # Convert BGR to RGB
+                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frames.append(frame_rgb)
+        
+        cap.release()
+        
+        if len(frames) == 0:
+            print(f"⚠ Could not extract frames from policy_image for task {task}")
+            continue
+        
+        n_samples = len(frames)
+        
+        # Create a figure for 6 frames (2x3 grid)
+        if n_samples <= 3:
+            fig, axes = plt.subplots(1, n_samples, figsize=(6*n_samples, 6), dpi=300)
+        else:
+            n_cols = 3
+            n_rows = (n_samples + n_cols - 1) // n_cols
+            fig, axes = plt.subplots(n_rows, n_cols, figsize=(6*n_cols, 6*n_rows), dpi=300)
+            axes = axes.flatten()
+        
+        if n_samples == 1:
+            axes = [axes]
+        
+        for idx, (ax, frame) in enumerate(zip(axes, frames)):
+            # Use nearest neighbor interpolation for pixelated games to maintain sharpness
+            ax.imshow(frame, interpolation='nearest')
+            ax.set_title(f"Frame {idx+1}", fontsize=14)
             ax.axis("off")
-        except Exception as e:
-            print(f"Error loading image for step {row['_step']}: {e}")
-            ax.axis("off")
-    
-    plt.suptitle(f"Policy Evolution - {task}", fontsize=11, fontweight='bold')
-    plt.tight_layout()
-    safe_task_name = task.replace('/', '_').replace(' ', '_')
-    fig.savefig(f"{output_dir}/{safe_task_name}-policy-temporal.png", dpi=300, bbox_inches="tight")
-    plt.close(fig)
-    print(f"✓ Saved: {output_dir}/{safe_task_name}-policy-temporal.png")
+        
+        # Hide unused subplots if any
+        for idx in range(n_samples, len(axes)):
+            axes[idx].axis("off")
+        
+        plt.suptitle(f"Single Environment Policy - {task}", fontsize=16, fontweight='bold')
+        plt.tight_layout()
+        plt.tight_layout()
+        safe_task_name = task.replace('/', '_').replace(' ', '_')
+        fig.savefig(f"{output_dir}/{safe_task_name}-policy-temporal.png", dpi=300, bbox_inches="tight")
+        plt.close(fig)
+        print(f"✓ Saved: {output_dir}/{safe_task_name}-policy-temporal.png")
+        
+    except Exception as e:
+        print(f"⚠ Error processing video for task {task}: {e}")
+        continue
 
 print("\n✓ All Atari visualizations complete!")

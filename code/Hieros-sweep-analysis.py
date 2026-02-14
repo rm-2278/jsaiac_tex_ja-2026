@@ -100,8 +100,8 @@ else:
         df = df.iloc[1:]
     
     if not df.empty:
-        # Select specific steps: 1k, 100k, 200k, 300k, 400k
-        target_steps = [1000, 100000, 200000, 300000, 400000]
+        # Select specific steps: 15k and 300k only (typical representative examples)
+        target_steps = [15000, 300000]
         sampled_rows = []
         
         for target in target_steps:
@@ -112,8 +112,8 @@ else:
         sampled = pd.DataFrame(sampled_rows)
         n_samples = len(sampled)
         
-        # Create a figure with 5 rows × 1 column (vertical layout)
-        fig, axes = plt.subplots(5, 1, figsize=(6, 10), dpi=300)
+        # Create a figure with 2 rows × 1 column (vertical layout)
+        fig, axes = plt.subplots(2, 1, figsize=(6, 4), dpi=300)
         axes = axes.flatten()
         
         for idx, (ax, (_, row)) in enumerate(zip(axes, sampled.iterrows())):
