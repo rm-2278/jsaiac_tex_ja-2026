@@ -9,6 +9,7 @@
 \usepackage{subcaption}
 \usepackage{url}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
 \setlength{\floatsep}{8pt plus 2pt minus 2pt}
 \setlength{\intextsep}{8pt plus 2pt minus 2pt}
@@ -43,11 +44,12 @@
 
 %%
 \begin{abstract}
-   ここに\\
-   アブストラクトを\\
-   5行程度\\
-   書き\\
-   ます\\
+階層的強化学習と世界モデルを結びつけた手法は，長期タスクの学習において期待されているが，その実用性や内部メカニズムについては十分な検証がされていない。
+本研究では，階層的世界モデルの代表例であるHieros\cite{2}に着目し，性能評価と内部状態の可視化を通じてその実態を検証した。
+Visual Pinpad環境での実験により，Hierosはハイパーパラメータ設定に対して高い感度を示し，報酬設計や更新頻度の変更に対する頑健性に限界があることがわかった。
+また，Atari環境での方策可視化では，高スコアを示しているにも関わらず単純な行動パターンのみが学習されており，階層性を活かしたサブゴールの学習が実現されていないことを確認した。
+さらに，\texttt{max\_hierarchy}パラメータの比較実験により，階層数の増加が学習の安定性を低下させることが確認された。
+これらの結果は，現在の階層的世界モデルには理論的期待と実際の性能の間にギャップがあることを示し，より頑健な階層的学習手法の必要性を示唆している。
 \end{abstract}
 
 %\setcounter{page}{1}
@@ -72,7 +74,7 @@
 特に，世界モデル自体を階層化した構造がどのように機能しているのかは明らかになっていない。
 そこで本研究では，階層的世界モデルの代表的手法である Hieros \cite{2} に着目し，その性能評価および内部状態の可視化を通じて，階層的想像学習の実態を検証した。
 これにより，階層的世界モデルの現状を整理し，構造的課題を明らかにした。
-特に、タスクの種類および報酬設計、更新頻度、報酬関数の係数、階層数の変化に対する Hieros モデルの頑健性が低いこと、また Atari において Hieros が単調な方策およびサブゴールでも高い報酬を出せていることが確認された。
+本研究の実験結果により，Hierosの性能がタスク特性，報酬設計，更新頻度，報酬関数係数，階層数などのハイパーパラメータに強く依存することが明らかになった。特にAtari環境では，スコア上は高い性能を示しているものの，実際に学習された方策は単調な行動パターンに留まっていることを確認した。
 
 \section{研究背景・目的}
 
@@ -147,12 +149,12 @@ Hieros のモデル検証では，既存のレポジトリ \cite{11} を変更�
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/Hieros-baseline.png}
-  \caption{Visual Pinpad環境におけるHierosの学習および内部報酬曲線。}
+  \caption{HierosのVisual Pinpad学習結果。ベースライン設定での学習および内部報酬曲線。}
   \label{fig:hieros-baseline}
 \end{figure}
 
-まずは，既存の Pinpad における Hieros のベースラインでの検証を行った。
-図~\ref{fig:hieros-baseline}が示すように、報酬が0のまま学習が進まないことが確認された。
+初期実験として，標準的なPinpad環境におけるHierosのベースライン性能を評価した。
+図~\ref{fig:hieros-baseline}に示すように，400,000ステップの学習期間を通じて累積報酬が0付近に留まり，有意な学習進展が観察されなかった。
 
 \subsection{Pinpad-easy}
 単純な Pinpad 設計では，報酬がフルシーケンスに到達するまで発生せず難しいため，モデルの変化を見やすくする目的で，以下では Pinpad の報酬設計を元の実装から，末尾の一致度が上がるとスコアが与えられるように変更した（例えば，赤 $\rightarrow$ 赤緑に変化した場合は +1 の報酬，赤緑 $\rightarrow$ 赤緑緑に変化した場合は -2 の報酬が与えられる）。
@@ -163,27 +165,27 @@ Hieros のモデル検証では，既存のレポジトリ \cite{11} を変更�
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-episode-scores.png}
-  \caption{異なる\texttt{subactor\_update\_every} パラメータでの学習曲線の比較。}
+  \caption{Pinpad-easy：\texttt{subactor\_update\_every}パラメータの影響。異なる更新頻度設定での学習曲線。}
   \label{fig:sweep-scores}
 \end{figure}
 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-subgoal-temporal.png}
-  \caption{学習過程におけるサブゴール可視化の時間的変化。典型的でわかりやすい例として15kステップと300kステップを抽出した。}
+  \caption{Pinpad-easy：サブゴールの時間的変化。学習過程におけるサブゴール可視化の比較（15kステップと300kステップ）。}
   \label{fig:subgoal-temporal}
 \end{figure}
 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/subactor-update-sweep/sweep-heatmap-temporal.png}
-  \caption{探索位置のヒートマップの時間的変化。}
+  \caption{Pinpad-easy：探索位置ヒートマップの時間的変化。各設定における累積訪問位置の分布。}
   \label{fig:heatmap-temporal}
 \end{figure}
 
 次に，\texttt{subactor\_update\_every} を変化させたときの結果をまとめる。
 \texttt{subactor\_update\_every} は，それぞれの階層が下位階層にどの頻度でサブゴールを提示するか，すなわち下位層をどの程度時間的抽象化しているかを表している。例えば，\texttt{subactor\_update\_every=4} では，4ステップごとに上位階層が下位階層に与えるサブゴールを更新しているという意味である。
-\ref{fig:sweep-scores} からわかるように，学習過程において多少の差異がみられる一方で，最終的には報酬が 1 程度に方策が収束することが確認された。
+図\ref{fig:sweep-scores}の定量的分析により，\texttt{subactor\_update\_every}パラメータの変動は学習過程において差異を生じるものの，最終的な収束性能は全設定において報酬値1.0程度の限定的な水準に留まることが確認された。
 また，\ref{fig:subgoal-temporal} において上位層が提示するサブゴールも，上位2階層ともに赤までしか提示しておらず，求めている赤緑青のフルシーケンスを提示するようには学習されなかった。
 同様に，\ref{fig:heatmap-temporal} においても探索範囲が収束している様子が確認できた。
 
@@ -191,19 +193,20 @@ Hieros のモデル検証では，既存のレポジトリ \cite{11} を変更�
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/entropy-sweep/sweep-episode-scores.png}
-  \caption{異なるactor\_entropyパラメータでの学習曲線の比較。}
+  \caption{Pinpad-easy：actor\_entropyパラメータの影響。異なるエントロピー設定での学習曲線。}
   \label{fig:entropy-sweep-scores}
 \end{figure}
 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.75\columnwidth]{media/pinpad/entropy-sweep/sweep-heatmap-temporal.png}
-  \caption{エントロピー調整実験における探索位置のヒートマップの時間的変化。}
+  \caption{Pinpad-easy：エントロピー調整実験の探索位置ヒートマップ。各設定における探索範囲の変化。}
   \label{fig:entropy-heatmap-temporal}
 \end{figure}
 
 
 方策エントロピーを変更したときの結果を確認した。
+方策エントロピーは単一の値の場合すべての階層で同一の値、3つ値がある場合は左から順に最も下の階層、真ん中の階層、
 エントロピーが大きくなると，\ref{fig:entropy-heatmap-temporal} に見られるように探索範囲がより収束しにくくなり，報酬も高くなったが（\ref{fig:entropy-sweep-scores}），タスクを解くほどに学習が進むことはなかった。
 サブゴールの可視化については，\ref{fig:subgoal-temporal} と同様，赤のタイルのみ，または不適切なタイル順を示すサブゴールを提案する結果となった（図は割愛）。
 
@@ -263,39 +266,12 @@ Pinpad-easy タスクにおいて，報酬設計を変更し，学習結果を�
 \ref{fig:reward-design-sweep-scores} からわかるように，密な報酬設計にしても有意義な差異は確認されなかった。
 なお，ここには掲載しないが，探索位置のヒートマップからも方策が特定領域に収束していることが確認された。
 
-\subsubsection{階層性の変更}
-\begin{figure*}[t]
-  \centering
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{media/hierarchy/hierarchy_episode_scores.png}
-    \caption{Max Hierarchyレベル別学習曲線}
-    \label{fig:hierarchy-scores}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{media/hierarchy/hierarchy_performance_analysis.png}
-    \caption{Max Hierarchyレベル別最終性能比較}
-    \label{fig:hierarchy-performance}
-  \end{subfigure}
-  \caption{Hierosにおけるmax\_hierarchyパラメータの影響解析。(a)学習曲線の比較、(b)最終性能の統計分析。max\_hierarchy=1の設定でより高い性能を示している。}
-  \label{fig:hierarchy-analysis}
-\end{figure*}
-
-本節では、HierosのMax Hierarchyパラメータが学習性能に与える影響を解析する。
-Max Hierarchy パラメータはHierosにおける階層数の上限を定義する重要なハイパーパラメータであり、計画の時間的抽象化レベルを決定する。
-
-図\ref{fig:hierarchy-analysis}に示すように、max\_hierarchy=1の設定がmax\_hierarchy=2よりも優れた性能を示している。
-これは、AppendixのRSSM結果と一致する傾向であり、階層数の増加がモデルの学習安定性を損なうことを示唆している。
-階層的計画は理論的には長期的な計画能力を向上させるはずだが、実際の学習においては最適化の困難さや過度な複雑さが性能低下を引き起こしている可能性がある。
-
 
 \subsection{Director実験結果}
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/director-results/director-episode-scores.png}
-  \caption{DirectorによるPinpad-3およびPinpad-dense-3の学習曲線。}
+  \caption{Director：Pinpad学習結果。Pinpad-3およびPinpad-dense-3での学習曲線。}
   \label{fig:director-scores}
 \end{figure}
 
@@ -376,7 +352,7 @@ Director ではどちらの報酬設計でも学習が進んでいることが�
     \label{fig:battlezone-policy}
   \end{subfigure}
 
-  \caption{Atari 100kベンチマークにおける学習結果。上段が学習曲線、下段が400kステップ時点での方策画像（5フレーム間隔で抽出）を示す。Freewayでは単調な前進動作のみが繰り返されていることが確認できる。}
+  \caption{Hieros：Atari 100kベンチマーク結果。上段：学習曲線，下段：400kステップ時点の方策画像（5フレーム間隔で抽出）。Freewayでは単調な前進動作のみが観察される。}
   \label{fig:atari-analysis}
 \end{figure*}
 
@@ -385,12 +361,28 @@ Director ではどちらの報酬設計でも学習が進んでいることが�
 なお計算資源の都合上，Freeway のみは Hieros の元論文と同じ設定で，(batch size, batch length) は (16, 64)，他は (16, 16) で検証を行った。
 \\
 図\ref{fig:atari-analysis} に示すように，Hieros の Atari 環境における学習は，スコアの観点では論文どおり高い性能を示しているが，400k ステップ時点での方策画像から抽出した連続フレームを確認すると，単純な行動パターンが繰り返されていることが確認された。
-特に Freeway では，スコアは高いものの連続フレームを確認すると前進動作のみが繰り返されており，複雑な方策が学習されていない。
+特にFreeway環境においては，定量的評価指標では高性能を示しているにも関わらず，連続フレーム解析により単調な前進動作のみが確認され，複雑な方策の学習には至っていないことが明らかになった。
+
+\subsection{階層数の影響}
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.7\textwidth]{media/hierarchy/hierarchy_episode_scores.png}
+  \caption{\texttt{max\_hierarchy}パラメータの影響解析。階層数別学習曲線の比較。\texttt{max\_hierarchy=1}の設定でより高い性能を示している。}
+  \label{fig:hierarchy-analysis}
+\end{figure*}
+
+本節では，Hierosの\texttt{max\_hierarchy}パラメータが学習性能に与える影響を解析する。
+\texttt{max\_hierarchy} パラメータはHierosにおける階層数の上限を定義する重要なハイパーパラメータであり，計画の時間的抽象化レベルを決定する。
+
+図\ref{fig:hierarchy-analysis}に示すように，\texttt{max\_hierarchy=1}の設定が\texttt{max\_hierarchy=2}よりも優れた性能を示している。
+これは付録のRSSM結果と一致する傾向であり，階層数の増加がモデルの学習安定性を損なうことを示唆している。
+定量的実験結果は，理論的に予測される階層的計画手法の優位性が実際の学習動態において十分に発現されないことを示し，階層構造の導入に伴う最適化問題の複雑性増大が学習性能の制約要因となっている可能性を強く示唆している。
+
 
 \section{考察・展望}
 
-第4節全体から，Hieros のタスク間における汎化性能の低さが示された。
-実験当初は Pinpad で学習が進まない理由を「報酬が疎であるため」と考えていたが，Pinpad の報酬設計を密にした場合にも学習が進まなかったため，そうではなく他の要因が大きいと考えられる。
+本研究の包括的実験結果は，Hierosの汎化性能における根本的な限界を明らかにした。
+当初仮説では，Pinpad環境における学習困難は疎な報酬に起因すると推測していたが，密な報酬設計を導入した実験においても同様の学習停滞が観察されたことから，この現象はより構造的な要因に由来すると結論される。
 本稿では Atari と Visual Pinpad の2種類のタスクしか比較できなかったが，タスクによる学習進度の差が最も大きく，どのようなタスクで学習が進まないのか（長期的計画が求められる環境か，またはエージェントが小さい環境か），またなぜタスクごとに差が生まれるのか（定常性の大きさか，モデルに入る外部予測誤差の大きさか）を，多様な環境下で評価することが将来の有望な方向性の一つである。
 \\
 また，4.2.1，4.2.3，4.2.4 において，更新頻度や報酬割り当て係数の比率に対してモデルが繊細であることがわかった。
@@ -405,23 +397,28 @@ Director ではどちらの報酬設計でも学習が進んでいることが�
 検証結果からは Hieros がうまく学習できておらず，汎化性能も低いため，より頑健性の高いモデルの理論的・実験的模索が必要であると結論づける。
 \\
 最後に，理論をコード化した際にエラーが含まれてしまった可能性は否めない一方で，世界モデルを階層化することで学習がより不安定になることが確認でき，階層性には実装によらない特有の不安定性を引き起こす要因があると考える。
-4.2.5 および Appendix にある RSSM での複数階層の実験は，これを強く示唆している。
+4.2.5 および AppendixにあるRSSM での複数階層の実験は，これを強く示唆している。
 世界モデルは目的関数や誤差蓄積に起因し，また階層的モデルは階層の同時学習による非定常性によりハイパーパラメータに繊細であることが知られており，それらの掛け合わせによって学習がより一層不安定になっている可能性がある。
 特に，Hieros は Director と異なり内部モデルが高階層でも学習されるため，この内部モデルの大きな誤差が下位層の方策学習を妨げる可能性や，下位層が方策を変化させた際に上位内部モデルのアップデートが遅れてもつれが生じる可能性が考えられる。
 これらの理論的・実証的解析は今後の課題である。
 
 
 \section{まとめ}
-1\\
-2\\
-3\\
-4\\
-5\\
-6\\
-7\\
-8\\
-9\\
-10\\
+
+本研究では，階層的世界モデルHierosの性能を詳細に評価し，内部状態の可視化を通じてその実態を検証した。
+
+主な研究成果は以下の通りである：
+\begin{enumerate}
+\item Visual Pinpad環境での実験では，Hierosがハイパーパラメータの設定に強く依存し，サブゴール更新頻度、報酬係数、エントロピーの調整に対して限定的な頑健性しか示さないことが明らかになった。
+
+\item Atari環境での方策可視化実験では，高いスコアを達成しているにも関わらず、実際には単純な行動パターンの繰り返しのみが学習されており，階層性が活用されていないことを確認した。
+
+\item \texttt{max\_hierarchy}パラメータの比較実験により，階層数を増やすことで学習の安定性が低下し，理論上の期待と実際の性能にギャップがあることが明らかになった。
+
+\item DirectorとHierosの比較実験から，世界モデルの階層化による複雑性の増大が学習の困難さを高めている可能性が示唆された。
+\end{enumerate}
+
+これらの結果は，現在の階層的世界モデルには根本的な課題があることを示しており，今後の研究方向として以下を提案する：(1) ハイパーパラメータに対する頑健性の向上，(2) 動的な階層的抽象化の実現，(3) 世界モデル階層化に伴う最適化問題の難しさの理論的説明。本研究の成果は，階層的強化学習と世界モデルの結合における今後のアルゴリズム設計のための基礎的な知見を提供するものである。
 
 
 \begin{thebibliography}{99}

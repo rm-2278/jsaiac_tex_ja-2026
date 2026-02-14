@@ -13,16 +13,16 @@ from pathlib import Path
 import os
 
 def setup_matplotlib():
-    """Matplotlibの設定"""
+    """Matplotlibの設定を他のグラフと統一"""
     plt.style.use('default')
     plt.rcParams['figure.dpi'] = 300
     plt.rcParams['savefig.dpi'] = 300
-    plt.rcParams['font.size'] = 10
-    plt.rcParams['axes.titlesize'] = 12
-    plt.rcParams['axes.labelsize'] = 10
-    plt.rcParams['legend.fontsize'] = 9
-    plt.rcParams['xtick.labelsize'] = 9
-    plt.rcParams['ytick.labelsize'] = 9
+    plt.rcParams['font.size'] = 9
+    plt.rcParams['axes.titlesize'] = 10
+    plt.rcParams['axes.labelsize'] = 9
+    plt.rcParams['legend.fontsize'] = 8
+    plt.rcParams['xtick.labelsize'] = 8
+    plt.rcParams['ytick.labelsize'] = 8
 
 def create_media_dir():
     """出力ディレクトリの作成"""
@@ -96,36 +96,40 @@ def create_episode_score_plot(data, output_dir):
     """episode/scoreの学習曲線を作成"""
     plt.figure(figsize=(12, 8))
     
-    # max_hierarchyごとに色分け
+    # max_hierarchyごとに色分け（他のグラフと同じカラーパレット使用）
     hierarchy_values = sorted(data['max_hierarchy'].unique())
-    colors = plt.cm.viridis(np.linspace(0, 1, len(hierarchy_values)))
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']  # matplotlib default colors
     
     for i, max_hier in enumerate(hierarchy_values):
         hier_data = data[data['max_hierarchy'] == max_hier]
+        color = colors[i % len(colors)]
         
-        # 各ランごとに薄い線でプロット
-        for run_id in hier_data['run_id'].unique():
-            run_data = hier_data[hier_data['run_id'] == run_id].sort_values('_step')
-            plt.plot(run_data['_step'], run_data['episode/score'], 
-                    color=colors[i], alpha=0.3, linewidth=0.5)
-        
-        # 平均線を太く表示
         # ステップごとにグループ化して平均を計算
-        mean_data = hier_data.groupby('_step')['episode/score'].agg(['mean', 'std']).reset_index()
-        plt.plot(mean_data['_step'], mean_data['mean'], 
-                color=colors[i], linewidth=2, label=f'max_hierarchy={max_hier}')
+        mean_data = hier_data.groupby('_step')['episode/score'].agg(['mean', 'std', 'min', 'max']).reset_index()
         
-        # 標準偏差の帯を追加
-        plt.fill_between(mean_data['_step'], 
-                        mean_data['mean'] - mean_data['std'],
-                        mean_data['mean'] + mean_data['std'],
-                        color=colors[i], alpha=0.2)
+        # X軸を1000で割って表示（他のグラフと統一）
+        x = mean_data['_step'] / 1000
+        
+        # 平均線をプロット
+        plt.plot(x, mean_data['mean'], 
+                color=color, linewidth=1.4, 
+                label=f'max_hierarchy={max_hier} (n={len(hier_data["run_id"].unique())})', alpha=0.8)
+        
+        # min-maxの帯を追加
+        plt.fill_between(x, mean_data['min'], mean_data['max'], color=color, alpha=0.2)
     
-    plt.xlabel('Training Steps')
-    plt.ylabel('Episode Score')
-    plt.title('Learning Curves by Max Hierarchy Level')
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.grid(True, alpha=0.3)
+    plt.xlabel('Env. Steps (×10³)', fontsize=9)
+    plt.ylabel('Episode Return', fontsize=9)
+    plt.title('Learning Curves by Max Hierarchy Level', fontsize=10, fontweight='bold')
+    plt.legend(fontsize=8, loc='best')
+    
+    # 他のグラフと同じスタイリング
+    ax = plt.gca()
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.tick_params(axis="both", labelsize=8)
+    ax.grid(True, alpha=0.3)
+    
     plt.tight_layout()
     
     output_path = output_dir / "hierarchy_episode_scores.png"
@@ -163,12 +167,16 @@ def create_performance_heatmap(data, output_dir):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
     
     # 左側：平均スコアのバープロット
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
+    bar_colors = [colors[i % len(colors)] for i in range(len(hierarchy_stats))]
     bars = ax1.bar(hierarchy_stats['max_hierarchy'], hierarchy_stats['mean'], 
-                   yerr=hierarchy_stats['std'], capsize=5, 
-                   color=plt.cm.viridis(np.linspace(0, 1, len(hierarchy_stats))))
-    ax1.set_xlabel('Max Hierarchy Level')
-    ax1.set_ylabel('Mean Final Episode Score')
-    ax1.set_title('Final Performance by Max Hierarchy')
+                   yerr=hierarchy_stats['std'], capsize=5, color=bar_colors, alpha=0.8)
+    ax1.set_xlabel('Max Hierarchy Level', fontsize=9)
+    ax1.set_ylabel('Mean Final Episode Score', fontsize=9)
+    ax1.set_title('Final Performance by Max Hierarchy', fontsize=10, fontweight='bold')
+    ax1.spines["top"].set_visible(False)
+    ax1.spines["right"].set_visible(False)
+    ax1.tick_params(axis="both", labelsize=8)
     ax1.grid(True, alpha=0.3)
     
     # 各バーに値を表示
@@ -179,20 +187,24 @@ def create_performance_heatmap(data, output_dir):
     
     # 右側：個別ランのスコア散布図
     hierarchy_values = sorted(final_df['max_hierarchy'].unique())
-    colors = plt.cm.viridis(np.linspace(0, 1, len(hierarchy_values)))
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
     
     for i, max_hier in enumerate(hierarchy_values):
         hier_data = final_df[final_df['max_hierarchy'] == max_hier]
+        color = colors[i % len(colors)]
         # x軸に少しジッターを加えて重複を避ける
         x_pos = [max_hier + np.random.normal(0, 0.1) for _ in range(len(hier_data))]
         ax2.scatter(x_pos, hier_data['final_score'], 
-                   color=colors[i], alpha=0.7, s=50, label=f'max_hierarchy={max_hier}')
+                   color=color, alpha=0.7, s=50, label=f'max_hierarchy={max_hier}')
     
-    ax2.set_xlabel('Max Hierarchy Level')
-    ax2.set_ylabel('Final Episode Score')
-    ax2.set_title('Individual Run Performance Distribution')
+    ax2.set_xlabel('Max Hierarchy Level', fontsize=9)
+    ax2.set_ylabel('Final Episode Score', fontsize=9)
+    ax2.set_title('Individual Run Performance Distribution', fontsize=10, fontweight='bold')
+    ax2.spines["top"].set_visible(False)
+    ax2.spines["right"].set_visible(False)
+    ax2.tick_params(axis="both", labelsize=8)
     ax2.grid(True, alpha=0.3)
-    ax2.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    ax2.legend(fontsize=8, loc='best')
     
     plt.tight_layout()
     
