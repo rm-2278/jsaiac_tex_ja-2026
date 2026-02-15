@@ -10,14 +10,15 @@
 \usepackage{url}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
-\setlength{\floatsep}{8pt plus 2pt minus 2pt}
-\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\floatsep}{4pt plus 1pt minus 1pt}
+\setlength{\intextsep}{4pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{0pt}
 %%
 \title{
-\jtitle{階層的世界モデルの現状と課題：Hierosの限界と将来の展望}
-\etitle{Current Status and Challenges in Hierarchical World Models: Identifying Limitations of Hieros and Future Prospects}
-}
+\jtitle{階層的世界モデルHierosの実証的再評価： 内部表現解析と階層構造の影響分析}
+\etitle{Empirical Re-evalutaion of the Hierarchical World Model Hieros: Internal Representation Analysis and the Impact of Hierarchical Structure}}
 \jaddress{三好理輝，rm2278@cam.ac.uk}
 
 \author{%
@@ -69,8 +70,6 @@ Visual Pinpad環境での実験により，Hieros はハイパーパラメータ
 特に Dreamer 系列 \cite{3,4,5} は，潜在状態空間上での想像学習により高いサンプル効率を実現している。
 さらに，長期的な依存関係を扱うために，時間抽象化を導入する階層的強化学習 (Hierarchical Reinforcement Learning, HRL) が研究されてきた~\cite{12,8}。
 近年では，世界モデルと階層構造を統合した手法が提案されており，多時間スケールでの計画と想像を同時に実現する枠組みである Director~\cite{1} や Hieros~\cite{2} は，Dreamer などのフラットな世界モデルを上回る性能を示している点で注目されている。
-近年では，世界モデルと階層構造を統合した手法が提案されており，Director \cite{1} や Hieros \cite{2} は，多時間スケールでの計画と想像を同時に実現する枠組みとして報告されている。
-これらの手法は，ベースラインの世界モデルを上回る性能を示している点で注目されている。
 しかしながら，性能向上が報告されている一方で，階層的世界モデルの内部でどのような抽象表現が獲得されているのか，あるいは真に階層的な想像や長期計画が実現されているのかについての実証的検証は不十分であり，特に世界モデル自体を階層化した構造がどのように機能しているのかは明らかでない。
 そこで本研究では，階層的世界モデルの代表的手法である Hieros~\cite{2} に着目し，その性能評価および内部状態の可視化を通じて，階層的想像学習の実態を検証した。
 実験結果により，Hieros の性能がタスク特性，報酬設計，更新頻度，報酬関数における各項の係数，階層数などのハイパーパラメータに敏感であることが明らかになった。特にAtari環境では，スコア上は高い性能を示しているものの，実際に学習された方策は単調な行動パターンに留まっていることが確認された。
@@ -146,6 +145,7 @@ Dreamer が潜在空間モデルにより生成された軌道に基づく方策
 \cite{9} 
 % \footnote{\url{https://github.com/Snagnar/Hieros}
 を変更して実験を行った。
+本研究の実装レポジトリは\footnote{\url{https://github.com/rm-2278/Hieros-Empirical-Reevaluation}}で公開している。
 また，Director ではこのレポジトリ 
 \cite{10} 
 % \footnote{\url{https://github.com/danijar/director}}
@@ -254,15 +254,12 @@ Hieros では，各レイヤの方策は external reward，subgoal reward，intr
 
 \subsubsection{Pinpadの報酬設計の変更}
 
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{media/pinpad/reward-design-sweep/sweep-episode-scores.png}
-  \caption{Pinpad-easy\_threeタスクにおける異なる報酬設計での学習曲線の比較。}
-  \label{fig:reward-design-sweep-scores}
-\end{figure}
-
 Pinpad-easy タスクにおいて，報酬設計を7種類用意し，それぞれ学習して結果を比較する実験を行った：
 \begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+  \setlength{\topsep}{2pt}
   \item \textbf{flat（デフォルト）}: タイルを踏んだときの末尾の一致度の増減を報酬として与える。
   \item \textbf{progressive}: タイルを踏んだときの末尾の一致度 (suf) の増減を指数関数的にしたもの（$2^{\text{suf}}$）を報酬として与える。
   \item \textbf{sequence\_bonus}: flat の報酬に加え，末尾一致度が増加ごとにボーナスで報酬を与える。
@@ -271,7 +268,14 @@ Pinpad-easy タスクにおいて，報酬設計を7種類用意し，それぞ�
   \item \textbf{progressive\_steep}: 急勾配な指数関数的報酬（$3^{\text{suf}}$）を与える。
   \item \textbf{dense\_guidance}: flat の報酬に加えステップごとの細かい報酬（正しい方向に進んだ場合+0.1，間違った方向に進んだ場合-0.1）を与える。
 \end{itemize}
-なお，階層数は2とした。 \\
+なお，階層数は2とした。
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.9\columnwidth,trim=10 8 10 8,clip]{media/pinpad/reward-design-sweep/sweep-episode-scores.png}
+  \caption{Pinpad-easy\_threeにおける報酬設計ごとの学習曲線。}
+  \label{fig:reward-design-sweep-scores}
+\end{figure}
 
 図~\ref{fig:reward-design-sweep-scores} からわかるように，密な報酬設計にしても有意義な差異は確認されなかった。
 なお，図の掲載は行わないが，探索位置のヒートマップからも方策が特定領域に収束していることが確認された。
