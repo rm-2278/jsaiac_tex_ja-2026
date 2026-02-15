@@ -21,9 +21,9 @@ def fetch_hierarchy_sweep_data():
     """階層性実験のスイープデータを取得"""
     api = wandb.Api()
     
-    # スイープの情報
+    # 新しいスイープの情報 (max_hierarchy 1-3)
     project = "rm2278-university-of-cambridge/Hieros-hieros" 
-    sweep_id = "myeqsabh"
+    sweep_id = "uul3sfkc"
     
     print(f"Fetching sweep: {sweep_id}")
     sweep = api.sweep(f"{project}/sweeps/{sweep_id}")
