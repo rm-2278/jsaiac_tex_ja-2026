@@ -17,12 +17,13 @@ def setup_matplotlib():
     plt.style.use('default')
     plt.rcParams['figure.dpi'] = 300
     plt.rcParams['savefig.dpi'] = 300
-    plt.rcParams['font.size'] = 9
-    plt.rcParams['axes.titlesize'] = 10
-    plt.rcParams['axes.labelsize'] = 9
-    plt.rcParams['legend.fontsize'] = 8
-    plt.rcParams['xtick.labelsize'] = 8
-    plt.rcParams['ytick.labelsize'] = 8
+    plt.rcParams['font.size'] = 10
+    plt.rcParams['axes.titlesize'] = 11
+    plt.rcParams['axes.labelsize'] = 10
+    plt.rcParams['legend.fontsize'] = 9
+    plt.rcParams['xtick.labelsize'] = 9
+    plt.rcParams['ytick.labelsize'] = 9
+    plt.rcParams['lines.linewidth'] = 2.0  # Thicker default line width
 
 def create_media_dir():
     """出力ディレクトリの作成"""
@@ -93,8 +94,8 @@ def fetch_hierarchy_sweep_data():
     return all_data
 
 def create_episode_score_plot(data, output_dir):
-    """episode/scoreの学習曲線を作成"""
-    plt.figure(figsize=(12, 8))
+    """episode/scoreの学習曲線を作成（他のPinpadグラフに合わせたスタイル）"""
+    plt.figure(figsize=(10, 6))  # Better aspect ratio like other Pinpad figures
     
     # max_hierarchyごとに色分け（他のグラフと同じカラーパレット使用）
     hierarchy_values = sorted(data['max_hierarchy'].unique())
@@ -110,30 +111,33 @@ def create_episode_score_plot(data, output_dir):
         # X軸を1000で割って表示（他のグラフと統一）
         x = mean_data['_step'] / 1000
         
-        # 平均線をプロット
+        # 平均線をプロット（太い線）
         plt.plot(x, mean_data['mean'], 
-                color=color, linewidth=1.4, 
-                label=f'max_hierarchy={max_hier} (n={len(hier_data["run_id"].unique())})', alpha=0.8)
+                color=color, linewidth=2.5,  # Much thicker lines
+                label=f'max_hierarchy={max_hier} (n={len(hier_data["run_id"].unique())})', 
+                alpha=0.9)
         
         # min-maxの帯を追加
-        plt.fill_between(x, mean_data['min'], mean_data['max'], color=color, alpha=0.2)
+        plt.fill_between(x, mean_data['min'], mean_data['max'], color=color, alpha=0.15)
     
-    plt.xlabel('Env. Steps (×10³)', fontsize=9)
-    plt.ylabel('Episode Return', fontsize=9)
-    plt.title('Learning Curves by Max Hierarchy Level', fontsize=10, fontweight='bold')
-    plt.legend(fontsize=8, loc='best')
+    plt.xlabel('Env. Steps (×10³)', fontsize=10)
+    plt.ylabel('Episode Return', fontsize=10)
+    plt.title('Learning Curves by Max Hierarchy Level', fontsize=11, fontweight='bold')
+    plt.legend(fontsize=9, loc='best', frameon=True, fancybox=True, shadow=True)
     
-    # 他のグラフと同じスタイリング
+    # 他のPinpadグラフと同じスタイリング
     ax = plt.gca()
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.tick_params(axis="both", labelsize=8)
-    ax.grid(True, alpha=0.3)
+    ax.spines["left"].set_linewidth(1.5)
+    ax.spines["bottom"].set_linewidth(1.5)
+    ax.tick_params(axis="both", labelsize=9, width=1.5)
+    ax.grid(True, alpha=0.4, linewidth=1.0)
     
     plt.tight_layout()
     
     output_path = output_dir / "hierarchy_episode_scores.png"
-    plt.savefig(output_path, bbox_inches='tight', dpi=300)
+    plt.savefig(output_path, bbox_inches='tight', dpi=300, facecolor='white')
     plt.close()
     
     print(f"✓ Saved: {output_path}")

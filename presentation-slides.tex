@@ -1,0 +1,200 @@
+%!TEX encoding = UTF-8 Unicode
+\documentclass[aspectratio=169,12pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[japanese]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+
+% テーマとカラーの設定
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title{階層的世界モデルの現状と課題：\\Hierosの限界と将来の展望}
+\subtitle{2分間研究概要}
+\author{三好理輝 \and 劉智優 \and 山田達也}
+\institute{ケンブリッジ大学 \and 電気通信大学 \and 大阪大学}
+\date{\today}
+
+\begin{document}
+
+% タイトルスライド
+\begin{frame}
+\titlepage
+\end{frame}
+
+% スライド1: 研究背景
+\begin{frame}{研究背景}
+\begin{columns}
+\begin{column}{0.6\textwidth}
+\begin{itemize}
+\item \textbf{階層的強化学習 (HRL)} 
+  \begin{itemize}
+  \item 長期計画に有効
+  \item 効率的な探索を実現
+  \end{itemize}
+\item \textbf{世界モデル}
+  \begin{itemize}
+  \item 高いサンプル効率
+  \item 少ない環境相互作用で学習
+  \end{itemize}
+\item \textbf{統合アプローチ}: Director, Hieros
+  \begin{itemize}
+  \item ベースライン手法を上回る性能
+  \item しかし内部メカニズムは未解明
+  \end{itemize}
+\end{itemize}
+\end{column}
+\begin{column}{0.4\textwidth}
+\includegraphics[width=\textwidth]{media/videos/report/subgoal_visualization_395000_ea3189286730c79ae915.gif}
+\end{column}
+\end{columns}
+\end{frame}
+
+% スライド2: 研究目的
+\begin{frame}{研究目的と手法}
+\begin{block}{研究の動機}
+階層的世界モデル（Hieros）は本当に「階層的な計画」を学習しているのか？
+\end{block}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{検証手法}
+\begin{itemize}
+\item Visual Pinpad環境での評価
+\item Atari環境での内部状態可視化
+\item ハイパーパラメータ感度分析
+\item 階層数の影響調査
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{media/pinpad/Hieros-baseline.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+% スライド3: 実験環境
+\begin{frame}{実験環境}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Visual Pinpad}
+\begin{itemize}
+\item 長期記憶が必要
+\item 論理的順序推論
+\item 赤→緑→青の順序タスク
+\end{itemize}
+
+\vspace{0.5cm}
+
+\textbf{Atari}
+\begin{itemize}
+\item 反射的行動が中心
+\item 高スコア≠高度な計画？
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{media/videos/train_stats/policy_image_368164_32b4f1098e74a1f3aa9c.gif}
+\end{column}
+\end{columns}
+\end{frame}
+
+% スライド4: 主要な発見
+\begin{frame}{主要な発見}
+\begin{alertblock}{実験結果}
+\begin{enumerate}
+\item \textbf{Visual Pinpad}: ハイパーパラメータに強く依存、限定的頑健性
+\item \textbf{Atari}: 高スコアでも単純な行動パターンのみ
+\item \textbf{階層数増加}: 学習安定性が低下
+\end{enumerate}
+\end{alertblock}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{media/images/hierarchy_analysis.png}
+\end{column}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=\textwidth]{media/pinpad/reward-design-sweep/sweep-episode-scores.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+% スライド5: 可視化による洞察
+\begin{frame}{内部状態可視化による洞察}
+\begin{columns}
+\begin{column}{0.6\textwidth}
+\textbf{サブゴール可視化の結果}
+\begin{itemize}
+\item 上位層は期待される長期サブゴール（青）を提示せず
+\item 短期的サブゴール（赤）のみに留まる  
+\item 階層的抽象化が機能していない
+\end{itemize}
+
+\textbf{探索ヒートマップ}
+\begin{itemize}
+\item 探索範囲が限定的
+\item エントロピー調整でも根本的改善なし
+\end{itemize}
+\end{column}
+\begin{column}{0.4\textwidth}
+\includegraphics[width=\textwidth]{media/videos/report/subgoal_visualization_96096_d09f1268047ab4e15d08.gif}
+\end{column}
+\end{columns}
+\end{frame}
+
+% スライド6: 数式による理解
+\begin{frame}{階層的報酬設計の検証}
+\textbf{検証した報酬関数}
+
+\begin{align}
+r_{\text{env}}(s,a) &= \text{環境からの外部報酬} \\
+r_g(s,g) &= \text{サブゴール達成報酬} \\
+r_{\text{nov}}(s) &= \beta \cdot \frac{\|\phi(s) - \mu_{\text{buffer}}\|^2}{\sigma_{\text{buffer}}^2 + \epsilon} \\
+r_{\text{total}} &= r_{\text{env}} + \lambda_g r_g + \lambda_{\text{nov}} r_{\text{nov}}
+\end{align}
+
+\begin{block}{結果}
+報酬設計を工夫してもHierosの学習は改善されず、\\
+根本的な構造的課題の存在が示唆された
+\end{block}
+\end{frame}
+
+% スライド7: 結論と将来展望
+\begin{frame}{結論と将来展望}
+\begin{block}{主要な結論}
+現在の階層的世界モデルには根本的課題が存在：
+\begin{itemize}
+\item 理論的優位性と実際の性能にギャップ
+\item ハイパーパラメータ頑健性の欠如
+\item 階層化による最適化の複雑性増大
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{今後の研究方向}
+\begin{enumerate}
+\item \textbf{動的階層抽象化}：固定的時間抽象化の改善
+\item \textbf{頑健性向上}：ハイパーパラメータ感度の軽減
+\item \textbf{理論的発展}：階層化に伴う最適化理論
+\end{enumerate}
+\end{exampleblock}
+\end{frame}
+
+% スライド8: まとめ
+\begin{frame}{まとめ}
+\begin{center}
+\large
+階層的世界モデルの現状を包括的に評価し、\\
+\textbf{Hierosの構造的限界}を明らかにした。
+
+\vspace{1cm}
+
+今後は\textbf{動的階層化}と\textbf{最適化理論}の発展が\\
+階層的強化学習の実用化に不可欠。
+
+\vspace{1cm}
+
+\textbf{ご清聴ありがとうございました}
+\end{center}
+\end{frame}
+
+\end{document}
