@@ -31,7 +31,7 @@
 %%
 \title{
 \jtitle{階層的世界モデルHierosの実証的再評価： 内部表現解析と階層構造の影響分析}
-\etitle{Empirical Re-evalutaion of the Hierarchical World Model Hieros: Internal Representation Analysis and the Impact of Hierarchical Structure}}
+\etitle{Empirical Re-evaluation of the Hierarchical World Model Hieros: Internal Representation Analysis and the Impact of Hierarchical Structure}}
 \jaddress{三好理輝，rm2278@cam.ac.uk}
 
 \author{%
@@ -61,7 +61,7 @@
 階層的強化学習と世界モデルを結びつけた手法は，長期タスクの学習において期待されているが，その実用性や内部メカニズムについては十分な検証がされていない。
 本研究では，階層的世界モデルの代表例である Hieros に着目し，性能評価と内部状態の可視化を通じてその実態を検証した。
 Visual Pinpad環境での実験により，Hieros はハイパーパラメータ設定に対して高い感度を示し，報酬設計や更新頻度の変更に対する頑健性に限界があることがわかった。
-また，Atari環境での方策可視化では，高スコアを示しているにも関わらず単純な行動パターンのみが学習されており，階層性を活かしたサブゴールの学習が実現されていないことを確認した。
+また，Atari環境での方策可視化では，高スコアを示しているにもかかわらず単純な行動パターンのみが学習されており，階層性を活かしたサブゴールの学習が実現されていないことを確認した。
 さらに，階層数の比較実験により，階層数の増加が学習の安定性を低下させることが確認された。
 これらの結果は，現在の階層的世界モデルにおいて理論的期待と実際の性能の間にギャップがあることを示しており，より頑健な階層的学習手法の必要性を示唆している。
 \end{abstract}
@@ -78,10 +78,10 @@ Visual Pinpad環境での実験により，Hieros はハイパーパラメータ
 
 \section{はじめに}
 
-深層強化学習は多くの分野で成功を収めている一方で，大量の環境相互作用を必要とするサンプル効率の低さや，長期的依存を伴うタスクにおける学習の不安定性が依然として課題である \cite{12,8}。
-この課題に対し，環境ダイナミクスを潜在空間上に学習し，将来状態を予測するワールドモデルが提案されてきた \cite{13,14}。
+深層強化学習は多くの分野で成功を収めている一方で，大量の環境相互作用を必要とするサンプル効率の低さや，長期的依存を伴うタスクにおける学習の不安定性が依然として課題である \cite{10,8}。
+この課題に対し，環境ダイナミクスを潜在空間上に学習し，将来状態を予測するワールドモデルが提案されてきた \cite{11,12}。
 特に Dreamer 系列 \cite{3,4,5} は，潜在状態空間上での想像学習により高いサンプル効率を実現している。
-さらに，長期的な依存関係を扱うために，時間抽象化を導入する階層的強化学習 (Hierarchical Reinforcement Learning, HRL) が研究されてきた~\cite{12,8}。
+さらに，長期的な依存関係を扱うために，時間抽象化を導入する階層的強化学習 (Hierarchical Reinforcement Learning, HRL) が研究されてきた~\cite{10,8}。
 近年では，世界モデルと階層構造を統合した手法が提案されており，多時間スケールでの計画と想像を同時に実現する枠組みである Director~\cite{1} や Hieros~\cite{2} は，Dreamer などのフラットな世界モデルを上回る性能を示している点で注目されている。
 しかしながら，性能向上が報告されている一方で，階層的世界モデルの内部でどのような抽象表現が獲得されているのか，あるいは真に階層的な想像や長期計画が実現されているのかについての実証的検証は不十分であり，特に世界モデル自体を階層化した構造がどのように機能しているのかは明らかでない。
 そこで本研究では，階層的世界モデルの代表的手法である Hieros~\cite{2} に着目し，その性能評価および内部状態の可視化を通じて，階層的想像学習の実態を検証した。
@@ -90,28 +90,30 @@ Visual Pinpad環境での実験により，Hieros はハイパーパラメータ
 
 \section{研究背景・目的}
 \label{sec:background}
-HRL は，エージェントが不確実な情報を集める行動をする探索において有益であると知られており~\cite{8}，効率的な報酬割り当て，転移学習，高い解釈性などといった点でも優位性があると考えられている~\cite{12}。
+HRL は，エージェントが不確実な情報を集める行動をする探索において有益であると知られており~\cite{8}，効率的な報酬割り当て，転移学習，高い解釈性などといった点でも優位性があると考えられている~\cite{10}。
 また，世界モデルは環境もモデル化することで高コストなエージェントと環境の相互作用を減らし，高いサンプル効率を実現する。
 これらを組み合わせた階層的世界モデルの研究も近年進められており，例えば Director~\cite{1} や Hieros~\cite{2} は特定の分野で既存のフラットな世界モデルを上回る性能を示している。
-
-この２つの要素を組み合わせた数少ないモデルとして，Director \cite{1} や Hieros \cite{2} があり，ベースラインとして使用されている Dreamer などのフラットな世界モデルを上回る性能を示している。
-
+Director は Dreamer という潜在空間での想像によって効率的な学習を行う世界モデル~\cite{3,4,5} を基盤として，方策を決めるモデルに Managerと Worker の二層構造を導入した手法である。Manager は長期的な潜在目標を生成し，Worker は短期的行動を出力するモデルであり，Worker の損失関数に目標達成度を組み込むことで，同時に学習を行う。
 Hieros は次の 4 つの点を改良するように Director を拡張した手法である：
+\setlength{\itemsep}{1pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{2pt}
 \begin{enumerate}
    \item 方策を決めるモデルだけでなく潜在空間モデルも階層化し，階層ごとに異なる時間スケールを扱えるようにする。
    \item 階層数の三層以上への拡張も行う。
    \item 潜在空間のダイナミクスの学習で再帰型状態空間モデル (Recurrent State-Space Model, RSSM) の代わりに線形状態空間モデルに基づく状態空間モデル (Simplified Structured State Space Sequence World Model, S5WM) を採用してより長期的な依存関係を学習できるようにする。
    \item 時間計算量を削減するサンプリング戦略を導入する。
 \end{enumerate}
-Hierosにおいて、各階層毎に以下のように定義される3つの報酬関数を持つ：
+Hierosにおいて、各階層ごとに以下のように定義される3つの報酬関数を持つ：
 \begin{align*}
-r_{\text{env}}&(s_t, a_t) = \text{環境報酬} \\
-r_g &= \frac{g_t^T \cdot h_t}{\max(\|g_t\|, \|h_t\|)} \quad \text{(目標達成度報酬)} \\
-r_{\text{nov}} &= \|h_t - g_h^T(h_t)\|_2 \quad \text{(新奇性報酬)} \\
-r_{\text{total}}(s_t, a_t, g_t) &= r_{\text{env}}(s_t, a_t) + w_g \cdot r_{\text{goal}}(s_t, g_t) + w_{\text{nov}} \cdot r_{\text{nov}}(s_t)
+&r_{\text{env}}(s_t, a_t) \quad (\text{環境報酬}) \\
+r_{\text{goal}} &= \frac{g_t^T \cdot h_t}{\max(\|g_t\|, \|h_t\|)} \quad \text{(目標達成度報酬)} \\
+r_{\text{nov}} &= \|h_t - g_\psi(h_t)\|_2 \quad \text{(新奇性報酬)} \\
+r_{\text{total}}(s_t, a_t, g_t) &= r_{\text{env}}(s_t, a_t) + w_g \cdot r_{\text{goal}}(h_t, g_t) + w_{\text{nov}} \cdot r_{\text{nov}}(h_t)
 \end{align*}
 
-ここで，$f(s_t)$は状態$s_t$の特徴表現，$h_t$は隠れ状態，$g_h^T(h_t)$はサブゴール，$w_g$と$w_{\text{nov}}$は重みづけ係数である。
+ここで，$s_t$は状態、$a_t$は行動、$g_t$はサブゴール，$h_t$は観測をエンコードした潜在状態，$g_\psi(h_t)$は潜在空間モデルによる予測，$w_g$と$w_{\text{nov}}$は重みづけ係数である。
 
 Hieros は Atari ベンチマークにおいて DreamerV3 を上回る性能が報告されている一方で，学習された表現の解釈性やモデルサイズをスケールする方向の研究は不十分である。またその階層的な世界モデル全体において理論および評価実験は知られていない。
 そこで本研究では，階層的世界モデルの現状を理解し課題を特定するために，Hieros のハイパーパラメータや環境を変えた際の挙動の可視化を通じて，Hieros の性能および内部状態の評価，そしてその限界の理解を試みた。
@@ -120,21 +122,21 @@ Hieros は Atari ベンチマークにおいて DreamerV3 を上回る性能が�
 
 \subsection{世界モデル}
 
-世界モデルとは，環境の遷移ダイナミクスを学習し，潜在空間上で将来状態を予測することで方策学習を効率化する枠組みである~\cite{13,14}。
-強化学習において環境はマルコフ決定過程（MDP）\cite{17} として定式化される：
+世界モデルとは，環境の遷移ダイナミクスを学習し，潜在空間上で将来状態を予測することで方策学習を効率化する枠組みである~\cite{11,12}。
+強化学習において環境はマルコフ決定過程（MDP）\cite{15} として定式化される：
 \begin{equation}
 \mathcal{M} = (\mathcal{S}, \mathcal{A}, P, r, \gamma)
 \end{equation}
 ここで，$\mathcal{S}$ は状態空間，$\mathcal{A}$ は行動空間である。
 時刻 $t$ における状態 $s_t$ と行動 $a_t$ から次時刻の状態 $s_{t+1}$ への遷移確率を $P(s_{t+1}\mid s_t, a_t)$ と表す。
 報酬関数 $r(s_t, a_t)$ は状態行動ペア $(s_t, a_t)$ に対して報酬を返す。$\gamma \in [0,1)$ は将来報酬に対する割引率を表す。
-世界モデルは遷移確率 $P$ を近似することで潜在空間上で軌道生成（imagination）を可能にする~\cite{13,3}。
+世界モデルは遷移確率 $P$ を近似することで潜在空間上で軌道生成（imagination）を可能にする~\cite{11,3}。
 この内部シミュレーションに基づく学習はサンプル効率を大きく向上させることが知られている~\cite{3}。
 
 \subsubsection{世界モデルの分類}
 
 世界モデルは潜在状態において次状態を予測することを目的とする状態予測モデル，高次元な観測空間において次の観測を予測することを目的とする観測予測モデル，そして観測を低次元の潜在空間に写像しその潜在空間上でダイナミクスを学習する状態空間モデルの3種類に大別される~\cite{13}。
-状態予測モデルと観測予測モデルは直接的な予測を行うが，学習の安定性や表現効率の面で課題があるとされており~\cite{13}，近年は特に状態空間モデルが注目されている~\cite{14}。
+状態予測モデルと観測予測モデルは直接的な予測を行うが，学習の安定性や表現効率の面で課題があるとされており~\cite{11}，近年は特に状態空間モデルが注目されている~\cite{12}。
 
 \subsubsection{Dreamer}
 
@@ -149,19 +151,17 @@ Dreamer が潜在空間モデルにより生成された軌道に基づく方策
 
 
 
-\section{実験・考察}
+\section{実験・結果}
 本節では \ref{sec:background} で説明した Hieros~\cite{2} に関する実験について述べる。
 まず，検証が不十分であった，長期タスクの評価に適している Visual Pinpad 環境での検証を行った。
 次に，Atari でのモデルの内部状態の確認を行った。
 
-なお，本節の実験において，Hieros のモデル検証では，既存のレポジトリ 
-\cite{9} 
-% \footnote{\url{https://github.com/Snagnar/Hieros}
+なお，本節の実験において，Hieros のモデル検証では，既存のレポジトリ
+\footnote{\url{https://github.com/Snagnar/Hieros}}
 を変更して実験を行った。
 本研究の実装レポジトリは\footnote{\url{https://github.com/rm-2278/Hieros-Empirical-Reevaluation}}で公開している。
 また，Director ではこのレポジトリ 
-\cite{10} 
-% \footnote{\url{https://github.com/danijar/director}}
+\footnote{\url{https://github.com/danijar/director}}
 を用いて実験を行った。
 学習には，RTX-5070Ti または RTX-6000 単機を用いた。
 
@@ -177,13 +177,13 @@ Dreamer が潜在空間モデルにより生成された軌道に基づく方策
 初期実験として，標準的な Pinpad 環境における Hieros のベースライン性能を評価した。
 Visual Pinpad は，エージェントが異なる色のタイルを特定の順番で踏むことが目的のタスクである。
 結果は図~\ref{fig:hieros-baseline}の通りであり，400,000 ステップの学習期間を通じて累積報酬が0付近に留まり，有意な学習進展が観察されなかった。
-これは，単純な  Pinpad 設計は Hieros に対して非常に難しいタスクであることを示唆している。
+これは，単純な Pinpad 設計は Hieros に対して非常に難しいタスクであることを示唆している。
 
 \subsection{Pinpad-easy}
-次に，モデルの変化を見やすくするため，Pinpad の報酬設計を元の実装から，末尾の一致度が上がるとスコアが与えられるように変更した Pinpad-easy というタスクを作成した。以降の実験ではこのタスクを用いることとする。
-例えば，赤緑青が正解シーケンスである Pinpad-easy-three タスクでは，赤 $\rightarrow$ 赤緑に変化した場合は +1 の報酬，赤緑 $\rightarrow$ 赤緑緑に変化した場合は -2 の報酬が与えられる）。
-また，Hieros 　の内部状態について調査するために，Hieros の各レイヤが提示しているサブゴールの可視化を行った。元の Hieroes の実装~\cite{9} では過去の経験を参考にしたノイズを加えてサブゴールを可視化していたが，上位モデルの提示する情報のみに焦点を当てるために，ノイズなしで可視化した。
-また，Hieros エージェントの各ステップにおける，各地点への累積訪問割合もヒートマップとして可視化した。
+次に，モデルの変化を見やすくするため，Pinpad の報酬設計を元の実装から，末尾の一致度が上がるとスコアが与えられるように変更した Pinpad-easy というタスクを作成した。以降の実験ではこのタスクを用いる。
+例えば，赤緑青が正解シーケンスである Pinpad-easy-three タスクでは，赤 $\rightarrow$ 赤緑に変化した場合は +1 の報酬，赤緑 $\rightarrow$ 赤緑緑に変化した場合は -2 の報酬が与えられる。
+また，Hieros の内部状態について調査するために，Hieros の各レイヤが提示しているサブゴールの可視化を行った。元の Hieros の実装では過去の経験を参考にしたノイズを加えてサブゴールを可視化していたが，上位モデルの提示する情報のみに焦点を当てるために，ノイズなしで可視化した。
+また，Hieros エージェントの各ステップにおける，各地点への累積訪問割合をヒートマップとして可視化した。
 
 \subsubsection{サブゴール更新頻度の変更}
 \begin{figure}[t]
@@ -210,7 +210,7 @@ Visual Pinpad は，エージェントが異なる色のタイルを特定の順
 まずは，\texttt{subactor\_update\_every} を変化させたときの結果をまとめる。
 \texttt{subactor\_update\_every} は，それぞれの階層がより下位の階層にどの頻度でサブゴールを提示するか，すなわち下位層をどの程度時間的抽象化しているかを表している。
 例えば，\texttt{subactor\_update\_every=4} は，4 ステップごとに上位階層が下位階層に与えるサブゴールを更新していることを意味する。図\ref{fig:sweep-scores}の定量的分析により，\texttt{subactor\_update\_every}パラメータの変動は学習過程において差異を生じるものの，最終的な収束性能は全設定において報酬値1.0程度の限定的な水準に留まることが確認された。
-また，\ref{fig:subgoal-temporal} において上位層が提示するサブゴールも，上位2階層ともに赤までしか提示しておらず，求めている赤緑青のフルシーケンスを提示するようには学習されなかった。
+また，\ref{fig:subgoal-temporal} において上位層が提示するサブゴールも，上位2層ともに赤までしか提示しておらず，求められている赤緑青のフルシーケンスを提示するようには学習されなかった。
 同様に，\ref{fig:heatmap-temporal} においても探索範囲が収束している様子が確認できた。
 
 \subsubsection{方策エントロピーの変更}
@@ -229,10 +229,10 @@ Visual Pinpad は，エージェントが異なる色のタイルを特定の順
 \end{figure}
 
 
-次に方策エントロピーを変更する実験の結果を図~\ref{fig:entropy-heatmap-temporal}, \ref{fig:entropy-sweep-scores} に示す。
+次に方策エントロピーを変更する実験の結果を図~\ref{fig:entropy-sweep-scores} ，図~\ref{fig:entropy-heatmap-temporal} に示す。
 図の凡例において，方策エントロピーが単一の値の場合すべての階層で同一の値であることを表し，3つ値がある場合は左から順に下位，中位，上位階層のエントロピー値を示す。
-エントロピーが大きくなると，\ref{fig:entropy-heatmap-temporal} に見られるように探索範囲がより収束しにくくなり，報酬も高くなったが（\ref{fig:entropy-sweep-scores}），タスクを解くほどに学習が進むことはなかった。
-サブゴールの可視化については，\ref{fig:subgoal-temporal} と同様，赤のタイルのみ，または不適切なタイル順を示すサブゴールを提案する結果となった（図は割愛）。
+エントロピーが大きくなると，図~\ref{fig:entropy-heatmap-temporal} に見られるように探索範囲がより収束しにくくなり，報酬も高くなったが（図~\ref{fig:entropy-sweep-scores}），タスクを解くほどに学習が進むことはなかった。
+サブゴールの可視化については，図~\ref{fig:subgoal-temporal} と同様，赤のタイルのみ，または不適切なタイル順を示すサブゴールを提案する結果となった（図は割愛）。
 
 \subsubsection{報酬割り当て係数の変更}
 % --- グラフとヒートマップをコンパクトにまとめる ---
@@ -288,7 +288,7 @@ Pinpad-easy タスクにおいて，報酬設計を7種類用意し，それぞ�
   \item \textbf{progressive\_steep}: 急勾配な指数関数的報酬（$3^{\text{suf}}$）を与える。
   \item \textbf{dense\_guidance}: flat の報酬に加えステップごとの細かい報酬（正しい方向に進んだ場合+0.1，間違った方向に進んだ場合-0.1）を与える。
 \end{itemize}
-なお，階層数は2とした。
+なお，階層数は2にした。
 図~\ref{fig:reward-design-sweep-scores} からわかるように，密な報酬設計にしても有意義な差異は確認されなかった。
 なお，図の掲載は行わないが，探索位置のヒートマップからも方策が特定領域に収束していることが確認された。
 
@@ -296,14 +296,14 @@ Pinpad-easy タスクにおいて，報酬設計を7種類用意し，それぞ�
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{media/pinpad/director-results/director-episode-scores.png}
-  \caption{Director：Pinpad学習結果。Pinpad-3およびPinpad-dense-3での学習曲線。}
+  \caption{Director：Pinpad学習結果。Pinpad および Pinpad-dense での学習曲線。}
   \label{fig:director-scores}
 \end{figure}
 
-Director を用いた Pinpad および Pinpad の結果を示す。
+Director を用いた Pinpad および Pinpad-dense の結果を示す。
 Director ではどちらの報酬設計でも学習が進んでいることが確認される。Pinpad の結果は \cite{1} で報告されている結果に近いものとなっている。
-また，比較のために作成した Pinpad-dense での学習も行ったところ，高い性能が出ることを確認でき，報酬設計には問題がないことが確認された。
-なお，GPU メモリの都合上，途中までしか学習できなかった。
+また，比較のために作成した Pinpad-dense での学習も行ったところ，高い性能が得られることを確認でき，報酬設計には問題がないことが確認された。
+なお，GPU メモリの都合上，途中までしか学習を進められなかった。
 
 \subsection{Atariにおける解析}
 % 2段抜きレイアウトで全Atari結果を配置
@@ -398,8 +398,7 @@ Director ではどちらの報酬設計でも学習が進んでいることが�
 
 本節では，Hierosの\texttt{max\_hierarchy}パラメータが学習性能に与える影響を解析する。
 \texttt{max\_hierarchy} パラメータはHierosにおける階層数の上限を定義する重要なハイパーパラメータであり，計画の時間的抽象化レベルを決定する。
-
-図~\ref{fig:hierarchy-analysis}に示すように，\texttt{max\_hierarchy=1}の設定が\texttt{max\_hierarchy=2,3}よりも優れた性能を示しており、階層数の増加に伴って学習性能が段階的に低下する傾向が観測された。
+図~\ref{fig:hierarchy-analysis} に示すように，\texttt{max\_hierarchy=1}の設定が\texttt{max\_hierarchy=2,3}よりも優れた性能を示しており、階層数の増加に伴って学習性能が段階的に低下する傾向が観測された。
 これは付録のRSSM結果と一致する傾向であり，階層数の増加がモデルの学習安定性を損なうことを示唆している。
 定量的実験結果は，理論的に予測される階層的計画手法の優位性が実際の学習動態において十分に発現されないことを示し，階層構造の導入に伴う最適化問題の複雑性増大が学習性能の制約要因となっている可能性を強く示唆している。
 
@@ -410,20 +409,20 @@ Director ではどちらの報酬設計でも学習が進んでいることが�
 当初の仮説では，Pinpad 環境における学習困難は疎な報酬に起因すると推測していたが，密な報酬設計を導入した実験においても同様の学習停滞が観察されたことから，この現象はより構造的な要因に由来すると考察できる。
 本稿では Atari と Visual Pinpad の2種類のタスクしか比較できなかったが，タスクによる学習進度の差が最も大きく，どのようなタスクで学習が進まないのか（長期的計画が求められる環境か，またはエージェントが小さい環境か），またタスクごとに差が生まれる要因は何か（定常性の度合いか，モデルに入る外部予測誤差の大きさか）を，多様な環境下で評価することが将来の有望な方向性の一つである。
 
-また，4.2.1，4.2.3，4.2.4 において，更新頻度や報酬割り当て係数の比率に対してモデルが繊細であることがわかった。
-ここから，VPRやTHICK　\cite{15,16}のように更新頻度を可変長にすること，または HarmonyDream~\cite{11} のように報酬を自動でバランスすることで，より多様なタスクを学習できるようになると予想できる。
+また，4.2.1，4.2.3，4.2.4 において，更新頻度や報酬割り当て係数の比率に対してモデルが敏感であることがわかった。
+ここから，THICK~\cite{16}のように更新頻度を可変長にすること，または HarmonyDream~\cite{9} のように報酬を自動でバランスすることで，より多様なタスクを学習できるようになると予想できる。
 
 4.2.2 では探索範囲に変化が見られた一方，方策エントロピーを増やしてもランダム性が増えただけで，有意義な変更ではないと考えられる。
 
 さらに Atari のモデル可視化を進める中で，有意義なサブゴールが学習されていない一方で，高スコアが出ていることが確認された。
 このことから，Hieros が報告する高スコアは階層性の優位性によるものではなく，環境の特性上，単純な方策でも高報酬が得られている可能性が示唆される。
-また，\cite{9} で提示されているような階層化による探索の改善が関連している可能性もあるが，検証が必要である。
+また，~\cite{8}で提示されているような階層化による探索の改善が関連している可能性があるが，検証が必要である。
 
 検証結果からは Hieros がうまく学習できておらず，汎化性能も低いため，より頑健性の高いモデルの理論的・実験的模索が必要であると結論づける。
 
 最後に，理論をコード化した際にエラーが含まれてしまった可能性は否めない一方で，世界モデルを階層化することで学習がより不安定になることが確認でき，階層性には実装によらない特有の不安定性を引き起こす要因があると考える。
 4.2.5 および Appendix にある RSSM での複数階層の実験は，これを強く示唆している。
-世界モデルは目的関数や誤差蓄積に起因し，また階層的モデルは階層の同時学習による非定常性によりハイパーパラメータに繊細であることが知られており，それらの掛け合わせによって学習がより一層不安定になっている可能性がある。
+世界モデルは目的関数や誤差蓄積に起因し，また階層的モデルは階層の同時学習による非定常性によりハイパーパラメータに敏感であることが知られており，それらの掛け合わせによって学習がより一層不安定になっている可能性がある。
 特に，Hieros は Director と異なり潜在空間モデルが高階層でも学習されるため，上位層の潜在空間モデルの大きな誤差が下位層の方策学習を妨げる可能性や，下位層が方策を変化させた際に上位層の潜在空間モデルのアップデートが遅れてもつれが生じる可能性が考えられる。
 これらの理論的・実証的解析は今後の課題である。
 
@@ -440,22 +439,21 @@ Director ではどちらの報酬設計でも学習が進んでいることが�
 
 \begin{thebibliography}{99}
 \bibitem{1} Hafner, D. et al.: Deep Hierarchical Planning from Pixels, NeurIPS (2022).
-\bibitem{2} Mattes, et al.: Hieros - Hierarchical Imagination on Structured State Space Sequence World Models (2023).
+\bibitem{2} Mattes, P. et al.: Hieros - Hierarchical Imagination on Structured State Space Sequence World Models (2023).
 \bibitem{3} Hafner, D. et al.: Dream to Control: Learning Behaviors by Latent Imagination, ICLR (2020).
 \bibitem{4} Hafner, D. et al.: Mastering Atari with Discrete World Models, ICLR (2021).
 \bibitem{5} Hafner, D. et al.: Mastering Diverse Domains through World Models, Nature (2025).
 \bibitem{6} Hansen, N. et al.: Temporal Difference Learning for Model Predictive Control, ICML (2022).
 \bibitem{7} Hansen, N. et al.: TD-MPC2: Scalable, Robust World Models for Continuous Control, ICLR (2024).
 \bibitem{8} Nachum, O. et al.: Why Does Hierarchy (Sometimes) Work So Well in Reinforcement Learning?, NeurIPS (2019).
-\bibitem{9} \url{https://github.com/Snagnar/Hieros}
-\bibitem{10} \url{https://github.com/danijar/director}
-\bibitem{11} Ma, H. et al.: HarmonyDream: Task Harmonization Inside World Models, ICML (2024).
-\bibitem{12} Pateria, S. et al.: Hierarchical Reinforcement Learning: A Comprehensive Survey, ACM Computing Surveys (2021).
-\bibitem{13} Ha, D. and Schmidhuber, J.: World Models, NeurIPS (2018).
-\bibitem{14} Hafner, D. et al.: Learning Latent Dynamics for Planning from Pixels, ICML (2019).
-\bibitem{15} Gu, A. et al.: Efficiently Modeling Long Sequences with Structured State Spaces, ICLR (2022).
-\bibitem{16} Smith, J. T. et al.: Simplified State Space Layers for Sequence Modeling, ICLR (2023).
-\bibitem{17} Sutton, R. S. and Barto, A. G.: Reinforcement Learning: An Introduction, MIT Press (2018).
+\bibitem{9} Ma, H. et al.: HarmonyDream: Task Harmonization Inside World Models, ICML (2024).
+\bibitem{10} Pateria, S. et al.: Hierarchical Reinforcement Learning: A Comprehensive Survey, ACM Computing Surveys (2021).
+\bibitem{11} Ha, D. and Schmidhuber, J.: World Models, NeurIPS (2018).
+\bibitem{12} Hafner, D. et al.: Learning Latent Dynamics for Planning from Pixels, ICML (2019).
+\bibitem{13} Gu, A. et al.: Efficiently Modeling Long Sequences with Structured State Spaces, ICLR (2022).
+\bibitem{14} Smith, J. T. et al.: Simplified State Space Layers for Sequence Modeling, ICLR (2023).
+\bibitem{15} Sutton, R. S. and Barto, A. G.: Reinforcement Learning: An Introduction, MIT Press (2018).
+\bibitem{16} Gumbsch, C. et al.: Learning Hierarchical World Models with Adaptive Temporal Abstractions from Discrete Latent Dynamics, EWRL (2023).
 
 
 \end{thebibliography}
@@ -472,11 +470,11 @@ Director ではどちらの報酬設計でも学習が進んでいることが�
 Hieros は S5WM を用いているが，RSSM を用いることもできる。
 そこで，RSSM を用いて Pinpad-easy で Hieros を学習させた結果をまとめる。
 図~\ref{fig:rssm-scores}で確認できるように，RSSMでも高スコアが出ることはなかった。
-また，S5WM を用いたときと同様に，階層数を少ない時により学習が進んでいることから，階層を加えることがモデルの頑健性を下げていると考えられる。
-なお，学習が進まなかったため，\texttt{max\_hierarchy=1} のときは 320k で学習を打ち切った。
+% また，S5WM を用いたときと同様に，階層数を少ない時により学習が進んでいることから，階層を加えることがモデルの頑健性を下げていると考えられる。
+なお，学習が進まなかったため，\texttt{max\_hierarchy=1} のときは 320k ステップで学習を打ち切った。
 \subsection{Hyperparameters}
-表~\ref{tab:pinpad-hparams}にあるものをベースとし，各実験において1つまたは２つの値を変更しながら組み合わせを試した。
-表に記述されていないものは，\cite{2} と同じ値を使用した。
+% 表~\ref{tab:pinpad-hparams}にあるものをベースとし，各実験において1つまたは2つの値を変更しながら組み合わせを試した。
+表に記載されていないものは，\cite{2} と同じ値を使用した。
 \begin{table}[!htbp]
   \centering
   \begin{tabular}{ll}
